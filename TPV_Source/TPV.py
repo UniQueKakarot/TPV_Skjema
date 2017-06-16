@@ -16,7 +16,6 @@ config_file = Path('TPV-Skjema/config.ini')
 FONT1 = ("Calibri", 11)
 FONT2 = ("Calibri", 11, "bold", "underline")
 
-print('Hello')
 
 class TPV_Main():
 
