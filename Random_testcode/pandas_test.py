@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from configobj import ConfigObj
 from datetime import datetime, date, timedelta
+import os.path
 
 config = ConfigObj('config.ini')
 d1 = date(2017, 1, 1)  # start date
@@ -9,7 +10,8 @@ d2 = date(2017, 1, 31)  # end date
 column = []
 dates = []
 delta = d2 - d1         # timedelta
-today = datetime.today()
+date = datetime.today()
+today = date.strftime('%d-%m-%Y')
 
 index_test = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 index_test2 = [1, 2]
@@ -24,8 +26,17 @@ for i in config['Vedlikeholdspunkt'].values():
     column.append(i)
 
 
+if os.path.isfile('pandas_to_excel.xlsx') == False:
+    df = pd.DataFrame(values1, index=column, columns=[today])
 
-df = pd.DataFrame(values1, index=column, columns=[today])
+else:
+    df = pd.read_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
+
+new_data = pd.DataFrame(values2, index=column, columns=['Hello'])
+
+test = df.add(new_data, axis='columns')
+# new_df = new_df.set_index(column, inplace=True)
+
 #df.fillna(value=0)
 # for i in range(delta.days + 1):
 #     dates.append(d1 + timedelta(days=i))
@@ -44,7 +55,7 @@ df = pd.DataFrame(values1, index=column, columns=[today])
 
 
 #today = datetime.today()
+#df.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
+test.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
 
-df.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
-
-#print(df)
+#print(test)
