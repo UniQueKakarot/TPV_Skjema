@@ -12,6 +12,7 @@ dates = []
 delta = d2 - d1         # timedelta
 date = datetime.today()
 today = date.strftime('%d-%m-%Y')
+test_today = '19-06-2017'
 
 index_test = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 index_test2 = [1, 2]
@@ -32,9 +33,13 @@ if os.path.isfile('pandas_to_excel.xlsx') == False:
 else:
     df = pd.read_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
 
-new_data = pd.DataFrame(values2, index=column, columns=['Hello'])
 
-test = df.add(new_data, axis='columns')
+#Litterally just slapping the values on to the existing dataframe! Just how we like it!
+df[test_today] = pd.Series(values3, index=df.index)
+
+# new_data = pd.DataFrame(values2, index=column, columns=['Hello'])
+#
+# test = pd.merge(df, new_data, left_index=True, right_on='Hello')
 # new_df = new_df.set_index(column, inplace=True)
 
 #df.fillna(value=0)
@@ -56,6 +61,6 @@ test = df.add(new_data, axis='columns')
 
 #today = datetime.today()
 #df.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
-test.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
+#test.to_excel('pandas_to_excel.xlsx', sheet_name='Sheet1')
 
-#print(test)
+print(df)
