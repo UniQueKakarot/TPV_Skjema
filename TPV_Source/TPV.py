@@ -1,8 +1,14 @@
+# coding: cp865
+
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
+import pandas as pd
+import numpy as np
+from datetime import datetime, date, timedelta
 
 win = Tk()
 win.title("TPV Skjema")
@@ -86,6 +92,10 @@ class TPV_Main():
 
             config['Diversje'] = {}
             config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
+
+            config['Filbehandling'] = {}
+            config['Filbehandling']['1'] = '' #Filename stored here
+            config['Filbehandling']['2'] = '' #Filepath stored here
 
             config.write()
 
@@ -353,7 +363,6 @@ class TPV_Main():
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
-
         elif length == 10:
             print('10')
             self.checkVar1 = IntVar()
@@ -839,20 +848,47 @@ class TPV_Main():
 
 
 
-        # row = 0
-        # col = 0
-        # var = {'test1': 1, 'test2': 2, 'test3': 3, 'test4': 4}
-        #
-        # self.variables = {}
-        # for label in sorted(var.keys()):
-        #     self.variables[label] = IntVar()
-        #     cb = Checkbutton(self.TPV_Body, text=label,
-        #                         onvalue=var[label], offvalue=0,
-        #                         variable=self.variables[label])
-        #     cb.grid(row=row, column=col, sticky=W)
-        #     row += 1
+        #stuff concerning the creation of a dataframe comes under here
+        print('Starting DataFrame creations')
 
-        #print(self.variables['test4'])
+        config = ConfigObj('config.ini', encoding='utf8') #Config Parser
+        f_name = config['Filbehandling']['1'] #reading in the location and name for the file
+        date = datetime.today()
+        today = date.strftime('%d-%m-%Y')
+        index = []
+
+
+
+        for i in config['Vedlikeholdspunkt'].values():
+            index.append(i)
+
+
+
+        #checking if the file exist or not
+        if os.path.isfile(f_name) == False:
+            print('Looks like we need a new file!')
+
+            df = pd.DataFrame(values2, index=index, columns=[today]) #Making a new dataframe with the results you want to save
+            f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
+            config['Filbehandling']['1'] = f_new #writing the filename to the config file
+            config.write()
+
+        #if the file exist:
+        else:
+
+            print('Opening the old scruffy file that already exists!')
+
+            f_name = config['Filbehandling']['1'] #reading in the location and name for the file
+            df = pd.read_excel(f_name, sheet_name='Sheet1') #Open the file that exist
+
+
+        df[today] = pd.Series(values2, index=df.index)
+
+        f_name = config['Filbehandling']['1']
+
+        df.to_excel(f_name, sheet_name='Sheet1')
+
+        print('I should be done by now!')
 
 
 
