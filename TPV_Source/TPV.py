@@ -882,10 +882,32 @@ class TPV_Main():
             df = pd.read_excel(f_name, sheet_name='Sheet1') #Open the file that exist
 
 
+        colum = df.columns.values
+
+        for i in colum:
+            last_date = i
+
+        if last_date != today:
+            d1 = date(last_date)  # start date
+            d2 = date(today)  # end date
+            dates = []
+            delta = d2 - d1         # timedelta
+
+            for i in range(delta.days + 1):
+                dates.append(d1 + timedelta(days=i))
+            
+
+
+        print('last_date ', last_date)
+
+
+        #appending the series to the dataframe
         df[today] = pd.Series(values2, index=df.index)
 
+        #loading in the name of the file from config
         f_name = config['Filbehandling']['1']
 
+        #writing the dataframe to excel
         df.to_excel(f_name, sheet_name='Sheet1')
 
         print('I should be done by now!')
