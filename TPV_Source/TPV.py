@@ -14,7 +14,13 @@ win = Tk()
 win.title("TPV Skjema")
 #win.geometry("400x450")
 
-#global length #I'm getting the lenght of the first dict in the config here, and need to use it atleast 1 more place #hack#dontdothis
+menuBar = Menu(win)
+win.config(menu=menuBar)
+
+fileMenu = Menu(menuBar, tearoff=0)
+
+fileMenu.add_command(label='Lagre ekstra info')
+menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
 config_name = 'config.ini'
 config_file = Path('TPV-Skjema/config.ini')
@@ -854,7 +860,7 @@ class TPV_Main():
         config = ConfigObj('config.ini', encoding='utf8') #Config Parser
         f_name = config['Filbehandling']['1'] #reading in the location and name for the file
         date = datetime.today()
-        today = date.strftime('%d-%m-%Y')
+        today = date.strftime('%d-%m-%Y, %A')
         index = []
 
 
