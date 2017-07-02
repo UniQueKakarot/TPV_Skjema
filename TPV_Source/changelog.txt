@@ -1,0 +1,10 @@
+
+02.07.2017:
+
+-Removed text input field on the gui
+-Removed nameheader for the input field
+
+-Added in a file menu
+-Added in 2 alternatives with respective submenues
+
+-------------------------------------------

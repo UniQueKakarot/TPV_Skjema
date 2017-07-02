@@ -12,9 +12,19 @@ from datetime import datetime, date, timedelta
 
 win = Tk()
 win.title("TPV Skjema")
-#win.geometry("400x450")
+win.geometry("850x460")
 
-#global length #I'm getting the lenght of the first dict in the config here, and need to use it atleast 1 more place #hack#dontdothis
+menuBar = Menu(win)
+win.config(menu=menuBar)
+
+fileMenu = Menu(menuBar, tearoff=0)
+helpMenu = Menu(menuBar, tearoff=0)
+
+helpMenu.add_command(label='Hjelp')
+menuBar.add_cascade(label='Info', menu=helpMenu)
+
+fileMenu.add_command(label='Lagre ekstra info')
+menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
 config_name = 'config.ini'
 config_file = Path('TPV-Skjema/config.ini')
@@ -91,7 +101,7 @@ class TPV_Main():
             config['Hyppighet']['9'] = ''
 
             config['Diversje'] = {}
-            config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
+            #config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = '' #Filename stored here
@@ -174,13 +184,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 6:
             print('6')
@@ -215,13 +225,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 7:
             print('7')
@@ -259,13 +269,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 8:
             print('8')
@@ -306,13 +316,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 9:
             print('something = 9')
@@ -356,13 +366,14 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
+
         elif length == 10:
             print('10')
             self.checkVar1 = IntVar()
@@ -409,13 +420,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 11:
             print('11')
@@ -466,13 +477,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 12:
             print('12')
@@ -526,13 +537,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 13:
             print('13')
@@ -589,13 +600,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 14:
             print('14')
@@ -655,13 +666,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 15:
             print('15')
@@ -725,13 +736,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
+            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
+            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
+            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
+            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=5)
+            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         else:
             print('initializing failed! Values out of bounds')
@@ -854,7 +865,7 @@ class TPV_Main():
         config = ConfigObj('config.ini', encoding='utf8') #Config Parser
         f_name = config['Filbehandling']['1'] #reading in the location and name for the file
         date = datetime.today()
-        today = date.strftime('%d-%m-%Y')
+        today = date.strftime('%d-%m-%Y, %A')
         index = []
 
 
@@ -882,10 +893,13 @@ class TPV_Main():
             df = pd.read_excel(f_name, sheet_name='Sheet1') #Open the file that exist
 
 
+        #appending the series to the dataframe
         df[today] = pd.Series(values2, index=df.index)
 
+        #loading in the name of the file from config
         f_name = config['Filbehandling']['1']
 
+        #writing the dataframe to excel
         df.to_excel(f_name, sheet_name='Sheet1')
 
         print('I should be done by now!')
