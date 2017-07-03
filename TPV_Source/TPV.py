@@ -119,6 +119,13 @@ class TPV_Main():
         values = [] #Empty list for storing how many entries it is in each key
         first_key = keys[0] #First key in the config for entries list
         misc = config1['Diversje']['1']
+        date = datetime.today() #Getting the current date
+        today = date.strftime('%A') #Getting the current day, as in day name. Mon, tue, wed and such
+        today_number = date.strftime('%d')
+        today_number = int(today_number)
+
+
+        print(today_number)
 
         #Establish the number of entries in the config file
         for i in config1[first_key]:
@@ -138,6 +145,7 @@ class TPV_Main():
             label.grid(row=row_ved, column=1, sticky=W, padx=15)
             row_ved += 1
 
+
         for value in config1['Handling'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_han, column=2, sticky=W, padx=15)
@@ -148,10 +156,74 @@ class TPV_Main():
             label.grid(row=row_olj, column=3, sticky=W, padx=15)
             row_olj += 1
 
+        #############################################
+        # We need more work here to get this working#
+        #############################################
+
         for value in config1['Hyppighet'].values():
-            label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-            label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-            row_hyp += 1
+            lowCas = value.lower() #converting the string value in value to all lower case for safety
+            print(lowCas)
+
+            if lowCas == 'daglig':
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='green')
+                label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                row_hyp += 1
+                print('Hello from Green!')
+
+
+
+            elif today == 'Friday' and today_number == 3:
+                if lowCas == 'ukentlig'  'maanedlig':
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='blue')
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    #print('Hello from Yellow!')
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    #print('Hello from Yellow else clausul!')
+
+
+            elif today == 'Monday':
+
+                if lowCas == 'ukentlig':
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    print('Hello from Yellow!')
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    print('Hello from Yellow else clausul!')
+
+            elif today_number == 4:
+
+                if lowCas == 'maanedlig':
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    print('Hello from Red!')
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                    row_hyp += 1
+                    print('Hello from Red else clausul!')
+
+
+            else:
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                row_hyp += 1
+                print('Hello from White!')
+
+        ###########################################
+        # The above part dont work as intended yet#
+        ###########################################
 
 
         if length == '5':
