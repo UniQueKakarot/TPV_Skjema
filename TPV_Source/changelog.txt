@@ -8,3 +8,7 @@
 -Added in 2 alternatives with respective submenues
 
 -------------------------------------------
+03.07.2017:
+
+-Added color to the background of daily events
+-Added color to the background of weekly events
