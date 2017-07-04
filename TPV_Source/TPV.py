@@ -162,64 +162,28 @@ class TPV_Main():
 
         for value in config1['Hyppighet'].values():
             lowCas = value.lower() #converting the string value in value to all lower case for safety
-            print(lowCas)
 
             if lowCas == 'daglig':
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='green')
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
-                print('Hello from Green!')
 
+            elif lowCas == 'ukentlig' and today == 'Tuesday':
 
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
+                label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                row_hyp += 1
 
-            elif today == 'Friday' and today_number == 3:
-                if lowCas == 'ukentlig'  'maanedlig':
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='blue')
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    #print('Hello from Yellow!')
+            elif today_number == 4 and lowCas == 'maanedlig':
 
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    #print('Hello from Yellow else clausul!')
-
-
-            elif today == 'Monday':
-
-                if lowCas == 'ukentlig':
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    print('Hello from Yellow!')
-
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    print('Hello from Yellow else clausul!')
-
-            elif today_number == 4:
-
-                if lowCas == 'maanedlig':
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    print('Hello from Red!')
-
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=W, padx=15)
-                    row_hyp += 1
-                    print('Hello from Red else clausul!')
-
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                row_hyp += 1
 
             else:
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
-                print('Hello from White!')
 
         ###########################################
         # The above part dont work as intended yet#
