@@ -123,9 +123,11 @@ class TPV_Main():
         today = date.strftime('%A') #Getting the current day, as in day name. Mon, tue, wed and such
         today_number = date.strftime('%d')
         today_number = int(today_number)
+        day_of_year = date.strftime('%j')
+        day_of_year = int(day_of_year)
 
 
-        print(today_number)
+        print(day_of_year)
 
         #Establish the number of entries in the config file
         for i in config1[first_key]:
@@ -156,9 +158,6 @@ class TPV_Main():
             label.grid(row=row_olj, column=3, sticky=W, padx=15)
             row_olj += 1
 
-        #############################################
-        # We need more work here to get this working#
-        #############################################
 
         for value in config1['Hyppighet'].values():
             lowCas = value.lower() #converting the string value in value to all lower case for safety
@@ -168,13 +167,19 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'ukentlig' and today == 'Tuesday':
+            elif lowCas == 'ukentlig' and today == 'Friday':
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
 
-            elif today_number == 4 and lowCas == 'maanedlig':
+            elif today_number == 20 and lowCas == 'maanedlig':
+
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                label.grid(row=row_hyp, column=4, sticky=W, padx=15)
+                row_hyp += 1
+
+            elif lowCas == 'halvaar' and day_of_year == 183:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
@@ -184,10 +189,6 @@ class TPV_Main():
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
-
-        ###########################################
-        # The above part dont work as intended yet#
-        ###########################################
 
 
         if length == '5':
@@ -901,7 +902,7 @@ class TPV_Main():
         config = ConfigObj('config.ini', encoding='utf8') #Config Parser
         f_name = config['Filbehandling']['1'] #reading in the location and name for the file
         date = datetime.today()
-        today = date.strftime('%d-%m-%Y, %A')
+        today = date.strftime('%d.%m.%Y, %a')
         index = []
 
 
