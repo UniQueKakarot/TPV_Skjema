@@ -6,6 +6,7 @@ from tkinter import filedialog
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
+#from pandas import DataFrame, Series, read_excel
 import pandas as pd
 import numpy as np
 from datetime import datetime, date, timedelta
@@ -50,7 +51,7 @@ class TPV_Main():
 
         if os.path.isfile('config.ini') == True:
             config1 = ConfigObj('config.ini')
-            print('The file exists')
+            #print('The file exists')
 
         else:
             config = ConfigObj()
@@ -104,30 +105,31 @@ class TPV_Main():
             #config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
 
             config['Filbehandling'] = {}
-            config['Filbehandling']['1'] = '' #Filename stored here
+            config['Filbehandling']['1'] = 'C:/' #Filename stored here
             config['Filbehandling']['2'] = '' #Filepath stored here
 
             config.write()
 
-            print('I wrote a new file!')
+            #print('I wrote a new file!')
 
 
 
     def main(self):
+
         config1 = ConfigObj('config.ini') #Config Parser
         keys = config1.keys() #Getting the number of keys in the config
         values = [] #Empty list for storing how many entries it is in each key
         first_key = keys[0] #First key in the config for entries list
-        misc = config1['Diversje']['1']
+        try:
+            misc = config1['Diversje']['1']
+        except(KeyError):
+            pass
         date = datetime.today() #Getting the current date
         today = date.strftime('%A') #Getting the current day, as in day name. Mon, tue, wed and such
         today_number = date.strftime('%d')
         today_number = int(today_number)
         day_of_year = date.strftime('%j')
         day_of_year = int(day_of_year)
-
-
-        print(day_of_year)
 
         #Establish the number of entries in the config file
         for i in config1[first_key]:
@@ -362,7 +364,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 9:
-            print('something = 9')
+            #print('something = 9')
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -897,7 +899,7 @@ class TPV_Main():
 
 
         #stuff concerning the creation of a dataframe comes under here
-        print('Starting DataFrame creations')
+        #print('Starting DataFrame creations')
 
         config = ConfigObj('config.ini', encoding='utf8') #Config Parser
         f_name = config['Filbehandling']['1'] #reading in the location and name for the file
@@ -914,7 +916,7 @@ class TPV_Main():
 
         #checking if the file exist or not
         if os.path.isfile(f_name) == False:
-            print('Looks like we need a new file!')
+            #print('Looks like we need a new file!')
 
             df = pd.DataFrame(values2, index=index, columns=[today]) #Making a new dataframe with the results you want to save
             f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
@@ -924,7 +926,7 @@ class TPV_Main():
         #if the file exist:
         else:
 
-            print('Opening the old scruffy file that already exists!')
+            #print('Opening the old scruffy file that already exists!')
 
             f_name = config['Filbehandling']['1'] #reading in the location and name for the file
             df = pd.read_excel(f_name, sheet_name='Sheet1') #Open the file that exist
@@ -939,7 +941,7 @@ class TPV_Main():
         #writing the dataframe to excel
         df.to_excel(f_name, sheet_name='Sheet1')
 
-        print('I should be done by now!')
+        #print('I should be done by now!')
 
 
 
