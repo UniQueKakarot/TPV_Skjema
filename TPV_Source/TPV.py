@@ -10,22 +10,11 @@ import os.path
 import pandas as pd
 import numpy as np
 from datetime import datetime, date, timedelta
+import webbrowser
 
 win = Tk()
 win.title("TPV Skjema")
 win.geometry("850x460")
-
-menuBar = Menu(win)
-win.config(menu=menuBar)
-
-fileMenu = Menu(menuBar, tearoff=0)
-helpMenu = Menu(menuBar, tearoff=0)
-
-helpMenu.add_command(label='Hjelp')
-menuBar.add_cascade(label='Info', menu=helpMenu)
-
-fileMenu.add_command(label='Lagre ekstra info')
-menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
 config_name = 'config.ini'
 config_file = Path('TPV-Skjema/config.ini')
@@ -43,6 +32,20 @@ class TPV_Main():
 
         #self.test = Label(self.TPV_Body, text='Hello World')
         #self.test.grid(row=1, column=0, sticky=W)
+
+        menuBar = Menu(win)
+        win.config(menu=menuBar)
+
+        fileMenu = Menu(menuBar, tearoff=0)
+        helpMenu = Menu(menuBar, tearoff=0)
+
+        helpMenu.add_command(label='Hjelp', command=self.op_wiki)
+        menuBar.add_cascade(label='Info', menu=helpMenu)
+
+        #fileMenu.add_command(label='Lagre ekstra info')
+        fileMenu.add_command(label='Aapne eksisterende excel fil', command=self.op_saved)
+        menuBar.add_cascade(label='Alternativer', menu=fileMenu)
+
 
         self.config()
         self.main()
@@ -938,6 +941,20 @@ class TPV_Main():
         df.to_excel(f_name, sheet_name='Sheet1')
 
         #print('I should be done by now!')
+
+    def op_saved(self):
+
+        config = ConfigObj('config.ini', encoding='utf8') #Config Parser
+
+        f_exist = filedialog.askopenfilename()
+
+        config['Filbehandling']['1'] = f_exist #writing the filename to the config file
+        config.write()
+
+    def op_wiki(self):
+
+        wiki = webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
+
 
 
 

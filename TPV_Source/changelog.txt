@@ -12,3 +12,13 @@
 
 -Added color to the background of daily events
 -Added color to the background of weekly events
+
+---------------------------------------------
+
+09.07.2017:
+
+-Added color to the background of monthly events
+-Added color to the background of 6 months events
+
+-Added in a option to select a already created excel file
+-Added in a help button that directs you to the github wiki for help
