@@ -58,54 +58,54 @@ class TPV_Main():
             config.filename = config_name
 
             config['Vedlikeholdspunkt'] = {}
-            config['Vedlikeholdspunkt']['1'] = ''
-            config['Vedlikeholdspunkt']['2'] = ''
-            config['Vedlikeholdspunkt']['3'] = ''
-            config['Vedlikeholdspunkt']['4'] = ''
-            config['Vedlikeholdspunkt']['5'] = ''
-            config['Vedlikeholdspunkt']['6'] = ''
-            config['Vedlikeholdspunkt']['7'] = ''
-            config['Vedlikeholdspunkt']['8'] = ''
-            config['Vedlikeholdspunkt']['9'] = ''
+            config['Vedlikeholdspunkt']['1'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['2'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['3'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['4'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['5'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['6'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['7'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['8'] = 'Put your info here'
+            config['Vedlikeholdspunkt']['9'] = 'Put your info here'
 
             config['Handling'] = {}
-            config['Handling']['1'] = ''
-            config['Handling']['2'] = ''
-            config['Handling']['3'] = ''
-            config['Handling']['4'] = ''
-            config['Handling']['5'] = ''
-            config['Handling']['6'] = ''
-            config['Handling']['7'] = ''
-            config['Handling']['8'] = ''
-            config['Handling']['9'] = ''
+            config['Handling']['1'] = 'Put your info here'
+            config['Handling']['2'] = 'Put your info here'
+            config['Handling']['3'] = 'Put your info here'
+            config['Handling']['4'] = 'Put your info here'
+            config['Handling']['5'] = 'Put your info here'
+            config['Handling']['6'] = 'Put your info here'
+            config['Handling']['7'] = 'Put your info here'
+            config['Handling']['8'] = 'Put your info here'
+            config['Handling']['9'] = 'Put your info here'
 
             config['Oljetype'] = {}
-            config['Oljetype']['1'] = ''
-            config['Oljetype']['2'] = ''
-            config['Oljetype']['3'] = ''
-            config['Oljetype']['4'] = ''
-            config['Oljetype']['5'] = ''
-            config['Oljetype']['6'] = ''
-            config['Oljetype']['7'] = ''
-            config['Oljetype']['8'] = ''
-            config['Oljetype']['9'] = ''
+            config['Oljetype']['1'] = 'Put your info here'
+            config['Oljetype']['2'] = 'Put your info here'
+            config['Oljetype']['3'] = 'Put your info here'
+            config['Oljetype']['4'] = 'Put your info here'
+            config['Oljetype']['5'] = 'Put your info here'
+            config['Oljetype']['6'] = 'Put your info here'
+            config['Oljetype']['7'] = 'Put your info here'
+            config['Oljetype']['8'] = 'Put your info here'
+            config['Oljetype']['9'] = 'Put your info here'
 
             config['Hyppighet'] = {}
-            config['Hyppighet']['1'] = ''
-            config['Hyppighet']['2'] = ''
-            config['Hyppighet']['3'] = ''
-            config['Hyppighet']['4'] = ''
-            config['Hyppighet']['5'] = ''
-            config['Hyppighet']['6'] = ''
-            config['Hyppighet']['7'] = ''
-            config['Hyppighet']['8'] = ''
-            config['Hyppighet']['9'] = ''
+            config['Hyppighet']['1'] = 'Put your info here'
+            config['Hyppighet']['2'] = 'Put your info here'
+            config['Hyppighet']['3'] = 'Put your info here'
+            config['Hyppighet']['4'] = 'Put your info here'
+            config['Hyppighet']['5'] = 'Put your info here'
+            config['Hyppighet']['6'] = 'Put your info here'
+            config['Hyppighet']['7'] = 'Put your info here'
+            config['Hyppighet']['8'] = 'Put your info here'
+            config['Hyppighet']['9'] = 'Put your info here'
 
             config['Diversje'] = {}
             #config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
 
             config['Filbehandling'] = {}
-            config['Filbehandling']['1'] = 'C:/' #Filename stored here
+            config['Filbehandling']['1'] = '' #Filename stored here
             config['Filbehandling']['2'] = '' #Filepath stored here
 
             config.write()
@@ -120,10 +120,6 @@ class TPV_Main():
         keys = config1.keys() #Getting the number of keys in the config
         values = [] #Empty list for storing how many entries it is in each key
         first_key = keys[0] #First key in the config for entries list
-        try:
-            misc = config1['Diversje']['1']
-        except(KeyError):
-            pass
         date = datetime.today() #Getting the current date
         today = date.strftime('%A') #Getting the current day, as in day name. Mon, tue, wed and such
         today_number = date.strftime('%d')
