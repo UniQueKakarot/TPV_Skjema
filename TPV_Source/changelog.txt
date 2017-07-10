@@ -22,3 +22,9 @@
 
 -Added in a option to select a already created excel file
 -Added in a help button that directs you to the github wiki for help
+
+-----------------------------------------------
+
+10.07.2017:
+
+-Added in a popup when the file is saved for visual feedback
