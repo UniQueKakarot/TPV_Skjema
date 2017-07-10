@@ -3,10 +3,10 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter import messagebox as mBox
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
-#from pandas import DataFrame, Series, read_excel
 import pandas as pd
 import numpy as np
 from datetime import datetime, date, timedelta
@@ -30,9 +30,6 @@ class TPV_Main():
         self.TPV_Body = ttk.LabelFrame(win, text='TPV Skjema')
         self.TPV_Body.pack(expand=1)
 
-        #self.test = Label(self.TPV_Body, text='Hello World')
-        #self.test.grid(row=1, column=0, sticky=W)
-
         menuBar = Menu(win)
         win.config(menu=menuBar)
 
@@ -54,7 +51,6 @@ class TPV_Main():
 
         if os.path.isfile('config.ini') == True:
             config1 = ConfigObj('config.ini')
-            #print('The file exists')
 
         else:
             config = ConfigObj()
@@ -112,8 +108,6 @@ class TPV_Main():
             config['Filbehandling']['2'] = '' #Filepath stored here
 
             config.write()
-
-            #print('I wrote a new file!')
 
 
 
@@ -222,11 +216,6 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
-
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
@@ -262,11 +251,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -306,11 +290,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -353,11 +332,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -403,11 +377,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -457,11 +426,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -514,11 +478,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -574,11 +533,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -637,11 +591,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -703,11 +652,6 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -774,10 +718,6 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
 
-            # lbl5 = Label(self.TPV_Body, text=misc, font=FONT2)
-            # lbl5.grid(row=19, columnspan=2, sticky=W, pady=5)
-            # self.text1 = Text(self.TPV_Body, width = 100, height = 7)
-            # self.text1.grid(row = 20, column = 0, columnspan = 5, sticky=W)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -790,17 +730,6 @@ class TPV_Main():
 
         values1 = []
         values2 = []
-
-        print(length)
-
-        # for i in self.list9:
-        #     values1.append(i)
-        #
-        # for i in values1:
-        #     x = i.get()
-        #     values2.append(x)
-        #
-        # print(values2)
 
         if length == 5:
             for i in self.list5:
@@ -841,8 +770,6 @@ class TPV_Main():
             for i in values1:
                 x = i.get()
                 values2.append(x)
-
-            print(values2)
 
         elif length == 10:
             for i in self.list10:
@@ -898,12 +825,13 @@ class TPV_Main():
 
 
         #stuff concerning the creation of a dataframe comes under here
-        #print('Starting DataFrame creations')
 
         config = ConfigObj('config.ini', encoding='utf8') #Config Parser
-        f_name = config['Filbehandling']['1'] #reading in the location and name for the file
-        date = datetime.today()
-        today = date.strftime('%d.%m.%Y, %a')
+        f_name = config['Filbehandling']['1']             #reading in the location and name for the file
+
+        date = datetime.today()                           #getting info on the current day
+        today = date.strftime('%d.%m.%Y, %a')             #formatting the date info to my liking
+
         index = []
 
 
@@ -915,41 +843,41 @@ class TPV_Main():
 
         #checking if the file exist or not
         if os.path.isfile(f_name) == False:
-            #print('Looks like we need a new file!')
 
-            df = pd.DataFrame(values2, index=index, columns=[today]) #Making a new dataframe with the results you want to save
+            df = pd.DataFrame(values2, index=index, columns=[today])  #Making a new dataframe with the results you want to save
             f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
-            config['Filbehandling']['1'] = f_new #writing the filename to the config file
-            config.write()
 
-        #if the file exist:
+            config['Filbehandling']['1'] = f_new                      #assigning the filename a place in the config file
+            config.write()                                            #writing the filename to the config file
+
+            df[today] = pd.Series(values2, index=df.index)            #generating a seires off the results
+            df.to_excel(f_new, sheet_name='Sheet1')                   #writing to the excel file and appending the results
+
+            mBox.showinfo('', 'Resultater har blitt lagret')          #showing the user a visual feedback when the result are saved
+
+
+        elif os.path.isfile(f_name) == True:
+
+            f_name = config['Filbehandling']['1']                     #reading in the location and name for the file
+            df = pd.read_excel(f_name, sheet_name='Sheet1')           #Open the file that exist
+
+            df[today] = pd.Series(values2, index=df.index)            #generating a seires off the results
+            df.to_excel(f_name, sheet_name='Sheet1')                  #writing to the excel file and appending the results
+
+            mBox.showinfo('', 'Resultater har blitt lagret')          #showing the user a visual feedback when the result are saved
+
         else:
+            print('Looks like something went wrong!')
 
-            #print('Opening the old scruffy file that already exists!')
-
-            f_name = config['Filbehandling']['1'] #reading in the location and name for the file
-            df = pd.read_excel(f_name, sheet_name='Sheet1') #Open the file that exist
-
-
-        #appending the series to the dataframe
-        df[today] = pd.Series(values2, index=df.index)
-
-        #loading in the name of the file from config
-        f_name = config['Filbehandling']['1']
-
-        #writing the dataframe to excel
-        df.to_excel(f_name, sheet_name='Sheet1')
-
-        #print('I should be done by now!')
 
     def op_saved(self):
 
-        config = ConfigObj('config.ini', encoding='utf8') #Config Parser
+        config = ConfigObj('config.ini', encoding='utf8')             #Config Parser
 
-        f_exist = filedialog.askopenfilename()
+        f_exist = filedialog.askopenfilename()                        #open a window to let the user select the already saved file
 
-        config['Filbehandling']['1'] = f_exist #writing the filename to the config file
-        config.write()
+        config['Filbehandling']['1'] = f_exist                        #assigning the value a place in the config file
+        config.write()                                                #writing the filename to the config file
 
     def op_wiki(self):
 
