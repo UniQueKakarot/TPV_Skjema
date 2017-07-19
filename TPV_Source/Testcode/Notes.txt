@@ -1,0 +1,19 @@
+OpenpyXl
+
+New file:
+
+-open a workbook
+-select active sheet
+-generate 1 sheet for each month of the year
+-check what the current month is
+-assign the results to the correct month sheet
+-save
+DONE!
+-------------------------------------------------
+
+Open already saved file:
+
+-Open the existing workbook
+-Find the current month
+-Append results to correct sheet
+-save
