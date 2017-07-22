@@ -850,31 +850,31 @@ class TPV_Main():
         #checking if the file exist or not
         if os.path.isfile(f_name) == False:
 
-            df = pd.DataFrame(values2, index=index, columns=[today])  #Making a new dataframe with the results you want to save
             f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
 
             config['Filbehandling']['1'] = f_new                      #assigning the filename a place in the config file
             config.write()                                            #writing the filename to the config file
 
-            # wb = op.Workbook()
-            #
-            # for i in months:
-            #     wb.create_sheet(i)
-            #
-            # sh = wb.get_sheet_names()
-            # x = wb.get_sheet_by_name('Sheet')
-            # wb.remove_sheet(x)
-            #
-            # ws = wb[month]
-            #
-            # # for i in dataframe_to_rows(df, index=True, header=True):
-            # #     ws.append(i)
-            #
-            # op.writer.excel.save_workbook(wb, f_new)
+            wb = op.Workbook()
+            
+            for i in months:
+                wb.create_sheet(i)
+            
+            sh = wb.get_sheet_names()
+            x = wb.get_sheet_by_name('Sheet')
+            wb.remove_sheet(x)
+            
+            ws = wb[month]
+
+            col = 2
+
+            for i in config1['Vedlikeholdspunkt'].values():
+                ws.cell(row=1, column=col, value=i)
+                col += 1
+            
+            op.writer.excel.save_workbook(wb, f_new)
 
             df[today] = pd.Series(values2, index=df.index)         #generating a seires off the results
-
-            df.to_excel(f_new, sheet_name=month)                   #writing to the excel file and appending the results
 
             mBox.showinfo('', 'Resultater har blitt lagret')       #showing the user a visual feedback when the result are saved
 
@@ -882,15 +882,9 @@ class TPV_Main():
         elif os.path.isfile(f_name) == True:
 
             f_name = config['Filbehandling']['1']                     #reading in the location and name for the file
-            df = pd.read_excel(f_name, sheet_name='August')           #Open the file that exist
-            print(df)
-            #wb = op.load_workbook(filename=f_name)
-            #ws = wb[month]
 
-            #df = pd.DataFrame(values2, index=index, columns=[today])
-
-            df[today] = pd.Series(values2, index=df.index)            #generating a seires off the results
-            df.to_excel(f_name, sheet_name='August')                  #writing to the excel file and appending the results
+            wb = op.load_workbook(filename=f_name)
+            ws = wb[month]
 
             # for i in dataframe_to_rows(df, index=True, header=True):
             #     ws.append(i)
