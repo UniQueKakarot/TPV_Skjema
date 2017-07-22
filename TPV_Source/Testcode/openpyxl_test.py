@@ -19,7 +19,13 @@ print(sh)
 x = wb.get_sheet_by_name('Sheet')
 wb.remove_sheet(x)
 
-print(sh)
+ws = wb['January']
+
+col = 2
+
+for i in colum_head:
+    ws.cell(row=1, column=col, value=i)
+    col += 1
 
 wb.save('test1.xlsx')
 
