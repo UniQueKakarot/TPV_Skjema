@@ -7,7 +7,6 @@ from tkinter import messagebox as mBox
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
-import pandas as pd
 from datetime import datetime, date, timedelta
 import webbrowser
 import openpyxl as op
@@ -831,9 +830,19 @@ class TPV_Main():
         f_name = config['Filbehandling']['1']             #reading in the location and name for the file
 
         date = datetime.today()                           #getting info on the current day
+
         month = date.strftime('%B')
         month = str(month)
+
+        day_as_string = date.strftime('%d')
+        day_as_string = str(day_as_string)
+
+        day_as_int = date.strftime('%d')
+        day_as_int = int(day_as_int)
+
         today = date.strftime('%d.%m.%Y, %a')             #formatting the date info to my liking
+
+        cell = 'A' + day_as_string
 
         index = []
 
@@ -856,14 +865,14 @@ class TPV_Main():
             config.write()                                            #writing the filename to the config file
 
             wb = op.Workbook()
-            
+
             for i in months:
                 wb.create_sheet(i)
-            
+
             sh = wb.get_sheet_names()
             x = wb.get_sheet_by_name('Sheet')
             wb.remove_sheet(x)
-            
+
             ws = wb[month]
 
             col = 2
@@ -871,7 +880,13 @@ class TPV_Main():
             for i in config1['Vedlikeholdspunkt'].values():
                 ws.cell(row=1, column=col, value=i)
                 col += 1
-            
+
+            ws[cell] = today
+
+            col = 2
+
+            for i in values2:
+
             op.writer.excel.save_workbook(wb, f_new)
 
             df[today] = pd.Series(values2, index=df.index)         #generating a seires off the results
