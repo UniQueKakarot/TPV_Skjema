@@ -835,10 +835,11 @@ class TPV_Main():
         month = str(month)
 
         day_as_string = date.strftime('%d')
+        day_as_string = int(day_as_string) + 1
         day_as_string = str(day_as_string)
 
         day_as_int = date.strftime('%d')
-        day_as_int = int(day_as_int)
+        day_as_int = int(day_as_int) + 1
 
         today = date.strftime('%d.%m.%Y, %a')             #formatting the date info to my liking
 
@@ -862,7 +863,6 @@ class TPV_Main():
             f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
 
             config['Filbehandling']['1'] = f_new                      #assigning the filename a place in the config file
-            config.write()                                            #writing the filename to the config file
 
             wb = op.Workbook()
 
@@ -872,26 +872,38 @@ class TPV_Main():
             sh = wb.get_sheet_names()
             x = wb.get_sheet_by_name('Sheet')
             wb.remove_sheet(x)
+            sh = wb.get_sheet_names()
 
-            ws = wb[month]
+            #ws = wb[month]
+            #print(len(index))
 
             col = 2
 
-            for i in config1['Vedlikeholdspunkt'].values():
-                ws.cell(row=1, column=col, value=i)
-                col += 1
+            for m in sh:
+                ws = wb[m]
+                for i in index:
+                    ws.cell(row=1, column=col, value=i)
+                    col += 1
+                    if col > len(index) + 1:
+                        col = 2
+                    else:
+                        continue
+
+            ws = wb[month]
 
             ws[cell] = today
 
             col = 2
 
             for i in values2:
+                ws.cell(row=day_as_int, column=col, value=i)
+                col += 1
 
             op.writer.excel.save_workbook(wb, f_new)
 
-            df[today] = pd.Series(values2, index=df.index)         #generating a seires off the results
-
             mBox.showinfo('', 'Resultater har blitt lagret')       #showing the user a visual feedback when the result are saved
+
+            config.write()
 
 
         elif os.path.isfile(f_name) == True:
@@ -901,10 +913,15 @@ class TPV_Main():
             wb = op.load_workbook(filename=f_name)
             ws = wb[month]
 
-            # for i in dataframe_to_rows(df, index=True, header=True):
-            #     ws.append(i)
-            #
-            # op.writer.excel.save_workbook(wb, f_name)
+            ws[cell] = today
+
+            col = 2
+
+            for i in values2:
+                ws.cell(row=day_as_int, column=col, value=i)
+                col += 1
+
+            op.writer.excel.save_workbook(wb, f_name)
 
             mBox.showinfo('', 'Resultater har blitt lagret')          #showing the user a visual feedback when the result are saved
 
