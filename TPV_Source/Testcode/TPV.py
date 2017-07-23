@@ -874,9 +874,6 @@ class TPV_Main():
             wb.remove_sheet(x)
             sh = wb.get_sheet_names()
 
-            #ws = wb[month]
-            #print(len(index))
-
             col = 2
 
             for m in sh:
