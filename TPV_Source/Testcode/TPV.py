@@ -855,6 +855,7 @@ class TPV_Main():
         for i in config['Vedlikeholdspunkt'].values():
             index.append(i)
 
+        index.append(config['Diversje']['2'])
 
 
         #checking if the file exist or not
