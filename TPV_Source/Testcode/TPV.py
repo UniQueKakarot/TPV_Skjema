@@ -216,6 +216,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
+
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
@@ -251,6 +258,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -290,6 +304,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -333,11 +354,17 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
+
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 9:
-            #print('something = 9')
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -377,6 +404,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -426,6 +460,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -478,6 +519,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -533,6 +581,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -591,6 +646,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -652,6 +714,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -717,6 +786,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
@@ -918,6 +994,9 @@ class TPV_Main():
             for i in values2:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
+
+            textbox = self.txt.get('1.0', END)
+            ws.cell(row=day_as_int, column=col, value=textbox)
 
             op.writer.excel.save_workbook(wb, f_name)
 
