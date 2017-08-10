@@ -7,10 +7,10 @@ from tkinter import messagebox as mBox
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
-import pandas as pd
-import numpy as np
 from datetime import datetime, date, timedelta
 import webbrowser
+import openpyxl as op
+from openpyxl.utils.dataframe import dataframe_to_rows
 
 win = Tk()
 win.title("TPV Skjema")
@@ -216,6 +216,13 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
+
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
@@ -251,6 +258,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -290,6 +304,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=N)
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -333,11 +354,17 @@ class TPV_Main():
             lbl4 = Label(self.TPV_Body, text='Hyppighet')
             lbl4.grid(row=0, column=4, sticky=N)
 
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
+
             button = ttk.Button(self.TPV_Body, text='Lagre')
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 9:
-            #print('something = 9')
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -377,6 +404,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -426,6 +460,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -478,6 +519,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -533,6 +581,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -591,6 +646,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -652,6 +714,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
@@ -717,6 +786,13 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+
+            header = config1['Diversje']['1']
+            lbl16 = Label(self.TPV_Body, text=header)
+            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
+
+            self.txt = Text(self.TPV_Body, height=3, width=25)
+            self.txt.grid(row=17, column=0, columnspan=2)
 
 
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
@@ -830,39 +906,99 @@ class TPV_Main():
         f_name = config['Filbehandling']['1']             #reading in the location and name for the file
 
         date = datetime.today()                           #getting info on the current day
+
+        month = date.strftime('%B')
+        month = str(month)
+
+        day_as_string = date.strftime('%d')
+        day_as_string = int(day_as_string) + 1
+        day_as_string = str(day_as_string)
+
+        day_as_int = date.strftime('%d')
+        day_as_int = int(day_as_int) + 1
+
         today = date.strftime('%d.%m.%Y, %a')             #formatting the date info to my liking
 
+        cell = 'A' + day_as_string
+
         index = []
+
+        months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+        'August', 'September', 'October', 'November', 'December']
 
 
 
         for i in config['Vedlikeholdspunkt'].values():
             index.append(i)
 
+        index.append(config['Diversje']['2'])
 
 
         #checking if the file exist or not
         if os.path.isfile(f_name) == False:
 
-            df = pd.DataFrame(values2, index=index, columns=[today])  #Making a new dataframe with the results you want to save
             f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
 
             config['Filbehandling']['1'] = f_new                      #assigning the filename a place in the config file
-            config.write()                                            #writing the filename to the config file
 
-            df[today] = pd.Series(values2, index=df.index)            #generating a seires off the results
-            df.to_excel(f_new, sheet_name='Sheet1')                   #writing to the excel file and appending the results
+            wb = op.Workbook()
 
-            mBox.showinfo('', 'Resultater har blitt lagret')          #showing the user a visual feedback when the result are saved
+            for i in months:
+                wb.create_sheet(i)
+
+            sh = wb.get_sheet_names()
+            x = wb.get_sheet_by_name('Sheet')
+            wb.remove_sheet(x)
+            sh = wb.get_sheet_names()
+
+            col = 2
+
+            for m in sh:
+                ws = wb[m]
+                for i in index:
+                    ws.cell(row=1, column=col, value=i)
+                    col += 1
+                    if col > len(index) + 1:
+                        col = 2
+                    else:
+                        continue
+
+            ws = wb[month]
+
+            ws[cell] = today
+
+            col = 2
+
+            for i in values2:
+                ws.cell(row=day_as_int, column=col, value=i)
+                col += 1
+
+            op.writer.excel.save_workbook(wb, f_new)
+
+            mBox.showinfo('', 'Resultater har blitt lagret')       #showing the user a visual feedback when the result are saved
+
+            config.write()
 
 
         elif os.path.isfile(f_name) == True:
 
             f_name = config['Filbehandling']['1']                     #reading in the location and name for the file
-            df = pd.read_excel(f_name, sheet_name='Sheet1')           #Open the file that exist
 
-            df[today] = pd.Series(values2, index=df.index)            #generating a seires off the results
-            df.to_excel(f_name, sheet_name='Sheet1')                  #writing to the excel file and appending the results
+            wb = op.load_workbook(filename=f_name)
+            ws = wb[month]
+
+            ws[cell] = today
+
+            col = 2
+
+            for i in values2:
+                ws.cell(row=day_as_int, column=col, value=i)
+                col += 1
+
+            textbox = self.txt.get('1.0', END)
+            ws.cell(row=day_as_int, column=col, value=textbox)
+
+            op.writer.excel.save_workbook(wb, f_name)
 
             mBox.showinfo('', 'Resultater har blitt lagret')          #showing the user a visual feedback when the result are saved
 
