@@ -1,8 +1,0 @@
-
-Ting som er planlagt lagt til i TPV Skjema programmet:
-
--Se på muligheten for å låse kolonne A i excel fila for enklere å kunne se hva som
-er kryssa ut når fila blir lang
-
--Skrive om hele lagrings mekansimen for å kunne gjøre mer med selve excel fila
-som f.eks dele opp dataen månedsvis og årsvis for å gjøre det enklere å finne fram.
