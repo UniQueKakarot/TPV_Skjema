@@ -101,7 +101,8 @@ class TPV_Main():
             config['Hyppighet']['9'] = 'Put your info here'
 
             config['Diversje'] = {}
-            #config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
+            config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
+            config['Diversje']['2'] = 'Annet:'
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = '' #Filename stored here
