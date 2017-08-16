@@ -20,7 +20,7 @@ exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
           name='TPV',
-          debug=True,
+          debug=False,
           strip=False,
           upx=True,
           console=True )

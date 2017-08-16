@@ -1,4 +1,3 @@
-# coding: cp865
 
 from tkinter import *
 from tkinter import ttk
@@ -11,16 +10,6 @@ from datetime import datetime, date, timedelta
 import webbrowser
 import openpyxl as op
 from openpyxl.utils.dataframe import dataframe_to_rows
-
-win = Tk()
-win.title("TPV Skjema")
-win.geometry("850x460")
-
-config_name = 'config.ini'
-config_file = Path('TPV-Skjema/config.ini')
-
-FONT1 = ("Calibri", 11)
-FONT2 = ("Calibri", 11, "bold", "underline")
 
 
 class TPV_Main():
@@ -50,10 +39,13 @@ class TPV_Main():
     def config(self):
 
         if os.path.isfile('config.ini') == True:
-            config1 = ConfigObj('config.ini')
+            config = ConfigObj('config.ini')
+            size = config['Filbehandling']['2']
+
+            win.geometry(size)
 
         else:
-            config = ConfigObj()
+            config = ConfigObj(encoding='utf8', default_encoding='utf8')
             config.filename = config_name
 
             config['Vedlikeholdspunkt'] = {}
@@ -106,9 +98,12 @@ class TPV_Main():
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = '' #Filename stored here
-            config['Filbehandling']['2'] = '' #Filepath stored here
+            config['Filbehandling']['2'] = '850x450'
 
             config.write()
+
+            size = config['Filbehandling']['2']
+            win.geometry(size)
 
 
 
@@ -187,7 +182,7 @@ class TPV_Main():
                 row_hyp += 1
 
 
-        if length == '5':
+        if length == 5:
             print('5')
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
@@ -197,15 +192,15 @@ class TPV_Main():
 
             self.list5 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, self.checkVar5]
 
-            check1 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar1)
+            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
             check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar2)
+            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
             check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar3)
+            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
             check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar4)
+            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
             check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar5)
+            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
             check5.grid(row=5, column=0, sticky=W)
 
             lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
@@ -224,7 +219,7 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-            button = ttk.Button(self.TPV_Body, text='Lagre')
+            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 6:
@@ -238,17 +233,17 @@ class TPV_Main():
 
             self.list6 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, self.checkVar5, self.checkVar6]
 
-            check1 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar1)
+            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
             check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar2)
+            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
             check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar3)
+            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
             check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar4)
+            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
             check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar5)
+            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
             check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar6)
+            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
             check6.grid(row=6, column=0, sticky=W)
 
             lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
@@ -267,7 +262,7 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-            button = ttk.Button(self.TPV_Body, text='Lagre')
+            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 7:
@@ -282,19 +277,19 @@ class TPV_Main():
 
             self.list7 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, self.checkVar5, self.checkVar6, self.checkVar7]
 
-            check1 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar1)
+            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
             check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar2)
+            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
             check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar3)
+            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
             check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar4)
+            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
             check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar5)
+            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
             check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar6)
+            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
             check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, text=label, variable=self.checkVar7)
+            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
             check7.grid(row=7, column=0, sticky=W)
 
             lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
@@ -313,7 +308,7 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-            button = ttk.Button(self.TPV_Body, text='Lagre')
+            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 8:
@@ -362,7 +357,7 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-            button = ttk.Button(self.TPV_Body, text='Lagre')
+            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 9:
@@ -413,7 +408,7 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.Save)
+            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 10:
@@ -803,7 +798,7 @@ class TPV_Main():
             print('initializing failed! Values out of bounds')
 
 
-    def Save(self):
+    def save(self):
 
         values1 = []
         values2 = []
@@ -903,7 +898,7 @@ class TPV_Main():
 
         #stuff concerning the creation of a dataframe comes under here
 
-        config = ConfigObj('config.ini', encoding='utf8') #Config Parser
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8') #Config Parser
         f_name = config['Filbehandling']['1']             #reading in the location and name for the file
 
         date = datetime.today()                           #getting info on the current day
@@ -1006,10 +1001,12 @@ class TPV_Main():
         else:
             print('Looks like something went wrong!')
 
+        self.win_size()
+
 
     def op_saved(self):
 
-        config = ConfigObj('config.ini', encoding='utf8')             #Config Parser
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')             #Config Parser
 
         f_exist = filedialog.askopenfilename()                        #open a window to let the user select the already saved file
 
@@ -1020,8 +1017,36 @@ class TPV_Main():
 
         wiki = webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
 
+    def win_size(self):
+
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+
+        width = self.TPV_Body.winfo_reqwidth()
+        height = self.TPV_Body.winfo_reqheight()
+
+        width += 100
+        height += 100
+
+        width = str(width)
+        height = str(height)
+
+        size = width + 'x' + height
+
+        config['Filbehandling']['2'] = size
+        config.write()
+
+        print(size)
 
 
+win = Tk()
+win.title("TPV Skjema")
+win.geometry("850x460")
+
+config_name = 'config.ini'
+config_file = Path('TPV-Skjema/config.ini')
+
+FONT1 = ("Calibri", 11)
+FONT2 = ("Calibri", 11, "bold", "underline")
 
 tpv = TPV_Main()
 
