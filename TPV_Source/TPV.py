@@ -896,24 +896,30 @@ class TPV_Main():
 
 
 
-        #stuff concerning the creation of a dataframe comes under here
+        #Main code for writing out the excel file used to save the data in comes here:
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8') #Config Parser
-        f_name = config['Filbehandling']['1']             #reading in the location and name for the file
+        #Calling the config parser and accessing filepath if present in config file
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        f_name = config['Filbehandling']['1']
 
-        date = datetime.today()                           #getting info on the current day
+        date = datetime.today()
 
+        #Dateformatting
         month = date.strftime('%B')
         month = str(month)
 
+        #Saving dates as strings for use in excel file
         day_as_string = date.strftime('%d')
         day_as_string = int(day_as_string) + 1
         day_as_string = str(day_as_string)
 
+        #Saving dates as int's for use in locating rows
         day_as_int = date.strftime('%d')
         day_as_int = int(day_as_int) + 1
 
-        today = date.strftime('%d.%m.%Y, %a')             #formatting the date info to my liking
+        #Formatting date to my liking
+        today = date.strftime('%d.%m.%Y, %a')
+
 
         cell = 'A' + day_as_string
 
