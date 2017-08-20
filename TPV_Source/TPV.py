@@ -10,6 +10,7 @@ from datetime import datetime, date, timedelta
 import webbrowser
 import openpyxl as op
 from openpyxl.utils.dataframe import dataframe_to_rows
+import logging
 
 
 class TPV_Main():
@@ -25,6 +26,7 @@ class TPV_Main():
         fileMenu = Menu(menuBar, tearoff=0)
         helpMenu = Menu(menuBar, tearoff=0)
 
+        helpMenu.add_command(label='Prosedyre', command=self.procedure)
         helpMenu.add_command(label='Hjelp', command=self.op_wiki)
         menuBar.add_cascade(label='Info', menu=helpMenu)
 
@@ -54,10 +56,6 @@ class TPV_Main():
             config['Vedlikeholdspunkt']['3'] = 'Put your info here'
             config['Vedlikeholdspunkt']['4'] = 'Put your info here'
             config['Vedlikeholdspunkt']['5'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['6'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['7'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['8'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['9'] = 'Put your info here'
 
             config['Handling'] = {}
             config['Handling']['1'] = 'Put your info here'
@@ -65,10 +63,6 @@ class TPV_Main():
             config['Handling']['3'] = 'Put your info here'
             config['Handling']['4'] = 'Put your info here'
             config['Handling']['5'] = 'Put your info here'
-            config['Handling']['6'] = 'Put your info here'
-            config['Handling']['7'] = 'Put your info here'
-            config['Handling']['8'] = 'Put your info here'
-            config['Handling']['9'] = 'Put your info here'
 
             config['Oljetype'] = {}
             config['Oljetype']['1'] = 'Put your info here'
@@ -76,10 +70,6 @@ class TPV_Main():
             config['Oljetype']['3'] = 'Put your info here'
             config['Oljetype']['4'] = 'Put your info here'
             config['Oljetype']['5'] = 'Put your info here'
-            config['Oljetype']['6'] = 'Put your info here'
-            config['Oljetype']['7'] = 'Put your info here'
-            config['Oljetype']['8'] = 'Put your info here'
-            config['Oljetype']['9'] = 'Put your info here'
 
             config['Hyppighet'] = {}
             config['Hyppighet']['1'] = 'Put your info here'
@@ -87,18 +77,20 @@ class TPV_Main():
             config['Hyppighet']['3'] = 'Put your info here'
             config['Hyppighet']['4'] = 'Put your info here'
             config['Hyppighet']['5'] = 'Put your info here'
-            config['Hyppighet']['6'] = 'Put your info here'
-            config['Hyppighet']['7'] = 'Put your info here'
-            config['Hyppighet']['8'] = 'Put your info here'
-            config['Hyppighet']['9'] = 'Put your info here'
 
             config['Diversje'] = {}
             config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
             config['Diversje']['2'] = 'Annet:'
+            config['Diversje']['3'] = ''
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = '' #Filename stored here
             config['Filbehandling']['2'] = '850x450'
+            config['Filbehandling']['3'] = ''
+
+            date = datetime.today()
+            year = date.strftime('%Y')
+            config['Diversje']['3'] = year
 
             config.write()
 
@@ -108,22 +100,34 @@ class TPV_Main():
 
 
     def main(self):
+        """Main body of the gui application"""
 
-        config1 = ConfigObj('config.ini') #Config Parser
-        keys = config1.keys() #Getting the number of keys in the config
-        values = [] #Empty list for storing how many entries it is in each key
-        first_key = keys[0] #First key in the config for entries list
-        date = datetime.today() #Getting the current date
-        today = date.strftime('%A') #Getting the current day, as in day name. Mon, tue, wed and such
+        #Accessing the config parser and getting the number of keys
+        config1 = ConfigObj('config.ini')
+        keys = config1.keys()
+
+        first_key = keys[0]
+
+        #Collecting current date and weekday in full name
+        date = datetime.today()
+        today = date.strftime('%A')
+
+        #Collecting which number in the month the current day is
         today_number = date.strftime('%d')
         today_number = int(today_number)
+
+        #Collecting which number in the year the current day is
         day_of_year = date.strftime('%j')
         day_of_year = int(day_of_year)
+
+        #Empty list assigned for holding info on entries in the first key of the config file
+        values = []
 
         #Establish the number of entries in the config file
         for i in config1[first_key]:
             values.append(i)
 
+        #Assigning the length of list values to a global variable
         global length
         length = len(values)
 
@@ -133,6 +137,7 @@ class TPV_Main():
         row_olj = 1
         row_hyp = 1
 
+        #Generating labels on the fly based on how many entries it is in the config file
         for value in config1['Vedlikeholdspunkt'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_ved, column=1, sticky=W, padx=15)
@@ -151,7 +156,8 @@ class TPV_Main():
 
 
         for value in config1['Hyppighet'].values():
-            lowCas = value.lower() #converting the string value in value to all lower case for safety
+
+            lowCas = value.lower() 
 
             if lowCas == 'daglig':
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='green')
@@ -183,7 +189,7 @@ class TPV_Main():
 
 
         if length == 5:
-            print('5')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -203,14 +209,18 @@ class TPV_Main():
             check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
             check5.grid(row=5, column=0, sticky=W)
 
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
+            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
             lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling')
+            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
             lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype')
+            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
             lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet')
+            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N)
+            lbl5 = Label(self.TPV_Body, text='Sist utført:', font=FONT2)
+            lbl5.grid(row=0, column=5, sticky=N)
+            lbl6 = Label(self.TPV_Body, text='Neste gang:', font=FONT2)
+            lbl6.grid(row=0, column=6, sticky=N)
 
             header = config1['Diversje']['1']
             lbl16 = Label(self.TPV_Body, text=header)
@@ -223,7 +233,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 6:
-            print('6')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -246,14 +256,18 @@ class TPV_Main():
             check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
             check6.grid(row=6, column=0, sticky=W)
 
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
+            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
             lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling')
+            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
             lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype')
+            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
             lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet')
+            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N)
+            lbl5 = Label(self.TPV_Body, text='Sist utført:', font=FONT2)
+            lbl5.grid(row=0, column=5, sticky=N)
+            lbl6 = Label(self.TPV_Body, text='Neste gang:', font=FONT2)
+            lbl6.grid(row=0, column=6, sticky=N)
 
             header = config1['Diversje']['1']
             lbl16 = Label(self.TPV_Body, text=header)
@@ -266,7 +280,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 7:
-            print('7')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -292,14 +306,18 @@ class TPV_Main():
             check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
             check7.grid(row=7, column=0, sticky=W)
 
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
+            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
             lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling')
+            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
             lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype')
+            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
             lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet')
+            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N)
+            lbl5 = Label(self.TPV_Body, text='Sist utført:', font=FONT2)
+            lbl5.grid(row=0, column=5, sticky=N)
+            lbl6 = Label(self.TPV_Body, text='Neste gang:', font=FONT2)
+            lbl6.grid(row=0, column=6, sticky=N)
 
             header = config1['Diversje']['1']
             lbl16 = Label(self.TPV_Body, text=header)
@@ -312,7 +330,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 8:
-            print('8')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -341,14 +359,18 @@ class TPV_Main():
             check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
             check8.grid(row=8, column=0, sticky=W)
 
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt')
+            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
             lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling')
+            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
             lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype')
+            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
             lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet')
+            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N)
+            lbl5 = Label(self.TPV_Body, text='Sist utført:', font=FONT2)
+            lbl5.grid(row=0, column=5, sticky=N)
+            lbl6 = Label(self.TPV_Body, text='Neste gang:', font=FONT2)
+            lbl6.grid(row=0, column=6, sticky=N)
 
             header = config1['Diversje']['1']
             lbl16 = Label(self.TPV_Body, text=header)
@@ -400,6 +422,10 @@ class TPV_Main():
             lbl3.grid(row=0, column=3, sticky=W, pady=5)
             lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
             lbl4.grid(row=0, column=4, sticky=N, pady=5)
+            lbl5 = Label(self.TPV_Body, text='Sist utført:', font=FONT2)
+            lbl5.grid(row=0, column=5, sticky=N)
+            lbl6 = Label(self.TPV_Body, text='Neste gang:', font=FONT2)
+            lbl6.grid(row=0, column=6, sticky=N)
 
             header = config1['Diversje']['1']
             lbl16 = Label(self.TPV_Body, text=header)
@@ -412,7 +438,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 10:
-            print('10')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -468,7 +494,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 11:
-            print('11')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -527,7 +553,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 12:
-            print('12')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -589,7 +615,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 13:
-            print('13')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -654,7 +680,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 14:
-            print('14')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -722,7 +748,7 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         elif length == 15:
-            print('15')
+
             self.checkVar1 = IntVar()
             self.checkVar2 = IntVar()
             self.checkVar3 = IntVar()
@@ -928,20 +954,20 @@ class TPV_Main():
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December']
 
-
-
         for i in config['Vedlikeholdspunkt'].values():
             index.append(i)
 
         index.append(config['Diversje']['2'])
 
+        #test = self.year_check()
 
-        #checking if the file exist or not
-        if os.path.isfile(f_name) == False:
+        #Checking if the file exist or not
+        if os.path.isfile(f_name) == False or self.year_check() == 1: 
 
-            f_new = filedialog.asksaveasfilename(title='Select File') #ask's you where to save the file
+            f_new = filedialog.asksaveasfilename(title='Select File', filetypes=(("Excel files", ".xlsx"),("All files", "*.*")), defaultextension="*.*")
 
-            config['Filbehandling']['1'] = f_new                      #assigning the filename a place in the config file
+            #Assigning the filename a place in the config file
+            config['Filbehandling']['1'] = f_new
 
             wb = op.Workbook()
 
@@ -975,14 +1001,21 @@ class TPV_Main():
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
-            op.writer.excel.save_workbook(wb, f_new)
+            try:
+                op.writer.excel.save_workbook(wb, f_new)
+                mBox.showinfo('', 'Resultater har blitt lagret')       #showing the user a visual feedback when the result are saved
+                config.write()
 
-            mBox.showinfo('', 'Resultater har blitt lagret')       #showing the user a visual feedback when the result are saved
+            except FileNotFoundError:
+                pass
 
-            config.write()
+
+            
+
+            
 
 
-        elif os.path.isfile(f_name) == True:
+        elif os.path.isfile(f_name) == True and self.year_check() == 0:
 
             f_name = config['Filbehandling']['1']                     #reading in the location and name for the file
 
@@ -1009,19 +1042,49 @@ class TPV_Main():
 
         self.win_size()
 
+    def year_check(self):
+
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config_year = config['Diversje']['3']
+
+        date = datetime.today()
+        current_year = date.strftime('%Y')
+
+        if config_year != current_year:
+            config['Diversje']['3'] = current_year
+            return 1
+        else:
+            return 0
 
     def op_saved(self):
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')             #Config Parser
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
 
-        f_exist = filedialog.askopenfilename()                        #open a window to let the user select the already saved file
+        f_exist = filedialog.askopenfilename()
 
-        config['Filbehandling']['1'] = f_exist                        #assigning the value a place in the config file
-        config.write()                                                #writing the filename to the config file
+        config['Filbehandling']['1'] = f_exist
+        config.write()
 
     def op_wiki(self):
 
         wiki = webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
+
+    def procedure(self):
+
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        f_exists = config['Filbehandling']['3']
+
+        if os.path.isfile(f_exists) == True:
+            os.system(f_exists)
+
+        elif os.path.isfile(f_exists) == False:
+            f_exists = filedialog.askopenfilename()
+            os.system(f_exists)
+            config['Filbehandling']['3'] = f_exists
+            config.write()
+
+        else:
+            print('Something went wrong!')
 
     def win_size(self):
 

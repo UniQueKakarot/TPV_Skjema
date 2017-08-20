@@ -1,0 +1,9 @@
+TODO:
+
+Mer info på når vedlikehold skal utføres:
+
+-Nedtelling av dager eller angi dato på når neste vedlikehold skal utføres
+
+
+Se på metoder for å sjekke om vedlikehold er utført.
+Dette for å kunne la vedlikeholdpunktene fremdeles lyse opp selv om datoen har passert.
