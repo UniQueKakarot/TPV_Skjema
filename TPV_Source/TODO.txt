@@ -7,3 +7,7 @@ Mer info på når vedlikehold skal utføres:
 
 Se på metoder for å sjekke om vedlikehold er utført.
 Dette for å kunne la vedlikeholdpunktene fremdeles lyse opp selv om datoen har passert.
+
+-Les inn punktene som ligger under vedlikeholdspunkt i ei liste
+Gå ut ifra at punktene er sortert etter hvor ofte vedlikeholdet skal utføres
+Hent inn dagens data + 1
