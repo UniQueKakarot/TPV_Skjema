@@ -1,4 +1,3 @@
-
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
@@ -7,7 +6,6 @@ from pathlib import Path
 from configobj import ConfigObj
 import os.path
 from datetime import datetime
-from datetime import timedelta
 import webbrowser
 import openpyxl as op
 import logging
@@ -16,6 +14,24 @@ import logging
 class TPV_Main():
 
     def __init__(self):
+
+        # Create the Logger
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+
+        # Create the Handler for logging data to a file
+        logger_handler = logging.FileHandler('TPV_log.log')
+        logger_handler.setLevel(logging.INFO)
+
+        # Create a Formatter for formatting the log messages
+        logger_formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+
+        # Add the Formatter to the Handler
+        logger_handler.setFormatter(logger_formatter)
+
+        # Add the Handler to the Logger
+        self.logger.addHandler(logger_handler)
+
 
         self.TPV_Body = ttk.LabelFrame(win, text='TPV Skjema')
         self.TPV_Body.pack(expand=1)
@@ -30,14 +46,15 @@ class TPV_Main():
         helpMenu.add_command(label='Hjelp', command=self.op_wiki)
         menuBar.add_cascade(label='Info', menu=helpMenu)
 
-        #fileMenu.add_command(label='Lagre ekstra info')
-        fileMenu.add_command(label='Aapne eksisterende excel fil', command=self.op_saved)
+        fileMenu.add_command(label='Lagre Utført vedlikehold', command=self.maintanance)
+        fileMenu.add_command(label='Åpne excel fil', command=self.op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
 
         self.config()
         self.main()
-        self.results_saved()
+
+        self.logger.info('Completed configuring logger(), and class is initsialized!')
 
     def config(self):
 
@@ -46,6 +63,8 @@ class TPV_Main():
             size = config['Filbehandling']['2']
 
             win.geometry(size)
+
+            self.logger.info('Config file exists, using existing one!')
 
         else:
             config = ConfigObj(encoding='utf8', default_encoding='utf8')
@@ -98,9 +117,12 @@ class TPV_Main():
             size = config['Filbehandling']['2']
             win.geometry(size)
 
+            self.logger.info('Config file does not exist, creating a new one!')
+
 
 
     def main(self):
+        
         """Main body of the gui application"""
 
         #Accessing the config parser and getting the number of keys
@@ -198,7 +220,7 @@ class TPV_Main():
             self.checkVar4 = IntVar()
             self.checkVar5 = IntVar()
 
-            self.list5 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
+            self.list5 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
                           self.checkVar5]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -240,7 +262,7 @@ class TPV_Main():
             self.checkVar5 = IntVar()
             self.checkVar6 = IntVar()
 
-            self.list6 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
+            self.list6 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
                           self.checkVar5, self.checkVar6]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -285,7 +307,7 @@ class TPV_Main():
             self.checkVar6 = IntVar()
             self.checkVar7 = IntVar()
 
-            self.list7 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
+            self.list7 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
                           self.checkVar5, self.checkVar6, self.checkVar7]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -333,7 +355,7 @@ class TPV_Main():
             self.checkVar7 = IntVar()
             self.checkVar8 = IntVar()
 
-            self.list8 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
+            self.list8 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -383,8 +405,8 @@ class TPV_Main():
             self.checkVar8 = IntVar()
             self.checkVar9 = IntVar()
 
-            self.list9 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                          self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
+            self.list9 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                          self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
                           self.checkVar9]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -438,8 +460,8 @@ class TPV_Main():
             self.checkVar9 = IntVar()
             self.checkVar10 = IntVar()
 
-            self.list10 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
+            self.list10 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
                            self.checkVar9, self.checkVar10]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -496,8 +518,8 @@ class TPV_Main():
             self.checkVar10 = IntVar()
             self.checkVar11 = IntVar()
 
-            self.list11 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
+            self.list11 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
                            self.checkVar9, self.checkVar10, self.checkVar11]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -557,8 +579,8 @@ class TPV_Main():
             self.checkVar11 = IntVar()
             self.checkVar12 = IntVar()
 
-            self.list12 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
+            self.list12 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
                            self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -621,9 +643,9 @@ class TPV_Main():
             self.checkVar12 = IntVar()
             self.checkVar13 = IntVar()
 
-            self.list13 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12, 
+            self.list13 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
+                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
                            self.checkVar13]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -689,9 +711,9 @@ class TPV_Main():
             self.checkVar13 = IntVar()
             self.checkVar14 = IntVar()
 
-            self.list14 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12, 
+            self.list14 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
+                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
                            self.checkVar13, self.checkVar14]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -760,9 +782,9 @@ class TPV_Main():
             self.checkVar14 = IntVar()
             self.checkVar15 = IntVar()
 
-            self.list15 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4, 
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8, 
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12, 
+            self.list15 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
+                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
+                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
                            self.checkVar13, self.checkVar14, self.checkVar15]
 
             check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
@@ -818,7 +840,9 @@ class TPV_Main():
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
         else:
-            print('initializing failed! Values out of bounds')
+            self.logger.critical('Initzialisation of main body failed!')
+
+        self.logger.info('Main body successfully initzialised!')
 
 
     def save(self):
@@ -959,7 +983,12 @@ class TPV_Main():
         #Checking if the file exist or not
         if os.path.isfile(f_name) == False or self.year_check() == 1:
 
-            f_new = filedialog.asksaveasfilename(title='Select File', filetypes=(("Excel files", ".xlsx"),("All files", "*.*")), defaultextension="*.*")
+            self.logger.info('Excel file does not exist, creating new one!')
+
+            f_new = filedialog.asksaveasfilename(title='Select File',
+                                                 filetypes=(("Excel files", ".xlsx"),
+                                                            ("All files", "*.*")),
+                                                            defaultextension="*.*")
 
             #Assigning the filename a place in the config file
             config['Filbehandling']['1'] = f_new
@@ -1002,15 +1031,12 @@ class TPV_Main():
                 config.write()
 
             except FileNotFoundError:
+                self.logger.critical('Saving of excel file failed!')
                 pass
 
-
-
-
-
-
-
         elif os.path.isfile(f_name) == True and self.year_check() == 0:
+
+            self.logger.info('Excel file exist, writing results to it!')
 
             f_name = config['Filbehandling']['1']
 
@@ -1033,12 +1059,13 @@ class TPV_Main():
             mBox.showinfo('', 'Resultater har blitt lagret')
 
         else:
-            print('Looks like something went wrong!')
+            self.logger.critical('Saving to excel file has failed!')
 
         self.win_size()
 
+
     def year_check(self):
-        
+
         """A simple method for checking if we have switched year"""
 
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
@@ -1053,8 +1080,9 @@ class TPV_Main():
         else:
             return 0
 
+
     def op_saved(self):
-        
+
         """Lets you open a preexisting excel file"""
 
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
@@ -1063,15 +1091,17 @@ class TPV_Main():
 
         config['Filbehandling']['1'] = f_exist
         config.write()
+        
 
     def op_wiki(self):
-        
+
         """Simply opens your default browser and directs you to the wiki"""
 
         webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
+        
 
     def procedure(self):
-        
+
         """Lets you select a word file that gets linked to in the UI"""
 
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
@@ -1087,10 +1117,11 @@ class TPV_Main():
             config.write()
 
         else:
-            logging.error('Shit hit the fan in the procedure method!')
+            self.logging.critical('Shit hit the fan in the procedure method!')
+            
 
     def win_size(self):
-        
+
         """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
 
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
@@ -1110,6 +1141,23 @@ class TPV_Main():
         config.write()
 
         print(size)
+        
+    def maintanance(self):
+        
+        new_win = Tk()
+        new_win.geometry('500x300')
+        
+        form_body = ttk.LabelFrame(new_win, text='Skjema for utført Vedlikehold')
+        form_body.pack(expand=1)
+        
+        test = Label(form_body, text='Hello')
+        test.grid(row=1, column=0, sticky=W)
+        
+        test1 = Label(form_body, text='Hello')
+        test1.grid(row=2, column=0, sticky=W)
+        
+        
+        print('Hello world!')
 
 
 win = Tk()
@@ -1121,8 +1169,6 @@ config_file = Path('TPV-Skjema/config.ini')
 
 FONT1 = ("Calibri", 11)
 FONT2 = ("Calibri", 11, "bold", "underline")
-
-logging.basicConfig(filename='Error.log',level=logging.ERROR)
 
 tpv = TPV_Main()
 
