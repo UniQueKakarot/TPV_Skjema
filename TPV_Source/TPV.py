@@ -9,6 +9,7 @@ from datetime import datetime
 import webbrowser
 import openpyxl as op
 import logging
+from docx import Document
 
 
 class TPV_Main():
@@ -107,6 +108,7 @@ class TPV_Main():
             config['Filbehandling']['1'] = ''
             config['Filbehandling']['2'] = '850x450'
             config['Filbehandling']['3'] = ''
+            config['Filbehandling']['4'] = ''
 
             date = datetime.today()
             year = date.strftime('%Y')
@@ -1105,15 +1107,15 @@ class TPV_Main():
         """Lets you select a word file that gets linked to in the UI"""
 
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
-        f_exists = config['Filbehandling']['3']
+        f_exist = config['Filbehandling']['3']
 
-        if os.path.isfile(f_exists) == True:
-            os.system(f_exists)
+        if os.path.isfile(f_exist) == True:
+            os.system(f_exist)
 
-        elif os.path.isfile(f_exists) == False:
-            f_exists = filedialog.askopenfilename()
-            os.system(f_exists)
-            config['Filbehandling']['3'] = f_exists
+        elif os.path.isfile(f_exist) == False:
+            f_exist = filedialog.askopenfilename()
+            os.system(f_exist)
+            config['Filbehandling']['3'] = f_exist
             config.write()
 
         else:
@@ -1144,20 +1146,103 @@ class TPV_Main():
         
     def maintanance(self):
         
-        new_win = Tk()
-        new_win.geometry('500x300')
+        """Adding in a new window for saving extra information on maintainance done"""
         
-        form_body = ttk.LabelFrame(new_win, text='Skjema for utført Vedlikehold')
+        self.new_win = Tk()
+        self.new_win.title('Skjema')
+        self.new_win.geometry('450x280')
+        
+        date = datetime.today()
+        today = date.strftime('%d.%m.%Y, %a')
+        
+        form_body = ttk.LabelFrame(self.new_win, text='Skjema for utført Vedlikehold')
         form_body.pack(expand=1)
         
-        test = Label(form_body, text='Hello')
-        test.grid(row=1, column=0, sticky=W)
+        lbl1 = Label(form_body, text='Dato: ', font=FONT1)
+        lbl1.grid(row=0, column=0, sticky=N)
+        self.ent1 = ttk.Entry(form_body)
+        self.ent1.grid(row=0, column=1, sticky=N)
+        self.ent1.insert(0, today)
         
-        test1 = Label(form_body, text='Hello')
-        test1.grid(row=2, column=0, sticky=W)
+        lbl2 = Label(form_body, text='Hvem utførte vedlikeholdet?: ', font=FONT1)
+        lbl2.grid(row=1, column=0, sticky=W, pady=10)
+        self.ent2 = ttk.Entry(form_body)
+        self.ent2.grid(row=1, column=1, sticky=N, pady=10)
+        
+        lbl3 = Label(form_body, text='Hva ble gjort:', font=FONT2)
+        lbl3.grid(row=2, column=0, sticky=W)
+        self.maintanance_txt = Text(form_body, height=3, width=40)
+        self.maintanance_txt.grid(row=3, column=0, columnspan=2, sticky=W)
+        
+        button1 = ttk.Button(form_body, text='Lagre', command=self.maintanance_save)
+        button1.grid(row=4, column=0, sticky=N, pady=10)
+            
+        button2 = ttk.Button(form_body, text='Avslutt', command=self.maintanance_quit)
+        button2.grid(row=4, column=1, sticky=N, pady=10)
         
         
-        print('Hello world!')
+    def maintanance_save(self):
+        
+        """Saving method for the main maintainance method"""
+        
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        f_exist = config['Filbehandling']['4']
+        
+        if os.path.isfile(f_exist) == True:
+            
+            document = Document(f_exist)
+            
+            date = self.ent1.get()
+            name = self.ent2.get()
+            textbox = self.maintanance_txt.get('1.0', END)
+            
+            document.add_paragraph(date)
+            document.add_paragraph(name)
+            document.add_paragraph(textbox)
+            document.add_paragraph('')
+            
+            document.save(f_exist)
+            
+            mBox.showinfo('', 'Resultater har blitt lagret')
+            
+        elif os.path.isfile(f_exist) == False:
+            
+            f_new = filedialog.asksaveasfilename(title='Select File',
+                                                 filetypes=(("Word files", ".docx"),
+                                                            ("All files", "*.*")),
+                                                            defaultextension="*.*")
+            
+            document = Document()
+            
+            date = self.ent1.get()
+            name = self.ent2.get()
+            textbox = self.maintanance_txt.get('1.0', END)
+            
+            document.add_paragraph(date)
+            document.add_paragraph(name)
+            document.add_paragraph(textbox)
+            document.add_paragraph('')
+            
+            document.save(f_new)
+            
+            config['Filbehandling']['4'] = f_new
+            config.write()
+            
+            mBox.showinfo('', 'Resultater har blitt lagret')
+        
+        
+    def maintanance_quit(self):
+        
+        """Simply just kills the extra save window"""
+        
+        self.new_win.destroy() 
+
+        
+
+
+        
+        
+
 
 
 win = Tk()
