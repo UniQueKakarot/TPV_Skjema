@@ -195,7 +195,7 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
 
-            elif today_number == 20 and lowCas == 'maanedlig':
+            elif lowCas == 'maanedlig' and today_number == 20:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
