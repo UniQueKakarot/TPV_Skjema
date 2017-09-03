@@ -1,0 +1,17 @@
+Check if day 20 is weekday or not
+
+check_day = date(year, month, day).isoweekday()
+
+we want this method to run every time the application
+runs, but we dont want it to write the result to the
+config file everytime.
+
+So in the start we need to evaluate if the method has
+done its work or not.
+
+Day = 20 is the original starting point.
+
+if 20 is saturday - 1
+elif 20 is sunday + 1
+
+so

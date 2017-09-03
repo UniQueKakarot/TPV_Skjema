@@ -5,7 +5,7 @@ from tkinter import messagebox as mBox
 from pathlib import Path
 from configobj import ConfigObj
 import os.path
-from datetime import datetime
+from datetime import datetime, date
 import webbrowser
 import openpyxl as op
 import logging
@@ -103,6 +103,8 @@ class TPV_Main():
             config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
             config['Diversje']['2'] = 'Annet:'
             config['Diversje']['3'] = ''
+            config['Diversje']['4'] = '20'
+            
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = ''
@@ -155,7 +157,8 @@ class TPV_Main():
         #Assigning the length of list values to a global variable
         global length
         length = len(values)
-
+        
+        testVar = self.day_check()
 
         row_ved = 1
         row_han = 1
@@ -195,7 +198,7 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'maanedlig' and today_number == 20:
+            elif lowCas == 'maanedlig' and today_number == testVar:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
@@ -1210,7 +1213,7 @@ class TPV_Main():
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Word files", ".docx"),
                                                             ("All files", "*.*")),
-                                                            defaultextension="*.*")
+                                                 defaultextension="*.*")
             
             document = Document()
             
@@ -1235,7 +1238,43 @@ class TPV_Main():
         
         """Simply just kills the extra save window"""
         
-        self.new_win.destroy() 
+        self.new_win.destroy()
+        
+        
+    def day_check(self):
+
+        """Checks to see if the 20th day of the month falls on a weekend"""
+        
+        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        saved_day = config['Diversje']['4']
+        
+        date1 = datetime.today()
+        
+        year = date1.strftime('%Y')
+        year = int(year)
+        month = date1.strftime('%m')
+        month = int(month)
+        day = 20
+        
+        check_day = date(year, month, day).isoweekday()
+
+        if saved_day == '20' and check_day == 6:
+            day = day - 1
+            config['Diversje']['4'] = day
+            config.write()
+            return day
+        
+        elif saved_day == '20' and check_day == 7:
+            day = day + 1
+            config['Diversje']['4'] = day
+            config.write()
+            return day
+        
+        else:
+            return 20
+        
+
+
 
         
 
