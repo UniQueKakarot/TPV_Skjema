@@ -944,8 +944,10 @@ class TPV_Main():
                 values2.append(x)
 
         else:
-            print('Well looks like shit hit the fan son!')
-
+            self.logger.critical("Failed initialization in the save method!")
+        
+        self.logger.info("Initialization of save method complete!")
+        
         self.values2 = values2
 
         #Main code for writing out the excel file used to save the data in comes here:
@@ -1081,8 +1083,10 @@ class TPV_Main():
 
         if config_year != current_year:
             config['Diversje']['3'] = current_year
+            self.logger.info("Happy new year! Writing new year to config and returning 1.")
             return 1
         else:
+            self.logger.info("Same old year, returning 0.")
             return 0
 
 
@@ -1232,6 +1236,9 @@ class TPV_Main():
             config.write()
             
             mBox.showinfo('', 'Resultater har blitt lagret')
+            
+        else:
+            self.logger.critical("Something failed in the maintanance_save method!")
         
         
     def maintanance_quit(self):
@@ -1262,15 +1269,18 @@ class TPV_Main():
             day = day - 1
             config['Diversje']['4'] = day
             config.write()
+            self.logger.info("20th falls on a saturday, switching to friday!")
             return day
         
         elif saved_day == '20' and check_day == 7:
             day = day + 1
             config['Diversje']['4'] = day
             config.write()
+            self.logger.info("20th falls on a sunday, switching to monday!")
             return day
         
         else:
+            self.logger.info("20th is a weekday, so returns 20.")
             return 20
         
 
