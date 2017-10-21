@@ -32,9 +32,17 @@ class TPV_Main():
 
         # Add the Handler to the Logger
         self.logger.addHandler(logger_handler)
+        
+        frametxt = 'TPV Skjema'
 
+        if os.path.isfile('config.ini') == True:
+            config = ConfigObj('config.ini')
+            frametxt = config['Diversje']['5']
 
-        self.TPV_Body = ttk.LabelFrame(win, text='TPV Skjema')
+            self.logger.info('Checking for the name of the labelframe in configfile')
+
+        # Instansiating a labelframe to contain the application in
+        self.TPV_Body = ttk.LabelFrame(win, text=frametxt)
         self.TPV_Body.pack(expand=1)
 
         menuBar = Menu(win)
@@ -104,6 +112,7 @@ class TPV_Main():
             config['Diversje']['2'] = 'Annet:'
             config['Diversje']['3'] = ''
             config['Diversje']['4'] = '20'
+            config['Diversje']['5'] = 'TPV Skjema for Maskin...'
             
 
             config['Filbehandling'] = {}
@@ -1149,7 +1158,7 @@ class TPV_Main():
         config['Filbehandling']['2'] = size
         config.write()
 
-        print(size)
+        #print(size)
         
     def maintanance(self):
         
