@@ -1060,6 +1060,25 @@ class TPV_Main():
 
             textbox = self.txt.get('1.0', END)
             ws.cell(row=day_as_int, column=col, value=textbox)
+            
+            #testpart
+            hyp = config['Hyppighet']
+            
+            test_key = []
+            test_val = []
+            
+            for k, v in hyp.items():
+                test_key.append(k)
+                test_val.append(v)
+                #print(k, v)
+            
+            rep_dag = test_val.count('Daglig')
+            rep_uke = test_val.count('Ukentlig')
+            rep_maan = test_val.count('Maanedlig')
+            rep_hal = test_val.count('Halvaar')
+            
+            print(rep_dag, rep_uke, rep_maan, rep_hal)
+            #print(hyp.keys)
 
             op.writer.excel.save_workbook(wb, f_name)
 
