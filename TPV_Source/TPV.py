@@ -35,7 +35,7 @@ class TPV_Main():
         
         frametxt = 'TPV Skjema'
 
-        if os.path.isfile('config.ini') == True:
+        if os.path.isfile('config.ini') is True:
             config = ConfigObj('config.ini')
             frametxt = config['Diversje']['5']
 
@@ -59,7 +59,6 @@ class TPV_Main():
         fileMenu.add_command(label='Åpne excel fil', command=self.op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
-
         self.config()
         self.main()
 
@@ -67,7 +66,7 @@ class TPV_Main():
 
     def config(self):
 
-        if os.path.isfile('config.ini') == True:
+        if os.path.isfile('config.ini') is True:
             config = ConfigObj('config.ini')
             size = config['Filbehandling']['2']
 
@@ -113,7 +112,6 @@ class TPV_Main():
             config['Diversje']['3'] = ''
             config['Diversje']['4'] = '20'
             config['Diversje']['5'] = 'TPV Skjema for Maskin...'
-            
 
             config['Filbehandling'] = {}
             config['Filbehandling']['1'] = ''
@@ -132,38 +130,36 @@ class TPV_Main():
 
             self.logger.info('Config file does not exist, creating a new one!')
 
-
-
     def main(self):
         
         """Main body of the gui application"""
 
-        #Accessing the config parser and getting the number of keys
+        # Accessing the config parser and getting the number of keys
         config1 = ConfigObj('config.ini')
         keys = config1.keys()
 
         first_key = keys[0]
 
-        #Collecting current date and weekday in full name
+        # Collecting current date and weekday in full name
         date = datetime.today()
         today = date.strftime('%A')
 
-        #Collecting which number in the month the current day is
+        # Collecting which number in the month the current day is
         today_number = date.strftime('%d')
         today_number = int(today_number)
 
-        #Collecting which number in the year the current day is
+        # Collecting which number in the year the current day is
         day_of_year = date.strftime('%j')
         day_of_year = int(day_of_year)
 
-        #Empty list assigned for holding info on entries in the first key of the config file
+        # Empty list assigned for holding info on entries in the first key of the config file
         values = []
 
-        #Establish the number of entries in the config file
+        # Establish the number of entries in the config file
         for i in config1[first_key]:
             values.append(i)
 
-        #Assigning the length of list values to a global variable
+        # Assigning the length of list values to a global variable
         global length
         length = len(values)
         
@@ -174,12 +170,11 @@ class TPV_Main():
         row_olj = 1
         row_hyp = 1
 
-        #Generating labels on the fly based on how many entries it is in the config file
+        # Generating labels on the fly based on how many entries it is in the config file
         for value in config1['Vedlikeholdspunkt'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_ved, column=1, sticky=W, padx=15)
             row_ved += 1
-
 
         for value in config1['Handling'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
@@ -190,7 +185,6 @@ class TPV_Main():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_olj, column=3, sticky=W, padx=15)
             row_olj += 1
-
 
         for value in config1['Hyppighet'].values():
 
@@ -223,8 +217,6 @@ class TPV_Main():
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
-
-
 
         if length == 5:
 
@@ -832,7 +824,6 @@ class TPV_Main():
             check15 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar15)
             check15.grid(row=15, column=0, sticky=W)
 
-
             lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
             lbl1.grid(row=0, column=1, sticky=N, pady=5)
             lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
@@ -849,7 +840,6 @@ class TPV_Main():
             self.txt = Text(self.TPV_Body, height=3, width=25)
             self.txt.grid(row=17, column=0, columnspan=2)
 
-
             button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
             button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
 
@@ -857,7 +847,6 @@ class TPV_Main():
             self.logger.critical('Initzialisation of main body failed!')
 
         self.logger.info('Main body successfully initzialised!')
-
 
     def save(self):
 
@@ -959,28 +948,28 @@ class TPV_Main():
         
         self.values2 = values2
 
-        #Main code for writing out the excel file used to save the data in comes here:
+        # Main code for writing out the excel file used to save the data in comes here:
 
-        #Calling the config parser and accessing filepath if present in config file
+        # Calling the config parser and accessing filepath if present in config file
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
         f_name = config['Filbehandling']['1']
 
         date = datetime.today()
 
-        #Dateformatting
+        # Dateformatting
         month = date.strftime('%B')
         month = str(month)
 
-        #Saving dates as strings for use in excel file
+        # Saving dates as strings for use in excel file
         day_as_string = date.strftime('%d')
         day_as_string = int(day_as_string) + 1
         day_as_string = str(day_as_string)
 
-        #Saving dates as int's for use in locating rows
+        # Saving dates as int's for use in locating rows
         day_as_int = date.strftime('%d')
         day_as_int = int(day_as_int) + 1
 
-        #Formatting date to my liking
+        # Formatting date to my liking
         today = date.strftime('%d.%m.%Y, %a')
 
 
@@ -989,24 +978,23 @@ class TPV_Main():
         index = []
 
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-        'August', 'September', 'October', 'November', 'December']
+                  'August', 'September', 'October', 'November', 'December']
 
         for i in config['Vedlikeholdspunkt'].values():
             index.append(i)
 
         index.append(config['Diversje']['2'])
 
-        #Checking if the file exist or not
+        # Checking if the file exist or not
         if os.path.isfile(f_name) == False or self.year_check() == 1:
 
             self.logger.info('Excel file does not exist, creating new one!')
 
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
-                                                            ("All files", "*.*")),
-                                                            defaultextension="*.*")
+                                                            ("All files", "*.*")), defaultextension="*.*")
 
-            #Assigning the filename a place in the config file
+            # Assigning the filename a place in the config file
             config['Filbehandling']['1'] = f_new
 
             wb = op.Workbook()
@@ -1079,7 +1067,6 @@ class TPV_Main():
 
         self.win_size()
 
-
     def year_check(self):
 
         """A simple method for checking if we have switched year"""
@@ -1098,7 +1085,6 @@ class TPV_Main():
             self.logger.info("Same old year, returning 0.")
             return 0
 
-
     def op_saved(self):
 
         """Lets you open a preexisting excel file"""
@@ -1109,14 +1095,12 @@ class TPV_Main():
 
         config['Filbehandling']['1'] = f_exist
         config.write()
-        
 
     def op_wiki(self):
 
         """Simply opens your default browser and directs you to the wiki"""
 
         webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
-        
 
     def procedure(self):
 
@@ -1136,7 +1120,6 @@ class TPV_Main():
 
         else:
             self.logging.critical('Shit hit the fan in the procedure method!')
-            
 
     def win_size(self):
 
@@ -1157,8 +1140,6 @@ class TPV_Main():
 
         config['Filbehandling']['2'] = size
         config.write()
-
-        #print(size)
         
     def maintanance(self):
         
@@ -1195,8 +1176,7 @@ class TPV_Main():
             
         button2 = ttk.Button(form_body, text='Avslutt', command=self.maintanance_quit)
         button2.grid(row=4, column=1, sticky=N, pady=10)
-        
-        
+
     def maintanance_save(self):
         
         """Saving method for the main maintainance method"""
@@ -1204,7 +1184,7 @@ class TPV_Main():
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
         f_exist = config['Filbehandling']['4']
         
-        if os.path.isfile(f_exist) == True:
+        if os.path.isfile(f_exist) is True:
             
             document = Document(f_exist)
             
@@ -1221,7 +1201,7 @@ class TPV_Main():
             
             mBox.showinfo('', 'Resultater har blitt lagret')
             
-        elif os.path.isfile(f_exist) == False:
+        elif os.path.isfile(f_exist) is False:
             
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Word files", ".docx"),
@@ -1248,15 +1228,13 @@ class TPV_Main():
             
         else:
             self.logger.critical("Something failed in the maintanance_save method!")
-        
-        
+
     def maintanance_quit(self):
         
         """Simply just kills the extra save window"""
         
         self.new_win.destroy()
-        
-        
+
     def day_check(self):
 
         """Checks to see if the 20th day of the month falls on a weekend"""
@@ -1291,16 +1269,6 @@ class TPV_Main():
         else:
             self.logger.info("20th is a weekday, so returns 20.")
             return 20
-        
-
-
-
-        
-
-
-        
-        
-
 
 
 win = Tk()
