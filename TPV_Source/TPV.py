@@ -41,7 +41,7 @@ class TPV_Main():
 
             self.logger.info('Checking for the name of the labelframe in configfile')
 
-        # Instansiating a labelframe to contain the application in
+        # Instantiating a labelframe to contain the application in
         self.TPV_Body = ttk.LabelFrame(win, text=frametxt)
         self.TPV_Body.pack(expand=1)
 
@@ -972,7 +972,6 @@ class TPV_Main():
         # Formatting date to my liking
         today = date.strftime('%d.%m.%Y, %a')
 
-
         cell = 'A' + day_as_string
 
         index = []
@@ -1096,7 +1095,8 @@ class TPV_Main():
         config['Filbehandling']['1'] = f_exist
         config.write()
 
-    def op_wiki(self):
+    @staticmethod
+    def op_wiki():
 
         """Simply opens your default browser and directs you to the wiki"""
 
