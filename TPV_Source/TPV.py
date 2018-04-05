@@ -62,7 +62,7 @@ class TPV_Main():
         self.config()
         self.main()
 
-        self.logger.info('Completed configuring logger(), and class is initsialized!')
+        self.logger.info('Completed configuring logger(), and class is initialized!')
 
     def config(self):
 
@@ -118,6 +118,11 @@ class TPV_Main():
             config['Filbehandling']['2'] = '850x450'
             config['Filbehandling']['3'] = ''
             config['Filbehandling']['4'] = ''
+
+            config['Vedlikeholdsjekk'] = {}
+            config['Vedlikeholdsjekk']['1'] = ''
+            config['Vedlikeholdsjekk']['2'] = ''
+            config['Vedlikeholdsjekk']['3'] = ''
 
             date = datetime.today()
             year = date.strftime('%Y')
@@ -1078,13 +1083,15 @@ class TPV_Main():
 
         if config_year != current_year:
             config['Diversje']['3'] = current_year
+            config.write()
             self.logger.info("Happy new year! Writing new year to config and returning 1.")
             return 1
         else:
             self.logger.info("Same old year, returning 0.")
             return 0
 
-    def op_saved(self):
+    @staticmethod
+    def op_saved():
 
         """Lets you open a preexisting excel file"""
 
@@ -1109,10 +1116,10 @@ class TPV_Main():
         config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
         f_exist = config['Filbehandling']['3']
 
-        if os.path.isfile(f_exist) == True:
+        if os.path.isfile(f_exist) is True:
             os.system(f_exist)
 
-        elif os.path.isfile(f_exist) == False:
+        elif os.path.isfile(f_exist) is False:
             f_exist = filedialog.askopenfilename()
             os.system(f_exist)
             config['Filbehandling']['3'] = f_exist
@@ -1143,7 +1150,7 @@ class TPV_Main():
         
     def maintanance(self):
         
-        """Adding in a new window for saving extra information on maintainance done"""
+        """Adding in a new window for saving extra information on maintenance done"""
         
         self.new_win = Tk()
         self.new_win.title('Skjema')
