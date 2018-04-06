@@ -12,7 +12,7 @@ class MyApp(tk.Frame):
         check_boxes = {}
         self.results = {}
         for i in range(num):
-            self.results['checkvar{0}'.format(i)] = i
+            self.results['checkvar{0}'.format(i)] = tk.IntVar()
             
         for item in self.results:
             check_boxes['check{0}'.format(i)] = ttk.Checkbutton(self.master, variable=self.results[item]).pack()
@@ -22,8 +22,18 @@ class MyApp(tk.Frame):
         button.pack()
 
     def save(self):
-        print(self.results)
-        pass
+        test = []
+
+        for i in self.results:
+            test.append(self.results[i])
+
+        #why the fuck do we have to append to a list and run .get to get the actual values??????????
+        for i in test:
+            print(i.get())
+
+        #print(self.test.get())
+        #print(self.results['checkvar0'])
+
 
 
 
