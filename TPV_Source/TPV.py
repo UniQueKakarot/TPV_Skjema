@@ -9,7 +9,12 @@ from datetime import datetime, date
 import webbrowser
 import openpyxl as op
 import logging
-from docx import Document 
+from docx import Document
+
+# TODO
+# Fix up the logging so it actually logs any usefull error message
+# Make it possible to have several machine configs by using tabs
+# Change the tkinter import from a star to tk
 
 
 class TPV_Main():
@@ -39,8 +44,6 @@ class TPV_Main():
             config = ConfigObj('config.ini')
             frametxt = config['Diversje']['5']
 
-            self.logger.info('Checking for the name of the labelframe in configfile')
-
         # Instantiating a labelframe to contain the application in
         self.TPV_Body = ttk.LabelFrame(win, text=frametxt)
         self.TPV_Body.pack(expand=1)
@@ -62,8 +65,6 @@ class TPV_Main():
         self.config()
         self.main()
 
-        self.logger.info('Completed configuring logger(), and class is initialized!')
-
     def config(self):
 
         if os.path.isfile('config.ini') is True:
@@ -71,8 +72,6 @@ class TPV_Main():
             size = config['Filbehandling']['2']
 
             win.geometry(size)
-
-            self.logger.info('Config file exists, using existing one!')
 
         else:
             config = ConfigObj(encoding='utf8', default_encoding='utf8')
@@ -133,8 +132,6 @@ class TPV_Main():
             size = config['Filbehandling']['2']
             win.geometry(size)
 
-            self.logger.info('Config file does not exist, creating a new one!')
-
     def main(self):
         
         """Main body of the gui application"""
@@ -165,7 +162,6 @@ class TPV_Main():
             values.append(i)
 
         # Assigning the length of list values to a global variable
-        global length
         length = len(values)
         
         testVar = self.day_check()
@@ -223,735 +219,47 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=W, padx=15)
                 row_hyp += 1
 
-        if length == 5:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-
-            self.list5 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                          self.checkVar5]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 6:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-
-            self.list6 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                          self.checkVar5, self.checkVar6]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 7:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-
-            self.list7 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                          self.checkVar5, self.checkVar6, self.checkVar7]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 8:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-
-            self.list8 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                          self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=N)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 9:
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-
-            self.list9 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                          self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                          self.checkVar9]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 10:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-
-            self.list10 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 11:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-            self.checkVar11 = IntVar()
-
-            self.list11 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10, self.checkVar11]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-            check11 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar11)
-            check11.grid(row=11, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 12:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-            self.checkVar11 = IntVar()
-            self.checkVar12 = IntVar()
-
-            self.list12 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-            check11 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar11)
-            check11.grid(row=11, column=0, sticky=W)
-            check12 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar12)
-            check12.grid(row=12, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 13:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-            self.checkVar11 = IntVar()
-            self.checkVar12 = IntVar()
-            self.checkVar13 = IntVar()
-
-            self.list13 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
-                           self.checkVar13]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-            check11 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar11)
-            check11.grid(row=11, column=0, sticky=W)
-            check12 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar12)
-            check12.grid(row=12, column=0, sticky=W)
-            check13 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar13)
-            check13.grid(row=13, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 14:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-            self.checkVar11 = IntVar()
-            self.checkVar12 = IntVar()
-            self.checkVar13 = IntVar()
-            self.checkVar14 = IntVar()
-
-            self.list14 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
-                           self.checkVar13, self.checkVar14]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-            check11 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar11)
-            check11.grid(row=11, column=0, sticky=W)
-            check12 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar12)
-            check12.grid(row=12, column=0, sticky=W)
-            check13 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar13)
-            check13.grid(row=13, column=0, sticky=W)
-            check14 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar14)
-            check14.grid(row=14, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        elif length == 15:
-
-            self.checkVar1 = IntVar()
-            self.checkVar2 = IntVar()
-            self.checkVar3 = IntVar()
-            self.checkVar4 = IntVar()
-            self.checkVar5 = IntVar()
-            self.checkVar6 = IntVar()
-            self.checkVar7 = IntVar()
-            self.checkVar8 = IntVar()
-            self.checkVar9 = IntVar()
-            self.checkVar10 = IntVar()
-            self.checkVar11 = IntVar()
-            self.checkVar12 = IntVar()
-            self.checkVar13 = IntVar()
-            self.checkVar14 = IntVar()
-            self.checkVar15 = IntVar()
-
-            self.list15 = [self.checkVar1, self.checkVar2, self.checkVar3, self.checkVar4,
-                           self.checkVar5, self.checkVar6, self.checkVar7, self.checkVar8,
-                           self.checkVar9, self.checkVar10, self.checkVar11, self.checkVar12,
-                           self.checkVar13, self.checkVar14, self.checkVar15]
-
-            check1 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar1)
-            check1.grid(row=1, column=0, sticky=W)
-            check2 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar2)
-            check2.grid(row=2, column=0, sticky=W)
-            check3 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar3)
-            check3.grid(row=3, column=0, sticky=W)
-            check4 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar4)
-            check4.grid(row=4, column=0, sticky=W)
-            check5 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar5)
-            check5.grid(row=5, column=0, sticky=W)
-            check6 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar6)
-            check6.grid(row=6, column=0, sticky=W)
-            check7 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar7)
-            check7.grid(row=7, column=0, sticky=W)
-            check8 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar8)
-            check8.grid(row=8, column=0, sticky=W)
-            check9 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar9)
-            check9.grid(row=9, column=0, sticky=W)
-            check10 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar10)
-            check10.grid(row=10, column=0, sticky=W)
-            check11 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar11)
-            check11.grid(row=11, column=0, sticky=W)
-            check12 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar12)
-            check12.grid(row=12, column=0, sticky=W)
-            check13 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar13)
-            check13.grid(row=13, column=0, sticky=W)
-            check14 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar14)
-            check14.grid(row=14, column=0, sticky=W)
-            check15 = ttk.Checkbutton(self.TPV_Body, variable=self.checkVar15)
-            check15.grid(row=15, column=0, sticky=W)
-
-            lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
-            lbl1.grid(row=0, column=1, sticky=N, pady=5)
-            lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
-            lbl2.grid(row=0, column=2, sticky=N, pady=5)
-            lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
-            lbl3.grid(row=0, column=3, sticky=W, pady=5)
-            lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
-            lbl4.grid(row=0, column=4, sticky=N, pady=5)
-
-            header = config1['Diversje']['1']
-            lbl16 = Label(self.TPV_Body, text=header)
-            lbl16.grid(row=16, column=0, columnspan=2,  pady=3)
-
-            self.txt = Text(self.TPV_Body, height=3, width=25)
-            self.txt.grid(row=17, column=0, columnspan=2)
-
-            button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
-            button.grid(row=21, column=0, columnspan=2, sticky=W, pady=15)
-
-        else:
-            self.logger.critical('Initzialisation of main body failed!')
-
-        self.logger.info('Main body successfully initzialised!')
+        self.results = {}
+        check_boxes = {}
+
+        for i in range(length):
+            self.results['checkvar{0}'.format(i)] = IntVar()
+        
+        row = 1
+        for item in self.results:
+            check_boxes['check{0}'.format(i)] = ttk.Checkbutton(self.TPV_Body, variable=self.results[item]).grid(row=row, column=0, sticky=W)
+            row += 1
+
+        lbl1 = Label(self.TPV_Body, text='Vedlikeholdspunkt:', font=FONT2)
+        lbl1.grid(row=0, column=1, sticky=N)
+        lbl2 = Label(self.TPV_Body, text='Handling:', font=FONT2)
+        lbl2.grid(row=0, column=2, sticky=N)
+        lbl3 = Label(self.TPV_Body, text='Oljetype:', font=FONT2)
+        lbl3.grid(row=0, column=3, sticky=N)
+        lbl4 = Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
+        lbl4.grid(row=0, column=4, sticky=N)
+
+        header = config1['Diversje']['1']
+        lbl16 = Label(self.TPV_Body, text=header)
+        lbl16.grid(row=row, column=0, columnspan=2,  pady=3)
+        row += 1
+
+        self.txt = Text(self.TPV_Body, height=3, width=25)
+        self.txt.grid(row=row, column=0, columnspan=2)
+        row += 1
+
+        button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
+        button.grid(row=row, column=0, columnspan=2, sticky=W, pady=15)
 
     def save(self):
-
-        values1 = []
-        values2 = []
-
-        if length == 5:
-            for i in self.list5:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 6:
-            for i in self.list6:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 7:
-            for i in self.list7:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 8:
-            for i in self.list8:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 9:
-            for i in self.list9:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 10:
-            for i in self.list10:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 11:
-            for i in self.list11:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 12:
-            for i in self.list12:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 13:
-            for i in self.list13:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 14:
-            for i in self.list14:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        elif length == 15:
-            for i in self.list15:
-                values1.append(i)
-
-            for i in values1:
-                x = i.get()
-                values2.append(x)
-
-        else:
-            self.logger.critical("Failed initialization in the save method!")
         
-        self.logger.info("Initialization of save method complete!")
-        
-        self.values2 = values2
+        values = []
+        for i in self.results:
+            values.append(self.results[i])
+
+        checkbox_values = []
+        for i in values:
+            checkbox_values.append(i.get())
 
         # Main code for writing out the excel file used to save the data in comes here:
 
@@ -992,8 +300,6 @@ class TPV_Main():
         # Checking if the file exist or not
         if os.path.isfile(f_name) == False or self.year_check() == 1:
 
-            self.logger.info('Excel file does not exist, creating new one!')
-
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
                                                             ("All files", "*.*")), defaultextension="*.*")
@@ -1029,7 +335,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in values2:
+            for i in checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -1038,13 +344,11 @@ class TPV_Main():
                 mBox.showinfo('', 'Resultater har blitt lagret')
                 config.write()
 
-            except FileNotFoundError:
-                self.logger.critical('Saving of excel file failed!')
+            except FileNotFoundError as e:
+                print(e)
                 pass
 
         elif os.path.isfile(f_name) == True and self.year_check() == 0:
-
-            self.logger.info('Excel file exist, writing results to it!')
 
             f_name = config['Filbehandling']['1']
 
@@ -1055,7 +359,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in values2:
+            for i in checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -1067,7 +371,8 @@ class TPV_Main():
             mBox.showinfo('', 'Resultater har blitt lagret')
 
         else:
-            self.logger.critical('Saving to excel file has failed!')
+            # put in some error handling or something here
+            pass
 
         self.win_size()
 
@@ -1084,10 +389,9 @@ class TPV_Main():
         if config_year != current_year:
             config['Diversje']['3'] = current_year
             config.write()
-            self.logger.info("Happy new year! Writing new year to config and returning 1.")
             return 1
         else:
-            self.logger.info("Same old year, returning 0.")
+            # returning 0 just to indicate that we have indeed not switched year
             return 0
 
     @staticmethod
@@ -1126,7 +430,8 @@ class TPV_Main():
             config.write()
 
         else:
-            self.logging.critical('Shit hit the fan in the procedure method!')
+            # insert some logging here when we have figured out if it is needed
+            pass
 
     def win_size(self):
 
@@ -1232,9 +537,10 @@ class TPV_Main():
             config.write()
             
             mBox.showinfo('', 'Resultater har blitt lagret')
-            
+
         else:
-            self.logger.critical("Something failed in the maintanance_save method!")
+            # might want some logging here
+            pass
 
     def maintanance_quit(self):
         
@@ -1263,18 +569,16 @@ class TPV_Main():
             day = day - 1
             config['Diversje']['4'] = day
             config.write()
-            self.logger.info("20th falls on a saturday, switching to friday!")
             return day
         
         elif saved_day == '20' and check_day == 7:
             day = day + 1
             config['Diversje']['4'] = day
             config.write()
-            self.logger.info("20th falls on a sunday, switching to monday!")
             return day
         
         else:
-            self.logger.info("20th is a weekday, so returns 20.")
+            # Logging?
             return 20
 
 
