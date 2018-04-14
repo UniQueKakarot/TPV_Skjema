@@ -20,23 +20,6 @@ from docx import Document
 class TPV_Main():
 
     def __init__(self):
-
-        # Create the Logger
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-
-        # Create the Handler for logging data to a file
-        logger_handler = logging.FileHandler('TPV_log.log')
-        logger_handler.setLevel(logging.INFO)
-
-        # Create a Formatter for formatting the log messages
-        logger_formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-
-        # Add the Formatter to the Handler
-        logger_handler.setFormatter(logger_formatter)
-
-        # Add the Handler to the Logger
-        self.logger.addHandler(logger_handler)
         
         frametxt = 'TPV Skjema'
 
@@ -62,8 +45,28 @@ class TPV_Main():
         fileMenu.add_command(label='Åpne excel fil', command=self.op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
+        self.logging()
         self.config()
         self.main()
+
+    def logging(self):
+
+        # Create the Logger
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+
+        # Create the Handler for logging data to a file
+        logger_handler = logging.FileHandler('TPV_log.log')
+        logger_handler.setLevel(logging.INFO)
+
+        # Create a Formatter for formatting the log messages
+        logger_formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+
+        # Add the Formatter to the Handler
+        logger_handler.setFormatter(logger_formatter)
+
+        # Add the Handler to the Logger
+        self.logger.addHandler(logger_handler)
 
     def config(self):
 
