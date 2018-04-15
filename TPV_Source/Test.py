@@ -1,16 +1,17 @@
 import tkinter as tk
 from tkinter import ttk
 
-class MyApp(tk.Frame):
-    def __init__(self, master):
-        tk.Frame.__init__(self, master)
-        self.tabcontroll = ttk.Notebook(master)
-        self.tab1 = ttk.Frame(self.tabcontroll)
-        self.tab2 = ttk.Frame(self.tabcontroll)
-        self.tabcontroll.add(self.tab1, text='Tab 1')
-        self.tabcontroll.add(self.tab2, text='Tab 2')
-        self.tabcontroll.pack()
-        self.pack()
+class MyApp():
+    def __init__(self, master, tab, tabvar, name):
+        self.master = master
+        self.tab = tab
+        self.tabvar = tabvar
+
+        self.tabvar = ttk.Frame(self.tab)
+
+        self.tab.add(self.tabvar, text=name)
+        self.tab.pack(expand=1, fill="both")
+
         self.test_widgets(10)
 
     def test_widgets(self, num):
@@ -20,10 +21,10 @@ class MyApp(tk.Frame):
             self.results['checkvar{0}'.format(i)] = tk.IntVar()
             
         for item in self.results:
-            check_boxes['check{0}'.format(i)] = ttk.Checkbutton(self.tab1, variable=self.results[item]).pack()
+            check_boxes['check{0}'.format(i)] = ttk.Checkbutton(self.tabvar, variable=self.results[item]).pack()
             
 
-        button = ttk.Button(self.tab1, text='Lagre', command=self.save)
+        button = ttk.Button(self.tabvar, text='Lagre', command=self.save)
         button.pack()
 
     def save(self):
@@ -45,8 +46,8 @@ class MyApp(tk.Frame):
 
 
 
-root = tk.Tk()
-app = MyApp(master=root)
-app.mainloop()
+#root = tk.Tk()
+#app = MyApp(master=root)
+#app.mainloop()
 
 
