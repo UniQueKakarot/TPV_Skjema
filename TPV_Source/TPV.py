@@ -19,20 +19,30 @@ from docx import Document
 
 class TPV_Main():
 
-    def __init__(self):
+    def __init__(self, master, tabcontroll, name, config_name):
         
+        self.config_name = config_name
+
         frametxt = 'TPV Skjema'
 
-        if os.path.isfile('config.ini') is True:
-            config = ConfigObj('config.ini')
+        if os.path.isfile(self.config_name) is True:
+            config = ConfigObj(self.config_name)
             frametxt = config['Diversje']['5']
 
+        self.master = master
+        self.tab = tabcontroll
+
+        self.tabvar = ttk.Frame(self.tab)
+
+        self.tab.add(self.tabvar, text=name)
+        self.tab.pack(expand=1, fill="both")
+
         # Instantiating a labelframe to contain the application in
-        self.TPV_Body = ttk.LabelFrame(win, text=frametxt)
+        self.TPV_Body = ttk.LabelFrame(self.tabvar, text=frametxt)
         self.TPV_Body.pack(expand=1)
 
-        menuBar = tk.Menu(win)
-        win.config(menu=menuBar)
+        menuBar = tk.Menu(self.master)
+        self.master.config(menu=menuBar)
 
         fileMenu = tk.Menu(menuBar, tearoff=0)
         helpMenu = tk.Menu(menuBar, tearoff=0)
@@ -70,15 +80,15 @@ class TPV_Main():
 
     def config(self):
 
-        if os.path.isfile('config.ini') is True:
-            config = ConfigObj('config.ini')
+        if os.path.isfile(self.config_name) is True:
+            config = ConfigObj(self.config_name)
             size = config['Filbehandling']['2']
 
-            win.geometry(size)
+            self.master.geometry(size)
 
         else:
             config = ConfigObj(encoding='utf8', default_encoding='utf8')
-            config.filename = config_name
+            config.filename = self.config_name
 
             config['Vedlikeholdspunkt'] = {}
             config['Vedlikeholdspunkt']['1'] = 'Put your info here'
@@ -133,14 +143,14 @@ class TPV_Main():
             config.write()
 
             size = config['Filbehandling']['2']
-            win.geometry(size)
+            self.master.geometry(size)
 
     def main(self):
         
         """Main body of the gui application"""
 
         # Accessing the config parser and getting the number of keys
-        config1 = ConfigObj('config.ini')
+        config1 = ConfigObj(self.config_name)
         keys = config1.keys()
 
         first_key = keys[0]
@@ -164,7 +174,6 @@ class TPV_Main():
         for i in config1[first_key]:
             values.append(i)
 
-        # Assigning the length of list values to a global variable
         length = len(values)
         
         testVar = self.day_check()
@@ -267,7 +276,7 @@ class TPV_Main():
         # Main code for writing out the excel file used to save the data in comes here:
 
         # Calling the config parser and accessing filepath if present in config file
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
         f_name = config['Filbehandling']['1']
 
         date = datetime.today()
@@ -383,7 +392,7 @@ class TPV_Main():
 
         """A simple method for checking if we have switched year"""
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
         config_year = config['Diversje']['3']
 
         date = datetime.today()
@@ -402,7 +411,7 @@ class TPV_Main():
 
         """Lets you open a preexisting excel file"""
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
 
         f_exist = filedialog.askopenfilename()
 
@@ -420,7 +429,7 @@ class TPV_Main():
 
         """Lets you select a word file that gets linked to in the UI"""
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
         f_exist = config['Filbehandling']['3']
 
         if os.path.isfile(f_exist) is True:
@@ -440,7 +449,7 @@ class TPV_Main():
 
         """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
 
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
 
         width = self.TPV_Body.winfo_reqwidth()
         height = self.TPV_Body.winfo_reqheight()
@@ -496,7 +505,7 @@ class TPV_Main():
         
         """Saving method for the main maintainance method"""
         
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
         f_exist = config['Filbehandling']['4']
         
         if os.path.isfile(f_exist) is True:
@@ -555,7 +564,7 @@ class TPV_Main():
 
         """Checks to see if the 20th day of the month falls on a weekend"""
         
-        config = ConfigObj('config.ini', encoding='utf8', default_encoding='utf8')
+        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
         saved_day = config['Diversje']['4']
         
         date1 = datetime.today()
@@ -585,16 +594,16 @@ class TPV_Main():
             return 20
 
 
-win = tk.Tk()
-win.title("TPV Skjema")
-win.geometry("850x460")
+#win = tk.Tk()
+#win.title("TPV Skjema")
+#win.geometry("850x460")
 
-config_name = 'config.ini'
-config_file = Path('TPV-Skjema/config.ini')
+#config_name = 'config.ini'
+#config_file = Path('TPV-Skjema/config.ini')
 
 FONT1 = ("Calibri", 11)
 FONT2 = ("Calibri", 11, "bold", "underline")
 
-tpv = TPV_Main()
+#tpv = TPV_Main()
 
-win.mainloop()
+#win.mainloop()

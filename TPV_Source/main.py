@@ -1,26 +1,63 @@
 import tkinter as tk
 from tkinter import ttk
+import os.path
 
-from Test import MyApp
+from configobj import ConfigObj
+
+from TPV import TPV_Main
 
 class SomeWindow(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
+
         self.master = master
         self.tabcontroll = ttk.Notebook(master)
 
-        MyApp(self.master, self.tabcontroll, 'tab1', 'Test1')
-        MyApp(self.master, self.tabcontroll, 'tab2', 'Test2')
-        MyApp(self.master, self.tabcontroll, 'tab3', 'Test3')
-        MyApp(self.master, self.tabcontroll, 'tab4', 'Test4')
-        MyApp(self.master, self.tabcontroll, 'tab5', 'Test5')
-        #self.tab1 = ttk.Frame(self.tabcontroll)
-        #self.tab2 = ttk.Frame(self.tabcontroll)
+        self.config_generation()
+        config = ConfigObj('app_config.ini')
 
-        #self.tabcontroll.add(self.tab1, text='Tab 1')
-        #self.tabcontroll.add(self.tab2, text='Tab 2')
+        names = []
+
+        for i in config['Maskin Navn'].values():
+            names.append(i)
+
+        configs = []
+
+        for i in config['Konfigurasjonsfiler'].values():
+            configs.append(i)
+
+        machines = config['Maskin info']['Antall Maskiner']
+        machines = int(machines)
+
+        for i in range(machines):
+            TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
 
         self.pack()
+
+    def config_generation(self):
+
+        """ We are dealing with all config related stuff concerning the main app in this method """
+
+        if os.path.isfile('app_config.ini') is True:
+            config = ConfigObj('app_config.ini')
+
+        else:
+            config = ConfigObj(encoding='utf8', default_encoding='utf8')
+            config.filename = 'app_config.ini'
+
+            config['Maskin info'] = {}
+            config['Maskin info']['Antall Maskiner'] = '1'
+
+            config['Maskin Navn'] = {}
+            config['Maskin Navn']['1'] = 'Du bestemmer 1'
+            config['Maskin Navn']['2'] = 'Du bestemmer 2'
+            config['Maskin Navn']['3'] = 'Du bestemmer 3'
+
+            config['Konfigurasjonsfiler'] = {}
+            config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
+
+            config.write()
+
 
 
 

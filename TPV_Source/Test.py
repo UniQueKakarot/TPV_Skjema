@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 
 class MyApp():
-    def __init__(self, master, tab, tabvar, name):
+    def __init__(self, master, tab, name):
         self.master = master
         self.tab = tab
-        self.tabvar = tabvar
+        #self.tabvar = tabvar
 
         self.tabvar = ttk.Frame(self.tab)
 
