@@ -3,12 +3,13 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox as mBox
 from pathlib import Path
-from configobj import ConfigObj
 import os.path
 from datetime import datetime, date
 import webbrowser
-import openpyxl as op
 import logging
+
+from configobj import ConfigObj
+import openpyxl as op
 from docx import Document
 
 # TODO
@@ -48,11 +49,11 @@ class TPV_Main():
         helpMenu = tk.Menu(menuBar, tearoff=0)
 
         helpMenu.add_command(label='Prosedyre', command=self.procedure)
-        helpMenu.add_command(label='Hjelp', command=self.op_wiki)
+        helpMenu.add_command(label='Hjelp', command=self._op_wiki)
         menuBar.add_cascade(label='Info', menu=helpMenu)
 
         fileMenu.add_command(label='Lagre Utført vedlikehold', command=self.maintanance)
-        fileMenu.add_command(label='Åpne excel fil', command=self.op_saved)
+        fileMenu.add_command(label='Åpne excel fil', command=self._op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
         self.logging()
@@ -310,7 +311,7 @@ class TPV_Main():
         index.append(config['Diversje']['2'])
 
         # Checking if the file exist or not
-        if os.path.isfile(f_name) == False or self.year_check() == 1:
+        if os.path.isfile(f_name) == False or self._year_check() == 1:
 
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
@@ -360,7 +361,7 @@ class TPV_Main():
                 print(e)
                 pass
 
-        elif os.path.isfile(f_name) == True and self.year_check() == 0:
+        elif os.path.isfile(f_name) == True and self._year_check() == 0:
 
             f_name = config['Filbehandling']['1']
 
@@ -388,7 +389,7 @@ class TPV_Main():
 
         self.win_size()
 
-    def year_check(self):
+    def _year_check(self):
 
         """A simple method for checking if we have switched year"""
 
@@ -406,8 +407,7 @@ class TPV_Main():
             # returning 0 just to indicate that we have indeed not switched year
             return 0
 
-    @staticmethod
-    def op_saved():
+    def _op_saved(self):
 
         """Lets you open a preexisting excel file"""
 
@@ -418,8 +418,7 @@ class TPV_Main():
         config['Filbehandling']['1'] = f_exist
         config.write()
 
-    @staticmethod
-    def op_wiki():
+    def _op_wiki(self):
 
         """Simply opens your default browser and directs you to the wiki"""
 
@@ -588,7 +587,7 @@ class TPV_Main():
             config['Diversje']['4'] = day
             config.write()
             return day
-        
+
         else:
             # Logging?
             return 20

@@ -14,7 +14,7 @@ class SomeWindow(tk.Frame):
         self.master = master
         self.tabcontroll = ttk.Notebook(master)
 
-        self.config_generation()
+        self._config_generation()
 
         names = []
 
@@ -32,12 +32,12 @@ class SomeWindow(tk.Frame):
         try:
             for i in range(machines):
                 TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
-        except IndexError:
-            self.config_popup()
+        except IndexError as e:
+            self._config_popup(e)
 
         self.pack()
 
-    def config_generation(self):
+    def _config_generation(self):
 
         """ We are dealing with all config related stuff concerning the main app in this method """
 
@@ -61,9 +61,9 @@ class SomeWindow(tk.Frame):
 
             config.write()
 
-    def config_popup(self):
+    def _config_popup(self, message):
 
-        mBox.showerror('', 'Noe er galt med app_config.ini fila')
+        mBox.showerror('Config Issues', '{}'.format(message))
         
 
 
