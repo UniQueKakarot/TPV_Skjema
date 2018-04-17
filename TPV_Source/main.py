@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox as mBox
 import os.path
 
 from configobj import ConfigObj
@@ -14,23 +15,25 @@ class SomeWindow(tk.Frame):
         self.tabcontroll = ttk.Notebook(master)
 
         self.config_generation()
-        config = ConfigObj('app_config.ini')
 
         names = []
 
-        for i in config['Maskin Navn'].values():
+        for i in self.config['Maskin Navn'].values():
             names.append(i)
 
         configs = []
 
-        for i in config['Konfigurasjonsfiler'].values():
+        for i in self.config['Konfigurasjonsfiler'].values():
             configs.append(i)
 
-        machines = config['Maskin info']['Antall Maskiner']
+        machines = self.config['Maskin info']['Antall Maskiner']
         machines = int(machines)
 
-        for i in range(machines):
-            TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
+        try:
+            for i in range(machines):
+                TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
+        except IndexError:
+            self.config_popup()
 
         self.pack()
 
@@ -39,7 +42,7 @@ class SomeWindow(tk.Frame):
         """ We are dealing with all config related stuff concerning the main app in this method """
 
         if os.path.isfile('app_config.ini') is True:
-            config = ConfigObj('app_config.ini')
+            self.config = ConfigObj('app_config.ini')
 
         else:
             config = ConfigObj(encoding='utf8', default_encoding='utf8')
@@ -57,6 +60,11 @@ class SomeWindow(tk.Frame):
             config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
 
             config.write()
+
+    def config_popup(self):
+
+        mBox.showerror('', 'Noe er galt med app_config.ini fila')
+        
 
 
 
