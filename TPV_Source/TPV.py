@@ -27,8 +27,8 @@ class TPV_Main():
         frametxt = 'TPV Skjema'
 
         if os.path.isfile(self.config_name) is True:
-            config = ConfigObj(self.config_name)
-            frametxt = config['Diversje']['5']
+            self.config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
+            frametxt = self.config['Diversje']['5']
 
         self.master = master
         self.tab = tabcontroll
@@ -56,8 +56,8 @@ class TPV_Main():
         fileMenu.add_command(label='Åpne excel fil', command=self._op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
-        self.logging()
-        self.config()
+        #self.logging()
+        self.config_gen()
         self.main()
 
     def logging(self):
@@ -79,71 +79,70 @@ class TPV_Main():
         # Add the Handler to the Logger
         self.logger.addHandler(logger_handler)
 
-    def config(self):
+    def config_gen(self):
 
         if os.path.isfile(self.config_name) is True:
-            config = ConfigObj(self.config_name)
-            size = config['Filbehandling']['2']
+            size = self.config['Filbehandling']['2']
 
             self.master.geometry(size)
 
         else:
-            config = ConfigObj(encoding='utf8', default_encoding='utf8')
-            config.filename = self.config_name
+            self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
+            self.config.filename = self.config_name
 
-            config['Vedlikeholdspunkt'] = {}
-            config['Vedlikeholdspunkt']['1'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['2'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['3'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['4'] = 'Put your info here'
-            config['Vedlikeholdspunkt']['5'] = 'Put your info here'
+            self.config['Vedlikeholdspunkt'] = {}
+            self.config['Vedlikeholdspunkt']['1'] = 'Put your info here'
+            self.config['Vedlikeholdspunkt']['2'] = 'Put your info here'
+            self.config['Vedlikeholdspunkt']['3'] = 'Put your info here'
+            self.config['Vedlikeholdspunkt']['4'] = 'Put your info here'
+            self.config['Vedlikeholdspunkt']['5'] = 'Put your info here'
 
-            config['Handling'] = {}
-            config['Handling']['1'] = 'Put your info here'
-            config['Handling']['2'] = 'Put your info here'
-            config['Handling']['3'] = 'Put your info here'
-            config['Handling']['4'] = 'Put your info here'
-            config['Handling']['5'] = 'Put your info here'
+            self.config['Handling'] = {}
+            self.config['Handling']['1'] = 'Put your info here'
+            self.config['Handling']['2'] = 'Put your info here'
+            self.config['Handling']['3'] = 'Put your info here'
+            self.config['Handling']['4'] = 'Put your info here'
+            self.config['Handling']['5'] = 'Put your info here'
 
-            config['Oljetype'] = {}
-            config['Oljetype']['1'] = 'Put your info here'
-            config['Oljetype']['2'] = 'Put your info here'
-            config['Oljetype']['3'] = 'Put your info here'
-            config['Oljetype']['4'] = 'Put your info here'
-            config['Oljetype']['5'] = 'Put your info here'
+            self.config['Oljetype'] = {}
+            self.config['Oljetype']['1'] = 'Put your info here'
+            self.config['Oljetype']['2'] = 'Put your info here'
+            self.config['Oljetype']['3'] = 'Put your info here'
+            self.config['Oljetype']['4'] = 'Put your info here'
+            self.config['Oljetype']['5'] = 'Put your info here'
 
-            config['Hyppighet'] = {}
-            config['Hyppighet']['1'] = 'Put your info here'
-            config['Hyppighet']['2'] = 'Put your info here'
-            config['Hyppighet']['3'] = 'Put your info here'
-            config['Hyppighet']['4'] = 'Put your info here'
-            config['Hyppighet']['5'] = 'Put your info here'
+            self.config['Hyppighet'] = {}
+            self.config['Hyppighet']['1'] = 'Put your info here'
+            self.config['Hyppighet']['2'] = 'Put your info here'
+            self.config['Hyppighet']['3'] = 'Put your info here'
+            self.config['Hyppighet']['4'] = 'Put your info here'
+            self.config['Hyppighet']['5'] = 'Put your info here'
 
-            config['Diversje'] = {}
-            config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
-            config['Diversje']['2'] = 'Annet:'
-            config['Diversje']['3'] = ''
-            config['Diversje']['4'] = '20'
-            config['Diversje']['5'] = 'TPV Skjema for Maskin...'
+            self.config['Diversje'] = {}
+            self.config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
+            self.config['Diversje']['2'] = 'Annet:'
+            self.config['Diversje']['3'] = ''
+            self.config['Diversje']['4'] = '20'
+            self.config['Diversje']['5'] = 'TPV Skjema for Maskin...'
 
-            config['Filbehandling'] = {}
-            config['Filbehandling']['1'] = ''
-            config['Filbehandling']['2'] = '850x450'
-            config['Filbehandling']['3'] = ''
-            config['Filbehandling']['4'] = ''
+            self.config['Filbehandling'] = {}
+            self.config['Filbehandling']['1'] = ''
+            self.config['Filbehandling']['2'] = '850x450'
+            self.config['Filbehandling']['3'] = ''
+            self.config['Filbehandling']['4'] = ''
 
-            config['Vedlikeholdsjekk'] = {}
-            config['Vedlikeholdsjekk']['1'] = ''
-            config['Vedlikeholdsjekk']['2'] = ''
-            config['Vedlikeholdsjekk']['3'] = ''
+            self.config['Vedlikeholdsjekk'] = {}
+            self.config['Vedlikeholdsjekk']['1'] = ''
+            self.config['Vedlikeholdsjekk']['2'] = ''
+            self.config['Vedlikeholdsjekk']['3'] = ''
 
             date = datetime.today()
             year = date.strftime('%Y')
-            config['Diversje']['3'] = year
+            self.config['Diversje']['3'] = year
 
-            config.write()
+            self.config.write()
 
-            size = config['Filbehandling']['2']
+            size = self.config['Filbehandling']['2']
             self.master.geometry(size)
 
     def main(self):
@@ -151,8 +150,8 @@ class TPV_Main():
         """Main body of the gui application"""
 
         # Accessing the config parser and getting the number of keys
-        config1 = ConfigObj(self.config_name)
-        keys = config1.keys()
+        
+        keys = self.config.keys()
 
         first_key = keys[0]
 
@@ -172,7 +171,7 @@ class TPV_Main():
         values = []
 
         # Establish the number of entries in the config file
-        for i in config1[first_key]:
+        for i in self.config[first_key]:
             values.append(i)
 
         length = len(values)
@@ -185,22 +184,22 @@ class TPV_Main():
         row_hyp = 1
 
         # Generating labels on the fly based on how many entries it is in the config file
-        for value in config1['Vedlikeholdspunkt'].values():
+        for value in self.config['Vedlikeholdspunkt'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_ved, column=1, sticky=tk.W, padx=15)
             row_ved += 1
 
-        for value in config1['Handling'].values():
+        for value in self.config['Handling'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_han, column=2, sticky=tk.W, padx=15)
             row_han += 1
 
-        for value in config1['Oljetype'].values():
+        for value in self.config['Oljetype'].values():
             label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
             label.grid(row=row_olj, column=3, sticky=tk.W, padx=15)
             row_olj += 1
 
-        for value in config1['Hyppighet'].values():
+        for value in self.config['Hyppighet'].values():
 
             lowCas = value.lower()
 
@@ -252,7 +251,7 @@ class TPV_Main():
         lbl4 = tk.Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
         lbl4.grid(row=0, column=4, sticky=tk.N)
 
-        header = config1['Diversje']['1']
+        header = self.config['Diversje']['1']
         lbl16 = tk.Label(self.TPV_Body, text=header)
         lbl16.grid(row=row, column=0, columnspan=2,  pady=3)
         row += 1
@@ -277,8 +276,7 @@ class TPV_Main():
         # Main code for writing out the excel file used to save the data in comes here:
 
         # Calling the config parser and accessing filepath if present in config file
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-        f_name = config['Filbehandling']['1']
+        f_name = self.config['Filbehandling']['1']
 
         date = datetime.today()
 
@@ -305,10 +303,10 @@ class TPV_Main():
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
                   'August', 'September', 'October', 'November', 'December']
 
-        for i in config['Vedlikeholdspunkt'].values():
+        for i in self.config['Vedlikeholdspunkt'].values():
             index.append(i)
 
-        index.append(config['Diversje']['2'])
+        index.append(self.config['Diversje']['2'])
 
         # Checking if the file exist or not
         if os.path.isfile(f_name) == False or self._year_check() == 1:
@@ -318,7 +316,7 @@ class TPV_Main():
                                                             ("All files", "*.*")), defaultextension="*.*")
 
             # Assigning the filename a place in the config file
-            config['Filbehandling']['1'] = f_new
+            self.config['Filbehandling']['1'] = f_new
 
             wb = op.Workbook()
 
@@ -355,7 +353,7 @@ class TPV_Main():
             try:
                 op.writer.excel.save_workbook(wb, f_new)
                 mBox.showinfo('', 'Resultater har blitt lagret')
-                config.write()
+                self.config.write()
 
             except FileNotFoundError as e:
                 print(e)
@@ -363,7 +361,7 @@ class TPV_Main():
 
         elif os.path.isfile(f_name) == True and self._year_check() == 0:
 
-            f_name = config['Filbehandling']['1']
+            f_name = self.config['Filbehandling']['1']
 
             wb = op.load_workbook(filename=f_name)
             ws = wb[month]
@@ -393,15 +391,14 @@ class TPV_Main():
 
         """A simple method for checking if we have switched year"""
 
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-        config_year = config['Diversje']['3']
+        config_year = self.config['Diversje']['3']
 
         date = datetime.today()
         current_year = date.strftime('%Y')
 
         if config_year != current_year:
-            config['Diversje']['3'] = current_year
-            config.write()
+            self.config['Diversje']['3'] = current_year
+            self.config.write()
             return 1
         else:
             # returning 0 just to indicate that we have indeed not switched year
@@ -411,12 +408,10 @@ class TPV_Main():
 
         """Lets you open a preexisting excel file"""
 
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-
         f_exist = filedialog.askopenfilename()
 
-        config['Filbehandling']['1'] = f_exist
-        config.write()
+        self.config['Filbehandling']['1'] = f_exist
+        self.config.write()
 
     def _op_wiki(self):
 
@@ -428,8 +423,7 @@ class TPV_Main():
 
         """Lets you select a word file that gets linked to in the UI"""
 
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-        f_exist = config['Filbehandling']['3']
+        f_exist = self.config['Filbehandling']['3']
 
         if os.path.isfile(f_exist) is True:
             os.system(f_exist)
@@ -437,8 +431,8 @@ class TPV_Main():
         elif os.path.isfile(f_exist) is False:
             f_exist = filedialog.askopenfilename()
             os.system(f_exist)
-            config['Filbehandling']['3'] = f_exist
-            config.write()
+            self.config['Filbehandling']['3'] = f_exist
+            self.config.write()
 
         else:
             # insert some logging here when we have figured out if it is needed
@@ -447,8 +441,6 @@ class TPV_Main():
     def win_size(self):
 
         """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
-
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
 
         width = self.TPV_Body.winfo_reqwidth()
         height = self.TPV_Body.winfo_reqheight()
@@ -461,8 +453,8 @@ class TPV_Main():
 
         size = width + 'x' + height
 
-        config['Filbehandling']['2'] = size
-        config.write()
+        self.config['Filbehandling']['2'] = size
+        self.config.write()
         
     def maintanance(self):
         
@@ -504,8 +496,7 @@ class TPV_Main():
         
         """Saving method for the main maintainance method"""
         
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-        f_exist = config['Filbehandling']['4']
+        f_exist = self.config['Filbehandling']['4']
         
         if os.path.isfile(f_exist) is True:
             
@@ -544,8 +535,8 @@ class TPV_Main():
             
             document.save(f_new)
             
-            config['Filbehandling']['4'] = f_new
-            config.write()
+            self.config['Filbehandling']['4'] = f_new
+            self.config.write()
             
             mBox.showinfo('', 'Resultater har blitt lagret')
 
@@ -563,8 +554,7 @@ class TPV_Main():
 
         """Checks to see if the 20th day of the month falls on a weekend"""
         
-        config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
-        saved_day = config['Diversje']['4']
+        saved_day = self.config['Diversje']['4']
         
         date1 = datetime.today()
         
@@ -578,14 +568,14 @@ class TPV_Main():
 
         if saved_day == '20' and check_day == 6:
             day = day - 1
-            config['Diversje']['4'] = day
-            config.write()
+            self.config['Diversje']['4'] = day
+            self.config.write()
             return day
         
         elif saved_day == '20' and check_day == 7:
             day = day + 1
-            config['Diversje']['4'] = day
-            config.write()
+            self.config['Diversje']['4'] = day
+            self.config.write()
             return day
 
         else:
