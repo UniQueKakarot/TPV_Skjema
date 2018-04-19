@@ -23,6 +23,7 @@ class TPV_Main():
     def __init__(self, master, tabcontroll, name, config_name):
         
         self.config_name = config_name
+        self.date = datetime.today()
 
         frametxt = 'TPV Skjema'
 
@@ -136,8 +137,7 @@ class TPV_Main():
             self.config['Vedlikeholdsjekk']['2'] = ''
             self.config['Vedlikeholdsjekk']['3'] = ''
 
-            date = datetime.today()
-            year = date.strftime('%Y')
+            year = self.date.strftime('%Y')
             self.config['Diversje']['3'] = year
 
             self.config.write()
@@ -156,15 +156,14 @@ class TPV_Main():
         first_key = keys[0]
 
         # Collecting current date and weekday in full name
-        date = datetime.today()
-        today = date.strftime('%A')
+        today = self.date.strftime('%A')
 
         # Collecting which number in the month the current day is
-        today_number = date.strftime('%d')
+        today_number = self.date.strftime('%d')
         today_number = int(today_number)
 
         # Collecting which number in the year the current day is
-        day_of_year = date.strftime('%j')
+        day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
 
         # Empty list assigned for holding info on entries in the first key of the config file
@@ -176,7 +175,7 @@ class TPV_Main():
 
         length = len(values)
         
-        testVar = self.day_check()
+        day = self.day_check()
 
         row_ved = 1
         row_han = 1
@@ -214,7 +213,7 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'maanedlig' and today_number == testVar:
+            elif lowCas == 'maanedlig' and today_number == day:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -278,23 +277,21 @@ class TPV_Main():
         # Calling the config parser and accessing filepath if present in config file
         f_name = self.config['Filbehandling']['1']
 
-        date = datetime.today()
-
         # Dateformatting
-        month = date.strftime('%B')
+        month = self.date.strftime('%B')
         month = str(month)
 
         # Saving dates as strings for use in excel file
-        day_as_string = date.strftime('%d')
+        day_as_string = self.date.strftime('%d')
         day_as_string = int(day_as_string) + 1
         day_as_string = str(day_as_string)
 
         # Saving dates as int's for use in locating rows
-        day_as_int = date.strftime('%d')
+        day_as_int = self.date.strftime('%d')
         day_as_int = int(day_as_int) + 1
 
         # Formatting date to my liking
-        today = date.strftime('%d.%m.%Y, %a')
+        today = self.date.strftime('%d.%m.%Y, %a')
 
         cell = 'A' + day_as_string
 
@@ -393,8 +390,7 @@ class TPV_Main():
 
         config_year = self.config['Diversje']['3']
 
-        date = datetime.today()
-        current_year = date.strftime('%Y')
+        current_year = self.date.strftime('%Y')
 
         if config_year != current_year:
             self.config['Diversje']['3'] = current_year
@@ -464,8 +460,7 @@ class TPV_Main():
         self.new_win.title('Skjema')
         self.new_win.geometry('450x280')
         
-        date = datetime.today()
-        today = date.strftime('%d.%m.%Y, %a')
+        today = self.date.strftime('%d.%m.%Y, %a')
         
         form_body = ttk.LabelFrame(self.new_win, text='Skjema for utført Vedlikehold')
         form_body.pack(expand=1)
@@ -511,9 +506,12 @@ class TPV_Main():
             document.add_paragraph(textbox)
             document.add_paragraph('')
             
-            document.save(f_exist)
-            
-            mBox.showinfo('', 'Resultater har blitt lagret')
+            try:
+                document.save(f_exist)
+                mBox.showinfo('', 'Resultater har blitt lagret')
+            except PermissionError as e:
+                self._error_popup('Error!', e)
+                mBox.showinfo('', 'Resultatene har ikke blitt lagret')
             
         elif os.path.isfile(f_exist) is False:
             
@@ -534,15 +532,14 @@ class TPV_Main():
             document.add_paragraph('')
             
             document.save(f_new)
-            
+
             self.config['Filbehandling']['4'] = f_new
             self.config.write()
             
             mBox.showinfo('', 'Resultater har blitt lagret')
 
         else:
-            # might want some logging here
-            pass
+            self._error_popup('Error Saving Document', 'Something went wrong when we tried to save the document')
 
     def maintanance_quit(self):
         
@@ -556,11 +553,9 @@ class TPV_Main():
         
         saved_day = self.config['Diversje']['4']
         
-        date1 = datetime.today()
-        
-        year = date1.strftime('%Y')
+        year = self.date.strftime('%Y')
         year = int(year)
-        month = date1.strftime('%m')
+        month = self.date.strftime('%m')
         month = int(month)
         day = 20
         
@@ -579,8 +574,11 @@ class TPV_Main():
             return day
 
         else:
-            # Logging?
             return 20
+
+    def _error_popup(self, message, issue):
+
+        mBox.showerror('{}'.format(message), '{}'.format(issue))
 
 
 #win = tk.Tk()
