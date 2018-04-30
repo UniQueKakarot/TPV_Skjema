@@ -12,11 +12,6 @@ from configobj import ConfigObj
 import openpyxl as op
 from docx import Document
 
-# TODO
-# Fix up the logging so it actually logs any usefull error message
-# Make it possible to have several machine configs by using tabs
-# Change the tkinter import from a star to tk
-
 
 class TPV_Main():
 

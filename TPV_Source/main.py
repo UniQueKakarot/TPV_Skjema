@@ -7,6 +7,13 @@ from configobj import ConfigObj
 
 from TPV import TPV_Main
 
+# TODO
+# Fix up the logging so it actually logs any usefull error message
+# Make an input field for oil filling besides entries that requires oil
+# Make it possible to edit any configs from the applications itself
+# Show the dates for when the next maintainance should be done
+# Make the color change persist if the maintainance havent beed done on time
+
 class SomeWindow(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
