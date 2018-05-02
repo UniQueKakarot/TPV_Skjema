@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox as mBox
+from pathlib import Path
 import os.path
 
 from configobj import ConfigObj
@@ -19,6 +20,7 @@ class SomeWindow(tk.Frame):
         tk.Frame.__init__(self, master)
 
         self.master = master
+        self.config_folder = Path('configs')
         self.tabcontroll = ttk.Notebook(master)
 
         self._config_generation()
@@ -48,12 +50,14 @@ class SomeWindow(tk.Frame):
 
         """ We are dealing with all config related stuff concerning the main app in this method """
 
-        if os.path.isfile('app_config.ini') is True:
-            self.config = ConfigObj('app_config.ini')
+        app_config = self.config_folder / 'app_config.ini'
+
+        if os.path.isfile(str(app_config)) is True:
+            self.config = ConfigObj(str(app_config))
 
         else:
             config = ConfigObj(encoding='utf8', default_encoding='utf8')
-            config.filename = 'app_config.ini'
+            config.filename = app_config
 
             config['Maskin info'] = {}
             config['Maskin info']['Antall Maskiner'] = '1'
@@ -67,6 +71,7 @@ class SomeWindow(tk.Frame):
             config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
 
             config.write()
+            self.config = ConfigObj(str(app_config))
 
     def _config_popup(self, message):
 
