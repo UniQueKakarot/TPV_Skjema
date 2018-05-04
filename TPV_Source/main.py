@@ -21,7 +21,7 @@ class SomeWindow(tk.Frame):
 
         self.master = master
         self.master.title('TPV Skjema')
-        self.master.iconbitmap('tpv.jpg')
+        self.master.iconbitmap('tpv.ico')
 
         self.config_folder = Path('configs')
         self.tabcontroll = ttk.Notebook(master)
