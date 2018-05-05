@@ -53,7 +53,7 @@ class TPV_Main():
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
         #self.logging()
-        self.config_gen()
+        self._config_gen()
         self.main()
 
     def logging(self):
@@ -75,12 +75,10 @@ class TPV_Main():
         # Add the Handler to the Logger
         self.logger.addHandler(logger_handler)
 
-    def config_gen(self):
+    def _config_gen(self):
 
         if os.path.isfile(self.config_name) is True:
-            size = self.config['Filbehandling']['2']
-
-            self.master.geometry(size)
+            pass
 
         else:
             self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
@@ -377,7 +375,7 @@ class TPV_Main():
             # put in some error handling or something here
             pass
 
-        self.win_size()
+        #self.win_size()
 
     def _year_check(self):
 

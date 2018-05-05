@@ -47,6 +47,11 @@ class SomeWindow(tk.Frame):
         except IndexError as e:
             self._config_popup(e)
 
+        self.master.after(1000, self.win_size)
+        #self.master.geometry(self.size)
+        size = self.config['Diversje']['1']
+        self.master.geometry(size)
+
         self.pack()
 
     def _config_generation(self):
@@ -73,12 +78,32 @@ class SomeWindow(tk.Frame):
             config['Konfigurasjonsfiler'] = {}
             config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
 
+            config['Diversje'] = {}
+
             config.write()
             self.config = ConfigObj(str(app_config))
 
     def _config_popup(self, message):
 
         mBox.showerror('Config Issues', '{}'.format(message))
+
+    def win_size(self):
+
+        """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
+
+        width = self.master.winfo_reqwidth()
+        height = self.master.winfo_reqheight()
+
+        width += 100
+        height += 100
+
+        width = str(width)
+        height = str(height)
+
+        size = width + 'x' + height
+
+        self.config['Diversje']['1'] = size
+        self.config.write()
         
 
 
