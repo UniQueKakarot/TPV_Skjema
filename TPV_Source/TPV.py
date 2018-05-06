@@ -55,6 +55,7 @@ class TPV_Main():
         #self.logging()
         self._config_gen()
         self.main()
+        self.persistent_colors()
 
     def logging(self):
 
@@ -155,6 +156,20 @@ class TPV_Main():
         # Collecting which number in the year the current day is
         day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
+
+        #testcode
+        month = self.date.strftime('%B')
+        month = str(month)
+
+        today = self.date.strftime('%d.%m.%Y, %a')
+
+        f_name = self.config['Filbehandling']['1']
+        excel_workbook = op.load_workbook(filename=f_name)
+
+        ws = wb[month]
+
+        ws[cell] = today
+        #testcode end
 
         # Empty list assigned for holding info on entries in the first key of the config file
         values = []
@@ -423,24 +438,6 @@ class TPV_Main():
         else:
             # insert some logging here when we have figured out if it is needed
             pass
-
-    def win_size(self):
-
-        """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
-
-        width = self.TPV_Body.winfo_reqwidth()
-        height = self.TPV_Body.winfo_reqheight()
-
-        width += 100
-        height += 100
-
-        width = str(width)
-        height = str(height)
-
-        size = width + 'x' + height
-
-        self.config['Filbehandling']['2'] = size
-        self.config.write()
         
     def maintanance(self):
         
@@ -565,6 +562,26 @@ class TPV_Main():
 
         else:
             return 20
+    
+    def persistent_colors(self):
+
+        main_counter = 0
+        weekly_counter = 0
+        monthly_counter = 0
+        locations = {}
+
+        for i in self.config['Hyppighet'].values():
+            main_counter += 1
+            if i == 'Ukentlig':
+                weekly_counter += 1
+                locations['Ukentlig{0}'.format(weekly_counter)] = main_counter
+
+            elif i == 'Maanedlig':
+                monthly_counter += 1
+                locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
+
+        print(locations)
+        return locations
 
     def _error_popup(self, message, issue):
 
