@@ -21,7 +21,11 @@ class SomeWindow(tk.Frame):
 
         self.master = master
         self.master.title('TPV Skjema')
-        self.master.iconbitmap('tpv.ico')
+        try:
+            self.master.iconbitmap('tpv.ico')
+        except:
+            self._generic_error()
+
 
         self.config_folder = Path('configs')
         self.tabcontroll = ttk.Notebook(master)
@@ -36,7 +40,8 @@ class SomeWindow(tk.Frame):
         configs = []
 
         for i in self.config['Konfigurasjonsfiler'].values():
-            configs.append(i)
+            config_path = self.config_folder / i
+            configs.append(str(config_path))
 
         machines = self.config['Maskin info']['Antall Maskiner']
         machines = int(machines)
@@ -48,7 +53,7 @@ class SomeWindow(tk.Frame):
             self._config_popup(e)
 
         self.master.after(1000, self.win_size)
-        #self.master.geometry(self.size)
+
         size = self.config['Diversje']['1']
         self.master.geometry(size)
 
@@ -86,6 +91,10 @@ class SomeWindow(tk.Frame):
     def _config_popup(self, message):
 
         mBox.showerror('Config Issues', '{}'.format(message))
+
+    def _generic_error(self):
+
+        mBox.showerror('Error', 'Something went wrong!')
 
     def win_size(self):
 

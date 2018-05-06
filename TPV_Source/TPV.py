@@ -135,9 +135,6 @@ class TPV_Main():
 
             self.config.write()
 
-            size = self.config['Filbehandling']['2']
-            self.master.geometry(size)
-
     def main(self):
         
         """Main body of the gui application"""
