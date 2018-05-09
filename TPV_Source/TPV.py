@@ -55,7 +55,9 @@ class TPV_Main():
         #self.logging()
         self._config_gen()
         self.main()
-        self.persistent_colors()
+
+        #self.master.after(1000, self.persistent_colors)
+        #self.persistent_colors()
 
     def logging(self):
 
@@ -273,9 +275,9 @@ class TPV_Main():
         for i in self.results:
             values.append(self.results[i])
 
-        checkbox_values = []
+        self.checkbox_values = []
         for i in values:
-            checkbox_values.append(i.get())
+            self.checkbox_values.append(i.get())
 
         # Main code for writing out the excel file used to save the data in comes here:
 
@@ -348,7 +350,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in checkbox_values:
+            for i in self.checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -372,7 +374,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in checkbox_values:
+            for i in self.checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -387,7 +389,7 @@ class TPV_Main():
             # put in some error handling or something here
             pass
 
-        #self.win_size()
+        self.persistent_colors()
 
     def _year_check(self):
 
@@ -580,8 +582,31 @@ class TPV_Main():
                 monthly_counter += 1
                 locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
 
-        print(locations)
-        return locations
+        test = []
+        for i in locations.keys():
+            test.append(i)
+
+        test2 = []
+        test3 = 1
+        for i in test:
+            if i == 'Ukentlig{0}'.format(test3):
+                test2.append(i)
+            test3 += 1
+
+        for i in test2:
+            test4 = locations[i]
+            test5 = self.checkbox_values[test4 - 1]
+            print(test5)
+
+        print(test2)
+        #print(locations['Ukentlig{0}'.format(test)])
+
+        #for i in locations['Ukentlig{0}'.format(str(test))]:
+            #test += 1
+            #print(self.checkbox_values[i - 1])
+
+        #print(self.checkbox_values[0])
+        #return locations
 
     def _error_popup(self, message, issue):
 
