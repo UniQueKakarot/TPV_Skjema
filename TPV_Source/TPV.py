@@ -164,11 +164,11 @@ class TPV_Main():
         today = self.date.strftime('%d.%m.%Y, %a')
 
         f_name = self.config['Filbehandling']['1']
-        excel_workbook = op.load_workbook(filename=f_name)
+        #excel_workbook = op.load_workbook(filename=f_name)
 
-        ws = wb[month]
+        #ws = wb[month]
 
-        ws[cell] = today
+        #ws[cell] = today
         #testcode end
 
         # Empty list assigned for holding info on entries in the first key of the config file
