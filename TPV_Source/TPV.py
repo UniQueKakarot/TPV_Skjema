@@ -55,7 +55,9 @@ class TPV_Main():
         #self.logging()
         self._config_gen()
         self.main()
-        self.persistent_colors()
+
+        #self.master.after(1000, self.persistent_colors)
+        #self.persistent_colors()
 
     def logging(self):
 
@@ -157,6 +159,23 @@ class TPV_Main():
         day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
 
+<<<<<<< HEAD
+=======
+        #testcode
+        month = self.date.strftime('%B')
+        month = str(month)
+
+        today = self.date.strftime('%d.%m.%Y, %a')
+
+        f_name = self.config['Filbehandling']['1']
+        #excel_workbook = op.load_workbook(filename=f_name)
+
+        #ws = wb[month]
+
+        #ws[cell] = today
+        #testcode end
+
+>>>>>>> d7f8f05c4e2bcbfdf4feb64beaa67928101721ce
         # Empty list assigned for holding info on entries in the first key of the config file
         values = []
 
@@ -259,9 +278,9 @@ class TPV_Main():
         for i in self.results:
             values.append(self.results[i])
 
-        checkbox_values = []
+        self.checkbox_values = []
         for i in values:
-            checkbox_values.append(i.get())
+            self.checkbox_values.append(i.get())
 
         # Main code for writing out the excel file used to save the data in comes here:
 
@@ -334,7 +353,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in checkbox_values:
+            for i in self.checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -358,7 +377,7 @@ class TPV_Main():
 
             col = 2
 
-            for i in checkbox_values:
+            for i in self.checkbox_values:
                 ws.cell(row=day_as_int, column=col, value=i)
                 col += 1
 
@@ -373,7 +392,7 @@ class TPV_Main():
             # put in some error handling or something here
             pass
 
-        #self.win_size()
+        self.persistent_colors()
 
     def _year_check(self):
 
@@ -566,8 +585,31 @@ class TPV_Main():
                 monthly_counter += 1
                 locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
 
-        print(locations)
-        return locations
+        test = []
+        for i in locations.keys():
+            test.append(i)
+
+        test2 = []
+        test3 = 1
+        for i in test:
+            if i == 'Ukentlig{0}'.format(test3):
+                test2.append(i)
+            test3 += 1
+
+        for i in test2:
+            test4 = locations[i]
+            test5 = self.checkbox_values[test4 - 1]
+            print(test5)
+
+        print(test2)
+        #print(locations['Ukentlig{0}'.format(test)])
+
+        #for i in locations['Ukentlig{0}'.format(str(test))]:
+            #test += 1
+            #print(self.checkbox_values[i - 1])
+
+        #print(self.checkbox_values[0])
+        #return locations
 
     def _error_popup(self, message, issue):
 
