@@ -157,20 +157,6 @@ class TPV_Main():
         day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
 
-        #testcode
-        month = self.date.strftime('%B')
-        month = str(month)
-
-        today = self.date.strftime('%d.%m.%Y, %a')
-
-        f_name = self.config['Filbehandling']['1']
-        excel_workbook = op.load_workbook(filename=f_name)
-
-        ws = wb[month]
-
-        ws[cell] = today
-        #testcode end
-
         # Empty list assigned for holding info on entries in the first key of the config file
         values = []
 
