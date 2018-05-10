@@ -159,23 +159,6 @@ class TPV_Main():
         day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
 
-<<<<<<< HEAD
-=======
-        #testcode
-        month = self.date.strftime('%B')
-        month = str(month)
-
-        today = self.date.strftime('%d.%m.%Y, %a')
-
-        f_name = self.config['Filbehandling']['1']
-        #excel_workbook = op.load_workbook(filename=f_name)
-
-        #ws = wb[month]
-
-        #ws[cell] = today
-        #testcode end
-
->>>>>>> d7f8f05c4e2bcbfdf4feb64beaa67928101721ce
         # Empty list assigned for holding info on entries in the first key of the config file
         values = []
 
@@ -596,10 +579,15 @@ class TPV_Main():
                 test2.append(i)
             test3 += 1
 
+        test5 = []
         for i in test2:
             test4 = locations[i]
-            test5 = self.checkbox_values[test4 - 1]
+            test5.append(self.checkbox_values[test4 - 1])
             print(test5)
+
+        with open('test', 'w') as f:
+            for i in test5:
+                f.write(str(i) + '\n')
 
         print(test2)
         #print(locations['Ukentlig{0}'.format(test)])
