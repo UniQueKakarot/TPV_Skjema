@@ -15,10 +15,12 @@ from docx import Document
 
 class TPV_Main():
 
-    def __init__(self, master, tabcontroll, name, config_name):
+    def __init__(self, master, tabcontroll, name, config_name, textfile):
         
         self.config_name = config_name
         self.date = datetime.today()
+
+        self.textfile = textfile
 
         frametxt = 'TPV Skjema'
 
@@ -159,23 +161,6 @@ class TPV_Main():
         day_of_year = self.date.strftime('%j')
         day_of_year = int(day_of_year)
 
-<<<<<<< HEAD
-        #testcode
-        month = self.date.strftime('%B')
-        month = str(month)
-
-        today = self.date.strftime('%d.%m.%Y, %a')
-
-        f_name = self.config['Filbehandling']['1']
-        #excel_workbook = op.load_workbook(filename=f_name)
-
-        #ws = wb[month]
-
-        #ws[cell] = today
-        #testcode end
-
-=======
->>>>>>> 31c48546d1d32e428f9ec5f8251a97a0ad2a98e6
         # Empty list assigned for holding info on entries in the first key of the config file
         values = []
 
@@ -392,7 +377,11 @@ class TPV_Main():
             # put in some error handling or something here
             pass
 
-        self.persistent_colors()
+        today_name = self.date.strftime('%A')
+        print(today_name)
+
+        if today_name == 'Friday':
+            self.persistent_colors(self.textfile)
 
     def _year_check(self):
 
@@ -568,7 +557,7 @@ class TPV_Main():
         else:
             return 20
     
-    def persistent_colors(self):
+    def persistent_colors(self, nameoffile):
 
         main_counter = 0
         weekly_counter = 0
@@ -585,36 +574,26 @@ class TPV_Main():
                 monthly_counter += 1
                 locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
 
-        test = []
+        locations_keys = []
         for i in locations.keys():
-            test.append(i)
+            locations_keys.append(i)
 
-        test2 = []
-        test3 = 1
-        for i in test:
-            if i == 'Ukentlig{0}'.format(test3):
-                test2.append(i)
-            test3 += 1
+        number_of_weekly = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Ukentlig{0}'.format(counter):
+                number_of_weekly.append(i)
+            counter += 1
 
-        test5 = []
-        for i in test2:
-            test4 = locations[i]
-            test5.append(self.checkbox_values[test4 - 1])
-            print(test5)
+        values_to_write = []
+        for i in number_of_weekly:
+            place = locations[i]
+            values_to_write.append(self.checkbox_values[place - 1])
 
-        with open('test', 'w') as f:
-            for i in test5:
+        with open(nameoffile, 'w') as f:
+            for i in values_to_write:
                 f.write(str(i) + '\n')
 
-        print(test2)
-        #print(locations['Ukentlig{0}'.format(test)])
-
-        #for i in locations['Ukentlig{0}'.format(str(test))]:
-            #test += 1
-            #print(self.checkbox_values[i - 1])
-
-        #print(self.checkbox_values[0])
-        #return locations
 
     def _error_popup(self, message, issue):
 
