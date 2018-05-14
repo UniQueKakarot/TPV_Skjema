@@ -378,10 +378,15 @@ class TPV_Main():
             pass
 
         today_name = self.date.strftime('%A')
-        print(today_name)
+        #print(today_name)
 
-        if today_name == 'Friday':
+        if os.path.isfile(self.textfile + '_weekly.txt') is False:
             self.persistent_colors(self.textfile)
+
+        elif today_name == 'Friday':
+            self.persistent_colors(self.textfile)
+
+        #self.persistent_colors(self.textfile)
 
     def _year_check(self):
 
@@ -562,6 +567,8 @@ class TPV_Main():
         main_counter = 0
         weekly_counter = 0
         monthly_counter = 0
+        quarterly_counter = 0
+        halfyearly_counter = 0
         locations = {}
 
         for i in self.config['Hyppighet'].values():
@@ -574,25 +581,88 @@ class TPV_Main():
                 monthly_counter += 1
                 locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
 
+            elif i == 'Kvartalsvis':
+                quarterly_counter += 1
+                locations['Kvartalsvis{0}'.format(quarterly_counter)] = main_counter
+
+            elif i == 'Halvaar':
+                halfyearly_counter += 1
+                locations['Halvaar{0}'.format(halfyearly_counter)] = main_counter
+
         locations_keys = []
         for i in locations.keys():
             locations_keys.append(i)
 
-        number_of_weekly = []
+        weekly = []
+        weekly_values = []
         counter = 1
         for i in locations_keys:
             if i == 'Ukentlig{0}'.format(counter):
-                number_of_weekly.append(i)
-            counter += 1
+                weekly.append(i)
+                counter += 1
 
-        values_to_write = []
-        for i in number_of_weekly:
+        for i in weekly:
             place = locations[i]
-            values_to_write.append(self.checkbox_values[place - 1])
+            weekly_values.append(self.checkbox_values[place - 1])
 
-        with open(nameoffile, 'w') as f:
-            for i in values_to_write:
+        monthly = []
+        monthly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Maanedlig{0}'.format(counter):
+                monthly.append(i)
+                counter += 1
+
+        for i in monthly:
+            place = locations[i]
+            monthly_values.append(self.checkbox_values[place - 1])
+
+        quarterly = []
+        quarterly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Kvartalsvis{0}'.format(counter):
+                quarterly.append(i)
+                counter += 1
+
+        for i in quarterly:
+            place = locations[i]
+            quarterly_values.append(self.checkbox_values[place - 1])
+
+        halfyearly = []
+        halfyearly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Halvaar{0}'.format(counter):
+                halfyearly.append(i)
+                counter += 1
+
+        for i in halfyearly:
+            place = locations[i]
+            halfyearly_values.append(self.checkbox_values[place - 1])
+
+        weekly_file = nameoffile + '_weekly.txt'
+        monthly_file = nameoffile + '_monthly.txt'
+        quarterly_file = nameoffile + '_quarterly.txt'
+        halfyearly_file = nameoffile + '_halfyearly.txt'
+
+        with open(weekly_file, 'w') as f:
+            for i in weekly_values:
                 f.write(str(i) + '\n')
+
+        with open(monthly_file, 'w') as f:
+            for i in monthly_values:
+                f.write(str(i) + '\n')
+
+        with open(quarterly_file, 'w') as f:
+            for i in quarterly_values:
+                f.write(str(i) + '\n')
+            
+        with open(halfyearly_file, 'w') as f:
+            for i in halfyearly_values:
+                f.write(str(i) + '\n')
+
+        print(locations_keys)
 
 
     def _error_popup(self, message, issue):

@@ -28,7 +28,7 @@ class SomeWindow(tk.Frame):
 
 
         self.config_folder = Path('configs')
-        self.file_folder = Path('files')
+        self.file_folder = 'files\\'
         self.tabcontroll = ttk.Notebook(master)
 
         self._config_generation()
@@ -46,7 +46,7 @@ class SomeWindow(tk.Frame):
 
         files = []
         for i in self.config['Textfiler'].values():
-            files_path = self.file_folder / i
+            files_path = self.file_folder + i
             files.append(files_path)
 
         machines = self.config['Maskin info']['Antall Maskiner']
@@ -90,7 +90,7 @@ class SomeWindow(tk.Frame):
             config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
 
             config['Textfiler'] = {}
-            config['Textfiler']['text1'] = 'textfile1.txt'
+            config['Textfiler']['text1'] = 'textfile1'
 
             config['Diversje'] = {}
 
