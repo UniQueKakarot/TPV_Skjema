@@ -56,6 +56,7 @@ class TPV_Main():
 
         #self.logging()
         self._config_gen()
+        self._file_gen(self.textfile)
         self.main()
 
         #self.master.after(1000, self.persistent_colors)
@@ -140,6 +141,26 @@ class TPV_Main():
 
             self.config.write()
 
+    def _file_gen(self, nameoffile):
+
+        weekly_file = nameoffile + '_weekly.txt'
+        monthly_file = nameoffile + '_monthly.txt'
+        quarterly_file = nameoffile + '_quarterly.txt'
+        halfyearly_file = nameoffile + '_halfyearly.txt'
+
+        if os.path.isfile(weekly_file) is False:
+            with open(weekly_file, 'w') as f:
+                f.write('1\n')
+
+            with open(monthly_file, 'w') as f:
+                f.write('1\n')
+
+            with open(quarterly_file, 'w') as f:
+                f.write('1\n')
+
+            with open(halfyearly_file, 'w') as f:
+                f.write('1\n')
+
     def main(self):
         
         """Main body of the gui application"""
@@ -172,6 +193,17 @@ class TPV_Main():
         
         day = self.day_check()
 
+        weekly_file = self.textfile + '_weekly.txt'
+        monthly_file = self.textfile + '_monthly.txt'
+        quarterly_file = self.textfile + '_quarterly.txt'
+        halfyearly_file = self.textfile + '_halfyearly.txt'
+
+
+        f1 = open(weekly_file, 'r')
+        f2 = open(monthly_file, 'r')
+        f3 = open(quarterly_file, 'r')
+        f4 = open(halfyearly_file, 'r')
+
         row_ved = 1
         row_han = 1
         row_olj = 1
@@ -202,28 +234,66 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'ukentlig' and today == 'Friday':
+            elif lowCas == 'ukentlig':
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                if f1.readline() == '0\n' or today == 'Friday':
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
 
-            elif lowCas == 'maanedlig' and today_number == day:
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+            elif lowCas == 'månedlig':
 
-            elif lowCas == 'halvaar' and day_of_year == 183:
+                if f2.readline() == '0\n' or today_number == day:
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+            elif lowCas == 'kvartalsvis':
+
+                if f3.readline() == '0\n':
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+            elif lowCas == 'halvår':
+
+                if f4.readline() == '0\n' or day_of_year == 183:
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
 
             else:
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
+
+        f1.close()
+        f2.close()
+        f3.close()
+        f4.close()
 
         self.results = {}
         check_boxes = {}
@@ -378,15 +448,11 @@ class TPV_Main():
             pass
 
         today_name = self.date.strftime('%A')
-        #print(today_name)
 
-        if os.path.isfile(self.textfile + '_weekly.txt') is False:
+        if today_name == 'Friday':
             self.persistent_colors(self.textfile)
 
-        elif today_name == 'Friday':
-            self.persistent_colors(self.textfile)
-
-        #self.persistent_colors(self.textfile)
+        self._persistant_colors_check(self.textfile)
 
     def _year_check(self):
 
@@ -577,7 +643,7 @@ class TPV_Main():
                 weekly_counter += 1
                 locations['Ukentlig{0}'.format(weekly_counter)] = main_counter
 
-            elif i == 'Maanedlig':
+            elif i == 'Månedlig':
                 monthly_counter += 1
                 locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
 
@@ -585,7 +651,7 @@ class TPV_Main():
                 quarterly_counter += 1
                 locations['Kvartalsvis{0}'.format(quarterly_counter)] = main_counter
 
-            elif i == 'Halvaar':
+            elif i == 'Halvår':
                 halfyearly_counter += 1
                 locations['Halvaar{0}'.format(halfyearly_counter)] = main_counter
 
@@ -609,7 +675,7 @@ class TPV_Main():
         monthly_values = []
         counter = 1
         for i in locations_keys:
-            if i == 'Maanedlig{0}'.format(counter):
+            if i == 'Månedlig{0}'.format(counter):
                 monthly.append(i)
                 counter += 1
 
@@ -633,7 +699,7 @@ class TPV_Main():
         halfyearly_values = []
         counter = 1
         for i in locations_keys:
-            if i == 'Halvaar{0}'.format(counter):
+            if i == 'Halvår{0}'.format(counter):
                 halfyearly.append(i)
                 counter += 1
 
@@ -662,7 +728,109 @@ class TPV_Main():
             for i in halfyearly_values:
                 f.write(str(i) + '\n')
 
-        print(locations_keys)
+    def _persistant_colors_check(self, nameoffile):
+
+        #today_name = self.date.strftime('%A')
+
+        main_counter = 0
+        weekly_counter = 0
+        monthly_counter = 0
+        quarterly_counter = 0
+        halfyearly_counter = 0
+        locations = {}
+
+        for i in self.config['Hyppighet'].values():
+            main_counter += 1
+            if i == 'Ukentlig':
+                weekly_counter += 1
+                locations['Ukentlig{0}'.format(weekly_counter)] = main_counter
+
+            elif i == 'Månedlig':
+                monthly_counter += 1
+                locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
+
+            elif i == 'Kvartalsvis':
+                quarterly_counter += 1
+                locations['Kvartalsvis{0}'.format(quarterly_counter)] = main_counter
+
+            elif i == 'Halvår':
+                halfyearly_counter += 1
+                locations['Halvaar{0}'.format(halfyearly_counter)] = main_counter
+
+        locations_keys = []
+        for i in locations.keys():
+            locations_keys.append(i)
+
+        weekly = []
+        weekly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Ukentlig{0}'.format(counter):
+                weekly.append(i)
+                counter += 1
+
+        for i in weekly:
+            place = locations[i]
+            weekly_values.append(self.checkbox_values[place - 1])
+
+        monthly = []
+        monthly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Månedlig{0}'.format(counter):
+                monthly.append(i)
+                counter += 1
+
+        for i in monthly:
+            place = locations[i]
+            monthly_values.append(self.checkbox_values[place - 1])
+
+        quarterly = []
+        quarterly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Kvartalsvis{0}'.format(counter):
+                quarterly.append(i)
+                counter += 1
+
+        for i in quarterly:
+            place = locations[i]
+            quarterly_values.append(self.checkbox_values[place - 1])
+
+        halfyearly = []
+        halfyearly_values = []
+        counter = 1
+        for i in locations_keys:
+            if i == 'Halvår{0}'.format(counter):
+                halfyearly.append(i)
+                counter += 1
+
+        for i in halfyearly:
+            place = locations[i]
+            halfyearly_values.append(self.checkbox_values[place - 1])
+
+        weekly_file = nameoffile + '_weekly.txt'
+        monthly_file = nameoffile + '_monthly.txt'
+        quarterly_file = nameoffile + '_quarterly.txt'
+        halfyearly_file = nameoffile + '_halfyearly.txt'
+
+        weekly_from_file = []
+        with open(weekly_file, 'r') as f:
+            for i in weekly_values:
+                file_results = f.readline()
+                file_results = file_results[0:1]
+                weekly_from_file.append(file_results)
+
+        print(weekly_from_file)
+        print(weekly_values)
+
+        currentfile = open(weekly_file, 'w')
+        for i in range(len(weekly_values)):
+            if weekly_values[i] != weekly_from_file[i] and weekly_from_file == '1':
+                currentfile.write(str(weekly_values[i]) + '\n')
+
+        currentfile.close()
+
 
 
     def _error_popup(self, message, issue):
