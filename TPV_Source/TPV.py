@@ -829,6 +829,19 @@ class TPV_Main():
         print(weekly_from_file)
         print(weekly_values)
 
+        check_list = []
+        for i in range(len(weekly_values)):
+            check_list.append(0)
+
+        print(check_list)
+
+        if weekly_values != weekly_from_file and weekly_from_file == check_list:
+            print('Hello')
+            with open(weekly_file, 'w') as f:
+                for i in range(len(weekly_values)):
+                    f.write(str(weekly_values[i]) + '\n')
+
+        '''
         currentfile = open(weekly_file, 'w')
         for i in range(len(weekly_values)):
             if weekly_values[i] != weekly_from_file[i] and weekly_from_file[i] == 0:
@@ -836,6 +849,7 @@ class TPV_Main():
                 currentfile.write(str(weekly_values[i]) + '\n')
 
         currentfile.close()
+        '''
 
 
 
