@@ -645,7 +645,7 @@ class TPV_Main():
 
             elif i == 'Månedlig':
                 monthly_counter += 1
-                locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
+                locations['Månedlig{0}'.format(monthly_counter)] = main_counter
 
             elif i == 'Kvartalsvis':
                 quarterly_counter += 1
@@ -653,7 +653,7 @@ class TPV_Main():
 
             elif i == 'Halvår':
                 halfyearly_counter += 1
-                locations['Halvaar{0}'.format(halfyearly_counter)] = main_counter
+                locations['Halvår{0}'.format(halfyearly_counter)] = main_counter
 
         locations_keys = []
         for i in locations.keys():
@@ -675,6 +675,7 @@ class TPV_Main():
         monthly_values = []
         counter = 1
         for i in locations_keys:
+            print(i)
             if i == 'Månedlig{0}'.format(counter):
                 monthly.append(i)
                 counter += 1
@@ -819,14 +820,19 @@ class TPV_Main():
             for i in weekly_values:
                 file_results = f.readline()
                 file_results = file_results[0:1]
-                weekly_from_file.append(file_results)
+                try:
+                    weekly_from_file.append(int(file_results))
+                except ValueError:
+                    weekly_from_file.append(0)
+                    pass
 
         print(weekly_from_file)
         print(weekly_values)
 
         currentfile = open(weekly_file, 'w')
         for i in range(len(weekly_values)):
-            if weekly_values[i] != weekly_from_file[i] and weekly_from_file == '1':
+            if weekly_values[i] != weekly_from_file[i] and weekly_from_file[i] == 0:
+                print('Hello')
                 currentfile.write(str(weekly_values[i]) + '\n')
 
         currentfile.close()
