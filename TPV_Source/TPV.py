@@ -748,7 +748,7 @@ class TPV_Main():
 
             elif i == 'Månedlig':
                 monthly_counter += 1
-                locations['Maanedlig{0}'.format(monthly_counter)] = main_counter
+                locations['Månedlig{0}'.format(monthly_counter)] = main_counter
 
             elif i == 'Kvartalsvis':
                 quarterly_counter += 1
@@ -756,7 +756,7 @@ class TPV_Main():
 
             elif i == 'Halvår':
                 halfyearly_counter += 1
-                locations['Halvaar{0}'.format(halfyearly_counter)] = main_counter
+                locations['Halvår{0}'.format(halfyearly_counter)] = main_counter
 
         locations_keys = []
         for i in locations.keys():
@@ -816,40 +816,50 @@ class TPV_Main():
         halfyearly_file = nameoffile + '_halfyearly.txt'
 
         weekly_from_file = []
+        weekly_check_list = []
         with open(weekly_file, 'r') as f:
             for i in weekly_values:
                 file_results = f.readline()
                 file_results = file_results[0:1]
+                
                 try:
                     weekly_from_file.append(int(file_results))
                 except ValueError:
                     weekly_from_file.append(0)
-                    pass
+                
+                weekly_check_list.append(0)
 
-        print(weekly_from_file)
-        print(weekly_values)
-
-        check_list = []
-        for i in range(len(weekly_values)):
-            check_list.append(0)
-
-        print(check_list)
-
-        if weekly_values != weekly_from_file and weekly_from_file == check_list:
-            print('Hello')
+        if weekly_values != weekly_from_file and weekly_from_file == weekly_check_list:
             with open(weekly_file, 'w') as f:
-                for i in range(len(weekly_values)):
-                    f.write(str(weekly_values[i]) + '\n')
+                for i in weekly_values:
+                    f.write(str(i) + '\n')
 
-        '''
-        currentfile = open(weekly_file, 'w')
-        for i in range(len(weekly_values)):
-            if weekly_values[i] != weekly_from_file[i] and weekly_from_file[i] == 0:
-                print('Hello')
-                currentfile.write(str(weekly_values[i]) + '\n')
 
-        currentfile.close()
-        '''
+        monthly_from_file = []
+        monthly_check_list = []
+        with open(monthly_file, 'r') as f:
+            for i in monthly_values:
+                file_results = f.readline()
+                file_results = file_results[0:1]
+                print(file_results)
+                
+                try:
+                    monthly_from_file.append(int(file_results))
+                except ValueError:
+                    monthly_from_file.append(0)
+                
+                monthly_check_list.append(0)
+
+
+        print('From file: ', monthly_from_file)
+        print('Monthly values: ', monthly_values)
+        print('Checklist: ', monthly_check_list)
+
+        if monthly_values != monthly_from_file and monthly_from_file == monthly_check_list:
+            with open(monthly_file, 'w') as f:
+                for i in monthly_values:
+                    f.write(str(i) + '\n')
+
 
 
 
