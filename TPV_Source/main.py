@@ -28,7 +28,6 @@ class SomeWindow(tk.Frame):
 
 
         self.config_folder = Path('configs')
-        self.file_folder = 'files\\'
         self.tabcontroll = ttk.Notebook(master)
 
         self._config_generation()
@@ -44,17 +43,12 @@ class SomeWindow(tk.Frame):
             config_path = self.config_folder / i
             configs.append(str(config_path))
 
-        files = []
-        for i in self.config['Textfiler'].values():
-            files_path = self.file_folder + i
-            files.append(files_path)
-
         machines = self.config['Maskin info']['Antall Maskiner']
         machines = int(machines)
 
         try:
             for i in range(machines):
-                TPV_Main(self.master, self.tabcontroll, names[i], configs[i], files[i])
+                TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
         except IndexError as e:
             self._config_popup(e)
 
@@ -88,9 +82,6 @@ class SomeWindow(tk.Frame):
 
             config['Konfigurasjonsfiler'] = {}
             config['Konfigurasjonsfiler']['config1'] = 'config1.ini'
-
-            config['Textfiler'] = {}
-            config['Textfiler']['text1'] = 'textfile1'
 
             config['Diversje'] = {}
 
