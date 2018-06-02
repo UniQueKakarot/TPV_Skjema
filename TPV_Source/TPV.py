@@ -675,7 +675,6 @@ class TPV_Main():
         monthly_values = []
         counter = 1
         for i in locations_keys:
-            print(i)
             if i == 'Månedlig{0}'.format(counter):
                 monthly.append(i)
                 counter += 1
@@ -837,11 +836,11 @@ class TPV_Main():
 
         monthly_from_file = []
         monthly_check_list = []
+        test = []
         with open(monthly_file, 'r') as f:
             for i in monthly_values:
                 file_results = f.readline()
                 file_results = file_results[0:1]
-                print(file_results)
                 
                 try:
                     monthly_from_file.append(int(file_results))
@@ -854,6 +853,15 @@ class TPV_Main():
         print('From file: ', monthly_from_file)
         print('Monthly values: ', monthly_values)
         print('Checklist: ', monthly_check_list)
+
+        test2 = 0
+        for i in monthly_from_file:   
+            if i == monthly_check_list[test2]:
+                test.append(i)
+                test2 += 1
+                print('Hello')               
+
+        print('Test', test)
 
         if monthly_values != monthly_from_file and monthly_from_file == monthly_check_list:
             with open(monthly_file, 'w') as f:
