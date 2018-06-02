@@ -271,10 +271,8 @@ class TPV_Main():
             for i in months:
                 wb.create_sheet(i)
 
-            sh = wb.get_sheet_names()
-            x = wb.get_sheet_by_name('Sheet')
-            wb.remove_sheet(x)
-            sh = wb.get_sheet_names()
+            del wb['Sheet']
+            sh = wb.sheetnames
 
             col = 2
 
