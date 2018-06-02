@@ -730,15 +730,19 @@ class TPV_Main():
 
     def _persistant_colors_check(self, nameoffile):
 
-        #today_name = self.date.strftime('%A')
+        """ Checking if the schedualed maintainance is done in time,
+            if not make the labels indicate that with color """
 
+        # counting variables
         main_counter = 0
         weekly_counter = 0
         monthly_counter = 0
         quarterly_counter = 0
         halfyearly_counter = 0
+
         locations = {}
 
+        # extracing the location of variables to check and adding them to a dict
         for i in self.config['Hyppighet'].values():
             main_counter += 1
             if i == 'Ukentlig':
@@ -757,10 +761,12 @@ class TPV_Main():
                 halfyearly_counter += 1
                 locations['Halvår{0}'.format(halfyearly_counter)] = main_counter
 
+        # extracting the keys from the dict
         locations_keys = []
         for i in locations.keys():
             locations_keys.append(i)
 
+        # looking up the key and adding the values to a list for each interval
         weekly = []
         weekly_values = []
         counter = 1
@@ -820,6 +826,7 @@ class TPV_Main():
             for i in weekly_values:
                 file_results = f.readline()
                 file_results = file_results[0:1]
+                print(file_results)
                 
                 try:
                     weekly_from_file.append(int(file_results))
@@ -828,10 +835,12 @@ class TPV_Main():
                 
                 weekly_check_list.append(0)
 
-        if weekly_values != weekly_from_file and weekly_from_file == weekly_check_list:
+        if weekly_values != weekly_from_file:
             with open(weekly_file, 'w') as f:
-                for i in weekly_values:
-                    f.write(str(i) + '\n')
+                for i, j in zip(weekly_from_file, weekly_check_list):
+                    if i == j:
+                        for i in weekly_values:
+                            f.write(str(i) + '\n')
 
 
         monthly_from_file = []
@@ -841,6 +850,10 @@ class TPV_Main():
             for i in monthly_values:
                 file_results = f.readline()
                 file_results = file_results[0:1]
+<<<<<<< HEAD
+=======
+                #print(file_results)
+>>>>>>> 125a230437de0ba2f5a27e5a6a25442b53e6029e
                 
                 try:
                     monthly_from_file.append(int(file_results))
@@ -850,10 +863,11 @@ class TPV_Main():
                 monthly_check_list.append(0)
 
 
-        print('From file: ', monthly_from_file)
-        print('Monthly values: ', monthly_values)
-        print('Checklist: ', monthly_check_list)
+        #print('From file: ', monthly_from_file)
+        #print('Monthly values: ', monthly_values)
+        #print('Checklist: ', monthly_check_list)
 
+<<<<<<< HEAD
         test2 = 0
         for i in monthly_from_file:   
             if i == monthly_check_list[test2]:
@@ -864,9 +878,14 @@ class TPV_Main():
         print('Test', test)
 
         if monthly_values != monthly_from_file and monthly_from_file == monthly_check_list:
+=======
+        if monthly_values != monthly_from_file:
+>>>>>>> 125a230437de0ba2f5a27e5a6a25442b53e6029e
             with open(monthly_file, 'w') as f:
-                for i in monthly_values:
-                    f.write(str(i) + '\n')
+                for i, j in zip(monthly_from_file, monthly_check_list):
+                    if i == j:
+                        for i in monthly_values:
+                            f.write(str(i) + '\n')
 
 
 
