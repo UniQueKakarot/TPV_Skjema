@@ -49,7 +49,7 @@ class TPV_Main():
         menuBar.add_cascade(label='Info', menu=helpMenu)
 
         fileMenu.add_command(label='Lagre Utført vedlikehold', command=self.maintanance)
-        fileMenu.add_command(label='Åpne excel fil', command=self._op_saved)
+        fileMenu.add_command(label='Velg eksisterende excel fil', command=self._op_saved)
         menuBar.add_cascade(label='Alternativer', menu=fileMenu)
 
         #self.logging()
