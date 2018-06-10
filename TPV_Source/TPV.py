@@ -12,6 +12,8 @@ from configobj import ConfigObj
 import openpyxl as op
 from docx import Document
 
+from modules import maintanance
+
 
 class TPV_Main():
 
@@ -44,7 +46,7 @@ class TPV_Main():
         fileMenu = tk.Menu(menuBar, tearoff=0)
         helpMenu = tk.Menu(menuBar, tearoff=0)
 
-        helpMenu.add_command(label='Prosedyre', command=self.procedure)
+        helpMenu.add_command(label='Prosedyre', command=self._procedure)
         helpMenu.add_command(label='Hjelp', command=self._op_wiki)
         menuBar.add_cascade(label='Info', menu=helpMenu)
 
@@ -56,10 +58,9 @@ class TPV_Main():
         self._config_gen()
         self.main()
 
-        #self.master.after(1000, self.persistent_colors)
-        #self.persistent_colors()
-
     def logging(self):
+
+        # is this neccessary?
 
         # Create the Logger
         self.logger = logging.getLogger(__name__)
@@ -80,10 +81,8 @@ class TPV_Main():
 
     def _config_gen(self):
 
-        if os.path.isfile(self.config_name) is True:
-            pass
+        if os.path.isfile(self.config_name) == False:
 
-        else:
             self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
             self.config.filename = self.config_name
 
@@ -148,12 +147,8 @@ class TPV_Main():
 
         first_key = keys[0]
 
-        # Empty list assigned for holding info on entries in the first key of the config file
-        values = []
-
-        # Establish the number of entries in the config file
-        for i in self.config[first_key]:
-            values.append(i)
+        # getting the text for the labels from the config file
+        values = [i for i in self.config[first_key]]
 
         row_ved = 1
         row_han = 1
@@ -214,16 +209,12 @@ class TPV_Main():
         button.grid(row=row, column=0, columnspan=2, sticky=tk.W, pady=15)
 
     def save(self):
+
+        """ This is the method dealing with saving the results to an excel file """
         
-        values = []
-        for i in self.results:
-            values.append(self.results[i])
+        values = [self.results[i] for i in self.results]
 
-        self.checkbox_values = []
-        for i in values:
-            self.checkbox_values.append(i.get())
-
-        # Main code for writing out the excel file used to save the data in comes here:
+        self.checkbox_values = [i.get() for i in values]
 
         # Calling the config parser and accessing filepath if present in config file
         f_name = self.config['Filbehandling']['1']
@@ -246,15 +237,11 @@ class TPV_Main():
 
         cell = 'A' + day_as_string
 
-        index = []
+        index = [i for i in self.config['Vedlikeholdspunkt'].values()]
+        index.append(self.config['Diversje']['2'])
 
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
                   'August', 'September', 'October', 'November', 'December']
-
-        for i in self.config['Vedlikeholdspunkt'].values():
-            index.append(i)
-
-        index.append(self.config['Diversje']['2'])
 
         # Checking if the file exist or not
         if os.path.isfile(f_name) == False or self._year_check() == 1:
@@ -303,7 +290,6 @@ class TPV_Main():
 
             except FileNotFoundError as e:
                 print(e)
-                pass
 
         elif os.path.isfile(f_name) == True and self._year_check() == 0:
 
@@ -329,6 +315,9 @@ class TPV_Main():
 
         else:
             # put in some error handling or something here
+            pass
+
+        if self._year_check == 1:
             pass
 
     def _year_check(self):
@@ -362,7 +351,7 @@ class TPV_Main():
 
         webbrowser.open('https://github.com/UniQueKakarot/TPV_Skjema/wiki')
 
-    def procedure(self):
+    def _procedure(self):
 
         """Lets you select a word file that gets linked to in the UI"""
 
@@ -384,97 +373,8 @@ class TPV_Main():
     def maintanance(self):
         
         """Adding in a new window for saving extra information on maintenance done"""
-        
-        self.new_win = tk.Tk()
-        self.new_win.title('Skjema')
-        self.new_win.geometry('450x280')
-        
-        today = self.date.strftime('%d.%m.%Y, %a')
-        
-        form_body = ttk.LabelFrame(self.new_win, text='Skjema for utført Vedlikehold')
-        form_body.pack(expand=1)
-        
-        lbl1 = tk.Label(form_body, text='Dato: ', font=FONT1)
-        lbl1.grid(row=0, column=0, sticky=tk.N)
-        self.ent1 = ttk.Entry(form_body)
-        self.ent1.grid(row=0, column=1, sticky=tk.N)
-        self.ent1.insert(0, today)
-        
-        lbl2 = tk.Label(form_body, text='Hvem utførte vedlikeholdet?: ', font=FONT1)
-        lbl2.grid(row=1, column=0, sticky=tk.W, pady=10)
-        self.ent2 = ttk.Entry(form_body)
-        self.ent2.grid(row=1, column=1, sticky=tk.N, pady=10)
-        
-        lbl3 = tk.Label(form_body, text='Hva ble gjort:', font=FONT2)
-        lbl3.grid(row=2, column=0, sticky=tk.W)
-        self.maintanance_txt = tk.Text(form_body, height=3, width=40)
-        self.maintanance_txt.grid(row=3, column=0, columnspan=2, sticky=tk.W)
-        
-        button1 = ttk.Button(form_body, text='Lagre', command=self.maintanance_save)
-        button1.grid(row=4, column=0, sticky=tk.N, pady=10)
-            
-        button2 = ttk.Button(form_body, text='Avslutt', command=self.maintanance_quit)
-        button2.grid(row=4, column=1, sticky=tk.N, pady=10)
 
-    def maintanance_save(self):
-        
-        """Saving method for the main maintainance method"""
-        
-        f_exist = self.config['Filbehandling']['4']
-        
-        if os.path.isfile(f_exist) is True:
-            
-            document = Document(f_exist)
-            
-            date = self.ent1.get()
-            name = self.ent2.get()
-            textbox = self.maintanance_txt.get('1.0', tk.END)
-            
-            document.add_paragraph(date)
-            document.add_paragraph(name)
-            document.add_paragraph(textbox)
-            document.add_paragraph('')
-            
-            try:
-                document.save(f_exist)
-                mBox.showinfo('', 'Resultater har blitt lagret')
-            except PermissionError as e:
-                self._error_popup('Error!', e)
-                mBox.showinfo('', 'Resultatene har ikke blitt lagret')
-            
-        elif os.path.isfile(f_exist) is False:
-            
-            f_new = filedialog.asksaveasfilename(title='Select File',
-                                                 filetypes=(("Word files", ".docx"),
-                                                            ("All files", "*.*")),
-                                                 defaultextension="*.*")
-            
-            document = Document()
-            
-            date = self.ent1.get()
-            name = self.ent2.get()
-            textbox = self.maintanance_txt.get('1.0', tk.END)
-            
-            document.add_paragraph(date)
-            document.add_paragraph(name)
-            document.add_paragraph(textbox)
-            document.add_paragraph('')
-            
-            document.save(f_new)
-
-            self.config['Filbehandling']['4'] = f_new
-            self.config.write()
-            
-            mBox.showinfo('', 'Resultater har blitt lagret')
-
-        else:
-            self._error_popup('Error Saving Document', 'Something went wrong when we tried to save the document')
-
-    def maintanance_quit(self):
-        
-        """Simply just kills the extra save window"""
-        
-        self.new_win.destroy()
+        maintanance.Maintanace(self.config, self.date, FONT1, FONT2)
 
     def _error_popup(self, message, issue):
 
