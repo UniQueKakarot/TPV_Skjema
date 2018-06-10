@@ -246,6 +246,10 @@ class TPV_Main():
         # Checking if the file exist or not
         if os.path.isfile(f_name) == False or self._year_check() == 1:
 
+            if self._year_check == 1:
+
+                mBox.showinfo('', 'Vennligst lagre ei ny fil for dette året!')
+
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
                                                             ("All files", "*.*")), defaultextension="*.*")
@@ -318,6 +322,9 @@ class TPV_Main():
             pass
 
         if self._year_check == 1:
+
+            f_name = self.config['Filbehandling']['1']
+            
             pass
 
     def _year_check(self):
