@@ -317,16 +317,6 @@ class TPV_Main():
 
             mBox.showinfo('', 'Resultater har blitt lagret')
 
-        else:
-            # put in some error handling or something here
-            pass
-
-        if self._year_check == 1:
-
-            f_name = self.config['Filbehandling']['1']
-            
-            pass
-
     def _year_check(self):
 
         """A simple method for checking if we have switched year"""
