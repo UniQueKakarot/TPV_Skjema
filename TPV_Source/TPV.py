@@ -56,9 +56,6 @@ class TPV_Main():
         self._config_gen()
         self.main()
 
-        #self.master.after(1000, self.persistent_colors)
-        #self.persistent_colors()
-
     def logging(self):
 
         # Create the Logger

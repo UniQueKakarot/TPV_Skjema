@@ -52,7 +52,7 @@ class SomeWindow(tk.Frame):
         except IndexError as e:
             self._config_popup(e)
 
-        self.master.after(1000, self.win_size)
+        self.master.after(1000, self._win_size)
 
         size = self.config['Diversje']['1']
         self.master.geometry(size)
@@ -96,7 +96,7 @@ class SomeWindow(tk.Frame):
 
         mBox.showerror('Error', 'Something went wrong!')
 
-    def win_size(self):
+    def _win_size(self):
 
         """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
 
