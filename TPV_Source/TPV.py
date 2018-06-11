@@ -114,6 +114,9 @@ class TPV_Main():
             self.config['Hyppighet']['4'] = 'Put your info here'
             self.config['Hyppighet']['5'] = 'Put your info here'
 
+            self.config['Tidspunkt'] = {}
+            self.config['Tidspunkt']['1'] = "Put your info here"
+
             self.config['Diversje'] = {}
             self.config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
             self.config['Diversje']['2'] = 'Annet:'
@@ -154,6 +157,7 @@ class TPV_Main():
         row_han = 1
         row_olj = 1
         row_hyp = 1
+        row_when = 1
 
         # Generating labels on the fly based on how many entries it is in the config file
         for value in self.config['Vedlikeholdspunkt'].values():
@@ -176,6 +180,11 @@ class TPV_Main():
             label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
             row_hyp += 1
 
+        for value in self.config['Tidspunkt'].values():
+            label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+            label.grid(row=row_when, column=5, sticky=tk.N, padx=15)
+            row_when += 1
+
         self.results = {}
         check_boxes = {}
 
@@ -195,6 +204,8 @@ class TPV_Main():
         lbl3.grid(row=0, column=3, sticky=tk.N)
         lbl4 = tk.Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
         lbl4.grid(row=0, column=4, sticky=tk.N)
+        lbl5 = tk.Label(self.TPV_Body, text='Tidspunkt:', font=FONT2)
+        lbl5.grid(row=0, column=5, sticky=tk.N)
 
         header = self.config['Diversje']['1']
         lbl16 = tk.Label(self.TPV_Body, text=header)
@@ -205,10 +216,10 @@ class TPV_Main():
         self.txt.grid(row=row, column=0, columnspan=2)
         row += 1
 
-        button = ttk.Button(self.TPV_Body, text='Lagre', command=self.save)
+        button = ttk.Button(self.TPV_Body, text='Lagre', command=self._save)
         button.grid(row=row, column=0, columnspan=2, sticky=tk.W, pady=15)
 
-    def save(self):
+    def _save(self):
 
         """ This is the method dealing with saving the results to an excel file """
         
@@ -313,9 +324,13 @@ class TPV_Main():
             textbox = self.txt.get('1.0', tk.END)
             ws.cell(row=day_as_int, column=col, value=textbox)
 
-            op.writer.excel.save_workbook(wb, f_name)
+            try:
+                op.writer.excel.save_workbook(wb, f_name)
+                mBox.showinfo('', 'Resultater har blitt lagret')
+            except PermissionError as e:
+                self._error_popup('Please close the Excel file', e)
 
-            mBox.showinfo('', 'Resultater har blitt lagret')
+            
 
     def _year_check(self):
 

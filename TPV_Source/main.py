@@ -22,10 +22,10 @@ class SomeWindow(tk.Frame):
 
         self.master = master
         self.master.title('TPV Skjema')
-        try:
-            self.master.iconbitmap('tpv.ico')
-        except:
-            self._generic_error()
+        #try:
+            #self.master.iconbitmap('tpv.ico')
+        #except:
+            #self._generic_error()
 
 
         self.config_folder = Path('configs')

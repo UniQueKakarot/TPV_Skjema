@@ -22,6 +22,7 @@ et_xmlfile = "==1.0.1"
 Pillow = "==5.1.0"
 
 [dev-packages]
+pyinstaller = "*"
 
 [requires]
 python_version = "3.6"
