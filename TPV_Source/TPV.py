@@ -15,12 +15,10 @@ from docx import Document
 
 class TPV_Main():
 
-    def __init__(self, master, tabcontroll, name, config_name, textfile):
+    def __init__(self, master, tabcontroll, name, config_name):
         
         self.config_name = config_name
         self.date = datetime.today()
-
-        self.textfile = textfile
 
         frametxt = 'TPV Skjema'
 
@@ -56,7 +54,6 @@ class TPV_Main():
 
         #self.logging()
         self._config_gen()
-        self._file_gen(self.textfile)
         self.main()
 
         #self.master.after(1000, self.persistent_colors)
@@ -141,26 +138,6 @@ class TPV_Main():
 
             self.config.write()
 
-    def _file_gen(self, nameoffile):
-
-        weekly_file = nameoffile + '_weekly.txt'
-        monthly_file = nameoffile + '_monthly.txt'
-        quarterly_file = nameoffile + '_quarterly.txt'
-        halfyearly_file = nameoffile + '_halfyearly.txt'
-
-        if os.path.isfile(weekly_file) is False:
-            with open(weekly_file, 'w') as f:
-                f.write('1\n')
-
-            with open(monthly_file, 'w') as f:
-                f.write('1\n')
-
-            with open(quarterly_file, 'w') as f:
-                f.write('1\n')
-
-            with open(halfyearly_file, 'w') as f:
-                f.write('1\n')
-
     def main(self):
         
         """Main body of the gui application"""
@@ -193,17 +170,6 @@ class TPV_Main():
         
         day = self.day_check()
 
-        weekly_file = self.textfile + '_weekly.txt'
-        monthly_file = self.textfile + '_monthly.txt'
-        quarterly_file = self.textfile + '_quarterly.txt'
-        halfyearly_file = self.textfile + '_halfyearly.txt'
-
-
-        f1 = open(weekly_file, 'r')
-        f2 = open(monthly_file, 'r')
-        f3 = open(quarterly_file, 'r')
-        f4 = open(halfyearly_file, 'r')
-
         row_ved = 1
         row_han = 1
         row_olj = 1
@@ -234,66 +200,34 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'ukentlig':
+            elif lowCas == 'ukentlig' and today == 'Friday':
 
-                if f1.readline() == '0\n' or today == 'Friday':
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
+                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                row_hyp += 1
 
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
+            elif lowCas == 'månedlig' and today_number == day:
 
-            elif lowCas == 'månedlig':
-
-                if f2.readline() == '0\n' or today_number == day:
-
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
-
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                row_hyp += 1
 
             elif lowCas == 'kvartalsvis':
 
-                if f3.readline() == '0\n':
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                row_hyp += 1
 
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
+            elif lowCas == 'halvår' and day_of_year == 183:
 
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
-
-            elif lowCas == 'halvår':
-
-                if f4.readline() == '0\n' or day_of_year == 183:
-
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
-
-                else:
-                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
-                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                    row_hyp += 1
+                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                row_hyp += 1
 
             else:
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
-
-        f1.close()
-        f2.close()
-        f3.close()
-        f4.close()
 
         self.results = {}
         check_boxes = {}
@@ -446,13 +380,6 @@ class TPV_Main():
         else:
             # put in some error handling or something here
             pass
-
-        today_name = self.date.strftime('%A')
-
-        if today_name == 'Friday':
-            self.persistent_colors(self.textfile)
-
-        self._persistant_colors_check(self.textfile)
 
     def _year_check(self):
 
@@ -627,268 +554,6 @@ class TPV_Main():
 
         else:
             return 20
-    
-    def persistent_colors(self, nameoffile):
-
-        main_counter = 0
-        weekly_counter = 0
-        monthly_counter = 0
-        quarterly_counter = 0
-        halfyearly_counter = 0
-        locations = {}
-
-        for i in self.config['Hyppighet'].values():
-            main_counter += 1
-            if i == 'Ukentlig':
-                weekly_counter += 1
-                locations['Ukentlig{0}'.format(weekly_counter)] = main_counter
-
-            elif i == 'Månedlig':
-                monthly_counter += 1
-                locations['Månedlig{0}'.format(monthly_counter)] = main_counter
-
-            elif i == 'Kvartalsvis':
-                quarterly_counter += 1
-                locations['Kvartalsvis{0}'.format(quarterly_counter)] = main_counter
-
-            elif i == 'Halvår':
-                halfyearly_counter += 1
-                locations['Halvår{0}'.format(halfyearly_counter)] = main_counter
-
-        locations_keys = []
-        for i in locations.keys():
-            locations_keys.append(i)
-
-        weekly = []
-        weekly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Ukentlig{0}'.format(counter):
-                weekly.append(i)
-                counter += 1
-
-        for i in weekly:
-            place = locations[i]
-            weekly_values.append(self.checkbox_values[place - 1])
-
-        monthly = []
-        monthly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Månedlig{0}'.format(counter):
-                monthly.append(i)
-                counter += 1
-
-        for i in monthly:
-            place = locations[i]
-            monthly_values.append(self.checkbox_values[place - 1])
-
-        quarterly = []
-        quarterly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Kvartalsvis{0}'.format(counter):
-                quarterly.append(i)
-                counter += 1
-
-        for i in quarterly:
-            place = locations[i]
-            quarterly_values.append(self.checkbox_values[place - 1])
-
-        halfyearly = []
-        halfyearly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Halvår{0}'.format(counter):
-                halfyearly.append(i)
-                counter += 1
-
-        for i in halfyearly:
-            place = locations[i]
-            halfyearly_values.append(self.checkbox_values[place - 1])
-
-        weekly_file = nameoffile + '_weekly.txt'
-        monthly_file = nameoffile + '_monthly.txt'
-        quarterly_file = nameoffile + '_quarterly.txt'
-        halfyearly_file = nameoffile + '_halfyearly.txt'
-
-        with open(weekly_file, 'w') as f:
-            for i in weekly_values:
-                f.write(str(i) + '\n')
-
-        with open(monthly_file, 'w') as f:
-            for i in monthly_values:
-                f.write(str(i) + '\n')
-
-        with open(quarterly_file, 'w') as f:
-            for i in quarterly_values:
-                f.write(str(i) + '\n')
-            
-        with open(halfyearly_file, 'w') as f:
-            for i in halfyearly_values:
-                f.write(str(i) + '\n')
-
-    def _persistant_colors_check(self, nameoffile):
-
-        """ Checking if the schedualed maintainance is done in time,
-            if not make the labels indicate that with color """
-
-        # counting variables
-        main_counter = 0
-        weekly_counter = 0
-        monthly_counter = 0
-        quarterly_counter = 0
-        halfyearly_counter = 0
-
-        locations = {}
-
-        # extracing the location of variables to check and adding them to a dict
-        for i in self.config['Hyppighet'].values():
-            main_counter += 1
-            if i == 'Ukentlig':
-                weekly_counter += 1
-                locations['Ukentlig{0}'.format(weekly_counter)] = main_counter
-
-            elif i == 'Månedlig':
-                monthly_counter += 1
-                locations['Månedlig{0}'.format(monthly_counter)] = main_counter
-
-            elif i == 'Kvartalsvis':
-                quarterly_counter += 1
-                locations['Kvartalsvis{0}'.format(quarterly_counter)] = main_counter
-
-            elif i == 'Halvår':
-                halfyearly_counter += 1
-                locations['Halvår{0}'.format(halfyearly_counter)] = main_counter
-
-        # extracting the keys from the dict
-        locations_keys = []
-        for i in locations.keys():
-            locations_keys.append(i)
-
-        # looking up the key and adding the values to a list for each interval
-        weekly = []
-        weekly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Ukentlig{0}'.format(counter):
-                weekly.append(i)
-                counter += 1
-
-        for i in weekly:
-            place = locations[i]
-            weekly_values.append(self.checkbox_values[place - 1])
-
-        monthly = []
-        monthly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Månedlig{0}'.format(counter):
-                monthly.append(i)
-                counter += 1
-
-        for i in monthly:
-            place = locations[i]
-            monthly_values.append(self.checkbox_values[place - 1])
-
-        quarterly = []
-        quarterly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Kvartalsvis{0}'.format(counter):
-                quarterly.append(i)
-                counter += 1
-
-        for i in quarterly:
-            place = locations[i]
-            quarterly_values.append(self.checkbox_values[place - 1])
-
-        halfyearly = []
-        halfyearly_values = []
-        counter = 1
-        for i in locations_keys:
-            if i == 'Halvår{0}'.format(counter):
-                halfyearly.append(i)
-                counter += 1
-
-        for i in halfyearly:
-            place = locations[i]
-            halfyearly_values.append(self.checkbox_values[place - 1])
-
-        weekly_file = nameoffile + '_weekly.txt'
-        monthly_file = nameoffile + '_monthly.txt'
-        quarterly_file = nameoffile + '_quarterly.txt'
-        halfyearly_file = nameoffile + '_halfyearly.txt'
-
-        weekly_from_file = []
-        weekly_check_list = []
-        with open(weekly_file, 'r') as f:
-            for i in weekly_values:
-                file_results = f.readline()
-                file_results = file_results[0:1]
-                print(file_results)
-                
-                try:
-                    weekly_from_file.append(int(file_results))
-                except ValueError:
-                    weekly_from_file.append(0)
-                
-                weekly_check_list.append(0)
-
-        if weekly_values != weekly_from_file:
-            with open(weekly_file, 'w') as f:
-                for i, j in zip(weekly_from_file, weekly_check_list):
-                    if i == j:
-                        for i in weekly_values:
-                            f.write(str(i) + '\n')
-
-
-        monthly_from_file = []
-        monthly_check_list = []
-        test = []
-        with open(monthly_file, 'r') as f:
-            for i in monthly_values:
-                file_results = f.readline()
-                file_results = file_results[0:1]
-<<<<<<< HEAD
-=======
-                #print(file_results)
->>>>>>> 125a230437de0ba2f5a27e5a6a25442b53e6029e
-                
-                try:
-                    monthly_from_file.append(int(file_results))
-                except ValueError:
-                    monthly_from_file.append(0)
-                
-                monthly_check_list.append(0)
-
-
-        #print('From file: ', monthly_from_file)
-        #print('Monthly values: ', monthly_values)
-        #print('Checklist: ', monthly_check_list)
-
-<<<<<<< HEAD
-        test2 = 0
-        for i in monthly_from_file:   
-            if i == monthly_check_list[test2]:
-                test.append(i)
-                test2 += 1
-                print('Hello')               
-
-        print('Test', test)
-
-        if monthly_values != monthly_from_file and monthly_from_file == monthly_check_list:
-=======
-        if monthly_values != monthly_from_file:
->>>>>>> 125a230437de0ba2f5a27e5a6a25442b53e6029e
-            with open(monthly_file, 'w') as f:
-                for i, j in zip(monthly_from_file, monthly_check_list):
-                    if i == j:
-                        for i in monthly_values:
-                            f.write(str(i) + '\n')
-
-
-
 
     def _error_popup(self, message, issue):
 
