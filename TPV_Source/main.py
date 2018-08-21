@@ -33,10 +33,7 @@ class SomeWindow(tk.Frame):
 
         self._config_generation()
 
-        names = []
-
-        for i in self.config['Maskin Navn'].values():
-            names.append(i)
+        names = [i for i in self.config['Maskin Navn'].values()]
 
         configs = []
 
@@ -66,7 +63,7 @@ class SomeWindow(tk.Frame):
 
         app_config = self.config_folder / 'app_config.ini'
 
-        if os.path.isfile(str(app_config)) is True:
+        if os.path.isfile(str(app_config)):
             self.config = ConfigObj(str(app_config))
 
         else:

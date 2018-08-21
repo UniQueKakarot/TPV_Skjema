@@ -80,10 +80,8 @@ class TPV_Main():
 
     def _config_gen(self):
 
-        if os.path.isfile(self.config_name) is True:
-            pass
+        if not os.path.isfile(self.config_name):
 
-        else:
             self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
             self.config.filename = self.config_name
 
@@ -276,40 +274,29 @@ class TPV_Main():
         # Calling the config parser and accessing filepath if present in config file
         f_name = self.config['Filbehandling']['1']
 
-        # Dateformatting
-        month = self.date.strftime('%B')
-        month = str(month)
-
-        # Saving dates as strings for use in excel file
-        day_as_string = self.date.strftime('%d')
-        day_as_string = int(day_as_string) + 1
-        day_as_string = str(day_as_string)
-
-        # Saving dates as int's for use in locating rows
-        day_as_int = self.date.strftime('%d')
-        day_as_int = int(day_as_int) + 1
-
-        # Formatting date to my liking
+        # Dealing with dates related to where in the excel file stuff will be saved
+        month = str(self.date.strftime('%B'))
+        day_as_string = str(int(self.date.strftime('%d')) + 1)
+        day_as_int = int(self.date.strftime('%d')) + 1
         today = self.date.strftime('%d.%m.%Y, %a')
 
         cell = 'A' + day_as_string
 
-        index = []
-
         months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
                   'August', 'September', 'October', 'November', 'December']
 
-        for i in self.config['Vedlikeholdspunkt'].values():
-            index.append(i)
+        index = [i for i in self.config['Vedlikeholdspunkt'].values()]
 
         index.append(self.config['Diversje']['2'])
 
+
         # Checking if the file exist or not
-        if os.path.isfile(f_name) == False or self._year_check() == 1:
+        if not os.path.isfile(f_name) or self._year_check() == 1:
 
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
-                                                            ("All files", "*.*")), defaultextension="*.*")
+                                                            ("All files", "*.*")), 
+                                                 defaultextension="*.*")
 
             # Assigning the filename a place in the config file
             self.config['Filbehandling']['1'] = f_new
@@ -350,10 +337,10 @@ class TPV_Main():
                 self.config.write()
 
             except FileNotFoundError as e:
-                print(e)
-                pass
+                self._error_popup('Error!', e)
+                #print(e)
 
-        elif os.path.isfile(f_name) == True and self._year_check() == 0:
+        elif os.path.isfile(f_name) and self._year_check() == 0:
 
             f_name = self.config['Filbehandling']['1']
 
@@ -376,8 +363,7 @@ class TPV_Main():
             mBox.showinfo('', 'Resultater har blitt lagret')
 
         else:
-            # put in some error handling or something here
-            pass
+            self._error_popup('Major Error!', 'The whole universe has shattered, take cover!')
 
     def _year_check(self):
 
