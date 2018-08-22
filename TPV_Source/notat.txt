@@ -1,0 +1,5 @@
+Fargekoder når vedlikehold ikke er utført på rett tid:
+
+Problemstilling:
+
+-Hvordan finne ut om vedlikehold ikke er gjort på rett tidspunkt?

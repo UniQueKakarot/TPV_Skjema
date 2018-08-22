@@ -191,32 +191,32 @@ class TPV_Main():
 
         for value in self.config['Hyppighet'].values():
 
-            lowCas = value.lower()
+            lowcas = value.lower()
 
-            if lowCas == 'daglig':
+            if lowcas == 'daglig':
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='green')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'ukentlig' and today == 'Friday':
+            elif lowcas == 'ukentlig' and today == 'Friday':
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'månedlig' and today_number == day:
+            elif lowcas == 'månedlig' and today_number == day:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'kvartalsvis':
+            elif lowcas == 'kvartalsvis':
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowCas == 'halvår' and day_of_year == 183:
+            elif lowcas == 'halvår' and day_of_year == 183:
 
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
