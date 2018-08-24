@@ -48,4 +48,29 @@ for i in intervalls:
 # Concive a way to check the 8 sample list and see if the correct maintainance is done
 # if its not done, emit a signal of some sort for each passing list which dosent have the maintainace done
 # after it should have been done
-# no signal should be omitted for the first 4 list
+# no signal should be omitted for the first 4 list in this test
+
+def maintainance_check(yesterday, today, maintainance):
+
+    #instead of going by dates here, I just use a bool
+    #maintainance_day = False
+
+    for i in ukentlig.values():
+        
+        if yesterday[i] == 0 and not maintainance:
+            print("Hello, you should have done some maintainance yesterday!")
+
+        else:
+            print("Everything seems to be fine")
+
+# Made the bool a part of the function call instead of defining it in the function
+# but we might be on to something here
+maintainance_check(dag6, dag7, False)
+
+# one idea is to get yesterdays values from the excel document and check and see if today is a "maintainace" day
+# but this in it self doesnt solve the issue, we still dont know if the maintainance was done on time.
+# So I think we need either a persistent variable that is getting set when the maintainance has been done
+# or we need to check backwards and calculate when the last maintainace should have been done
+# and make the labels glow until it is done.
+# This should also only be done if we notice that it wasnt done on time
+# The last option seems to be the easiest one
