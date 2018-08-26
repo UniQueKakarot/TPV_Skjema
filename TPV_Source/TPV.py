@@ -268,6 +268,8 @@ class TPV_Main():
         self.checkbox_values = []
         for i in values:
             self.checkbox_values.append(i.get())
+            
+        #print(self.checkbox_values)
 
         # Main code for writing out the excel file used to save the data in comes here:
 
@@ -357,6 +359,8 @@ class TPV_Main():
 
             textbox = self.txt.get('1.0', tk.END)
             ws.cell(row=day_as_int, column=col, value=textbox)
+
+            self._persistent_weekly(self.checkbox_values, ws)
 
             op.writer.excel.save_workbook(wb, f_name)
 
@@ -538,6 +542,9 @@ class TPV_Main():
 
         else:
             return 20
+
+    def _persistent_weekly(self, checkbox_values, active_worksheet):
+        pass
 
     def _error_popup(self, message, issue):
 

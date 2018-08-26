@@ -50,9 +50,10 @@ for i in intervalls:
 # after it should have been done
 # no signal should be omitted for the first 4 list in this test
 
-def maintainance_check(yesterday, today, maintainance, intervall, flag):
+def maintainance_check(yesterday, today, maintainance, trigger):
 
-    if flag == 1:
+    # this works great, we only need a way to set the trigger correctly
+    if trigger == 1:
 
         for i in ukentlig.values():
             
@@ -65,7 +66,9 @@ def maintainance_check(yesterday, today, maintainance, intervall, flag):
 
 # Made the bool a part of the function call instead of defining it in the function
 # but we might be on to something here
-maintainance_check(dag5, dag6, False, 0, 0)
+
+
+maintainance_check(dag5, dag6, False, 1)
 
 # one idea is to get yesterdays values from the excel document and check and see if today is a "maintainace" day
 # but this in it self doesnt solve the issue, we still dont know if the maintainance was done on time.
