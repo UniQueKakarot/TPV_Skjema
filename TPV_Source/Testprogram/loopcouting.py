@@ -50,23 +50,22 @@ for i in intervalls:
 # after it should have been done
 # no signal should be omitted for the first 4 list in this test
 
-def maintainance_check(yesterday, today, maintainance, intervall):
+def maintainance_check(yesterday, today, maintainance, intervall, flag):
 
-    #instead of going by dates here, I just use a bool
-    #maintainance_day = False
+    if flag == 1:
 
-    for i in ukentlig.values():
-        
-        # How do we decide that maintainance isnt done????
-        if yesterday[i] == 0 and not maintainance:
-            print("Hello, you should have done some maintainance yesterday!")
+        for i in ukentlig.values():
+            
+            if yesterday[i] == 0 and not maintainance:
+                print("Hello, you should have done some maintainance yesterday!")
 
-        else:
-            print("Everything seems to be fine")
+            else:
+                print("Everything seems to be fine")
+
 
 # Made the bool a part of the function call instead of defining it in the function
 # but we might be on to something here
-maintainance_check(dag6, dag7, False, 0)
+maintainance_check(dag5, dag6, False, 0, 0)
 
 # one idea is to get yesterdays values from the excel document and check and see if today is a "maintainace" day
 # but this in it self doesnt solve the issue, we still dont know if the maintainance was done on time.
