@@ -127,12 +127,14 @@ class TPV_Main():
             self.config['Filbehandling']['4'] = ''
 
             self.config['Vedlikeholdsjekk'] = {}
-            self.config['Vedlikeholdsjekk']['1'] = ''
+            self.config['Vedlikeholdsjekk']['1'] = '0'
             self.config['Vedlikeholdsjekk']['2'] = ''
             self.config['Vedlikeholdsjekk']['3'] = ''
 
-            year = self.date.strftime('%Y')
-            self.config['Diversje']['3'] = year
+            self.config['Ukentlig'] = {}
+            self.config['Ukentlig']['1'] = '0'
+
+            self.config['Diversje']['3'] = self.date.strftime('%Y')
 
             self.config.write()
 
@@ -168,6 +170,21 @@ class TPV_Main():
         
         day = self.day_check()
 
+        key_weekly = 0
+        self.weekly = {}
+
+        key_monthly = 0
+        self.monthly = {}
+
+        key_quarterly = 0
+        self.quarterly = {}
+
+        key_halfyear = 0
+        self.halfyear = {}
+
+        intervalls_counter = 1
+        test = 1
+
         row_ved = 1
         row_han = 1
         row_olj = 1
@@ -198,17 +215,46 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowcas == 'ukentlig' and today == 'Friday':
+            elif lowcas == 'ukentlig':
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                weekly_flag = self.config['Ukentlig']['{0}'.format(test)]
+                test += 1
 
-            elif lowcas == 'månedlig' and today_number == day:
+                if today == 'Friday' or weekly_flag == '1':
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.weekly['Weekly' + str(key_weekly)] = intervalls_counter
+                    key_weekly += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.weekly['Weekly' + str(key_weekly)] = intervalls_counter
+                    key_weekly += 1
+
+            elif lowcas == 'månedlig':
+
+                if today_number == day:
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.monthly['Monthly' + str(key_monthly)] = intervalls_counter
+                    key_monthly += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.monthly['Monthly' + str(key_monthly)] = intervalls_counter
+                    key_monthly += 1
 
             elif lowcas == 'kvartalsvis':
 
@@ -216,16 +262,31 @@ class TPV_Main():
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
 
-            elif lowcas == 'halvår' and day_of_year == 183:
+            elif lowcas == 'halvår':
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                if day_of_year == 183:
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.halfyear['Halfyear' + str(key_halfyear)] = intervalls_counter
+                    key_halfyear += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.halfyear['Halfyear' + str(key_halfyear)] = intervalls_counter
+                    key_halfyear += 1
 
             else:
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
                 label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
                 row_hyp += 1
+
+            intervalls_counter += 1
 
         self.results = {}
         check_boxes = {}
@@ -544,6 +605,41 @@ class TPV_Main():
             return 20
 
     def _persistent_weekly(self, checkbox_values, active_worksheet):
+
+        #today = self.date.strftime('%A')
+        today = 'Friday'
+        today_number = int(self.date.strftime('%d'))
+
+        #test = int(self.config['Vedlikeholdsjekk']['1'])
+        print(checkbox_values)
+        config_pos = 1
+        if today == 'Friday':
+            
+            # weekly values need adjusting, list index 1 to high
+            for i in self.weekly.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Ukentlig'][str(config_pos)] = '0'
+                    config_pos += 1
+                    print("Checkbox = 1")
+
+                else:
+                    self.config['Ukentlig'][str(config_pos)] = '1'
+                    config_pos += 1
+                    
+            self.config.write()
+
+        # repeat the above and invert the flag writing with the flag as the condition on the outer if
+
+
+        """
+        print(self.weekly)
+        print(self.monthly)
+        print(self.halfyear)
+        """
+
+
+
         pass
 
     def _error_popup(self, message, issue):
