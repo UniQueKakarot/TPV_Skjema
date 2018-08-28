@@ -170,20 +170,19 @@ class TPV_Main():
         
         day = self.day_check()
 
-        key_weekly = 0
+        key_weekly = 1
         self.weekly = {}
 
-        key_monthly = 0
+        key_monthly = 1
         self.monthly = {}
 
-        key_quarterly = 0
+        key_quarterly = 1
         self.quarterly = {}
 
-        key_halfyear = 0
+        key_halfyear = 1
         self.halfyear = {}
 
-        intervalls_counter = 1
-        test = 1
+        intervalls_counter = 0
 
         row_ved = 1
         row_han = 1
@@ -217,10 +216,9 @@ class TPV_Main():
 
             elif lowcas == 'ukentlig':
 
-                weekly_flag = self.config['Ukentlig']['{0}'.format(test)]
-                test += 1
+                self.weekly_flag = self.config['Ukentlig'][str(key_weekly)]
 
-                if today == 'Friday' or weekly_flag == '1':
+                if today == 'Friday' or self.weekly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -606,28 +604,49 @@ class TPV_Main():
 
     def _persistent_weekly(self, checkbox_values, active_worksheet):
 
-        #today = self.date.strftime('%A')
-        today = 'Friday'
+        today = self.date.strftime('%A')
+        #today = 'Friday'
         today_number = int(self.date.strftime('%d'))
 
-        #test = int(self.config['Vedlikeholdsjekk']['1'])
         print(checkbox_values)
+
         config_pos = 1
         if today == 'Friday':
             
-            # weekly values need adjusting, list index 1 to high
             for i in self.weekly.values():
 
                 if checkbox_values[i] == 1:
                     self.config['Ukentlig'][str(config_pos)] = '0'
                     config_pos += 1
-                    print("Checkbox = 1")
-
                 else:
                     self.config['Ukentlig'][str(config_pos)] = '1'
                     config_pos += 1
-                    
-            self.config.write()
+
+        # could we be so stupid as to assume that if the weekly checkbox is checked
+        # that it would mean the maintainance is done?
+        for value in self.config['Ukentlig'].values():
+            if value == '1'
+
+        config_pos = 1
+        if self.config['Flags']['1'] == '1':
+
+            for i in self.weekly.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Ukentlig'][str(config_pos)] = '0'
+                    config_pos += 1
+
+            print("Hello")
+
+
+
+
+
+
+
+
+
+        self.config.write()
 
         # repeat the above and invert the flag writing with the flag as the condition on the outer if
 
