@@ -625,8 +625,18 @@ class TPV_Main():
         # could we be so stupid as to assume that if the weekly checkbox is checked
         # that it would mean the maintainance is done?
         test = 0
-        test2 = [value for value in self.config['Ukentlig'].values()]
+        test2 = []
+        for value in self.config['Ukentlig'].values():
+            test2.append(int(value))
+            test += 1
 
+        print(test2.count(1))
+        print(test2.count(0))
+        if test2.count(0) == test:
+            print("Hello")
+            
+
+        """
         config_pos = 1
         if self.config['Flags']['1'] == '1':
 
@@ -636,7 +646,8 @@ class TPV_Main():
                     self.config['Ukentlig'][str(config_pos)] = '0'
                     config_pos += 1
 
-            print("Hello")
+            #print("Hello")
+        """
 
 
 
