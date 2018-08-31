@@ -12,6 +12,8 @@ from configobj import ConfigObj
 import openpyxl as op
 from docx import Document
 
+from modules import maintanance
+
 
 class TPV_Main():
 
@@ -481,101 +483,12 @@ class TPV_Main():
         else:
             # insert some logging here when we have figured out if it is needed
             pass
-        
+
     def maintanance(self):
         
         """Adding in a new window for saving extra information on maintenance done"""
-        
-        self.new_win = tk.Tk()
-        self.new_win.title('Skjema')
-        self.new_win.geometry('450x280')
-        
-        today = self.date.strftime('%d.%m.%Y, %a')
-        
-        form_body = ttk.LabelFrame(self.new_win, text='Skjema for utført Vedlikehold')
-        form_body.pack(expand=1)
-        
-        lbl1 = tk.Label(form_body, text='Dato: ', font=FONT1)
-        lbl1.grid(row=0, column=0, sticky=tk.N)
-        self.ent1 = ttk.Entry(form_body)
-        self.ent1.grid(row=0, column=1, sticky=tk.N)
-        self.ent1.insert(0, today)
-        
-        lbl2 = tk.Label(form_body, text='Hvem utførte vedlikeholdet?: ', font=FONT1)
-        lbl2.grid(row=1, column=0, sticky=tk.W, pady=10)
-        self.ent2 = ttk.Entry(form_body)
-        self.ent2.grid(row=1, column=1, sticky=tk.N, pady=10)
-        
-        lbl3 = tk.Label(form_body, text='Hva ble gjort:', font=FONT2)
-        lbl3.grid(row=2, column=0, sticky=tk.W)
-        self.maintanance_txt = tk.Text(form_body, height=3, width=40)
-        self.maintanance_txt.grid(row=3, column=0, columnspan=2, sticky=tk.W)
-        
-        button1 = ttk.Button(form_body, text='Lagre', command=self.maintanance_save)
-        button1.grid(row=4, column=0, sticky=tk.N, pady=10)
-            
-        button2 = ttk.Button(form_body, text='Avslutt', command=self.maintanance_quit)
-        button2.grid(row=4, column=1, sticky=tk.N, pady=10)
 
-    def maintanance_save(self):
-        
-        """Saving method for the main maintainance method"""
-        
-        f_exist = self.config['Filbehandling']['4']
-        
-        if os.path.isfile(f_exist) is True:
-            
-            document = Document(f_exist)
-            
-            date = self.ent1.get()
-            name = self.ent2.get()
-            textbox = self.maintanance_txt.get('1.0', tk.END)
-            
-            document.add_paragraph(date)
-            document.add_paragraph(name)
-            document.add_paragraph(textbox)
-            document.add_paragraph('')
-            
-            try:
-                document.save(f_exist)
-                mBox.showinfo('', 'Resultater har blitt lagret')
-            except PermissionError as e:
-                self._error_popup('Error!', e)
-                mBox.showinfo('', 'Resultatene har ikke blitt lagret')
-            
-        elif os.path.isfile(f_exist) is False:
-            
-            f_new = filedialog.asksaveasfilename(title='Select File',
-                                                 filetypes=(("Word files", ".docx"),
-                                                            ("All files", "*.*")),
-                                                 defaultextension="*.*")
-            
-            document = Document()
-            
-            date = self.ent1.get()
-            name = self.ent2.get()
-            textbox = self.maintanance_txt.get('1.0', tk.END)
-            
-            document.add_paragraph(date)
-            document.add_paragraph(name)
-            document.add_paragraph(textbox)
-            document.add_paragraph('')
-            
-            document.save(f_new)
-
-            self.config['Filbehandling']['4'] = f_new
-            self.config.write()
-            
-            mBox.showinfo('', 'Resultater har blitt lagret')
-
-        else:
-            self._error_popup('Error Saving Document', 'Something went wrong when we tried to save the document')
-
-    def maintanance_quit(self):
-        
-        """Simply just kills the extra save window"""
-        
-        self.new_win.destroy()
+        maintanance.Maintanace(self.config, self.date, FONT1, FONT2)
 
     def day_check(self):
 
