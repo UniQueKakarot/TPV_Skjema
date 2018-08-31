@@ -150,6 +150,7 @@ class TPV_Main():
 
         # Collecting current date and weekday in full name
         today = self.date.strftime('%A')
+        #today = 'M'
 
         # Collecting which number in the month the current day is
         today_number = self.date.strftime('%d')
@@ -419,7 +420,7 @@ class TPV_Main():
             textbox = self.txt.get('1.0', tk.END)
             ws.cell(row=day_as_int, column=col, value=textbox)
 
-            self._persistent_weekly(self.checkbox_values, ws)
+            self._persistent_weekly(self.checkbox_values)
 
             op.writer.excel.save_workbook(wb, f_name)
 
@@ -602,11 +603,12 @@ class TPV_Main():
         else:
             return 20
 
-    def _persistent_weekly(self, checkbox_values, active_worksheet):
+    def _persistent_weekly(self, checkbox_values):
 
         today = self.date.strftime('%A')
         #today = 'Friday'
-        today_number = int(self.date.strftime('%d'))
+        #today = 'M'
+        #today_number = int(self.date.strftime('%d'))
 
         print(checkbox_values)
 
@@ -622,55 +624,18 @@ class TPV_Main():
                     self.config['Ukentlig'][str(config_pos)] = '1'
                     config_pos += 1
 
-        # could we be so stupid as to assume that if the weekly checkbox is checked
-        # that it would mean the maintainance is done?
-        test = 0
-        test2 = []
-        for value in self.config['Ukentlig'].values():
-            test2.append(int(value))
-            test += 1
-
-        print(test2.count(1))
-        print(test2.count(0))
-        if test2.count(0) == test:
-            print("Hello")
-            
-
-        """
         config_pos = 1
-        if self.config['Flags']['1'] == '1':
-
-            for i in self.weekly.values():
-
-                if checkbox_values[i] == 1:
-                    self.config['Ukentlig'][str(config_pos)] = '0'
-                    config_pos += 1
-
-            #print("Hello")
-        """
-
-
-
-
-
-
-
-
+        for value, test in zip(self.config['Ukentlig'].values(), self.weekly.values()):
+            #print("Test: ", test)
+            #print("Value: ", value)
+            
+            if value == '1' and checkbox_values[test] == 1:
+                print("Test2")
+                self.config['Ukentlig'][str(config_pos)] = '0'
+        
+            config_pos += 1
 
         self.config.write()
-
-        # repeat the above and invert the flag writing with the flag as the condition on the outer if
-
-
-        """
-        print(self.weekly)
-        print(self.monthly)
-        print(self.halfyear)
-        """
-
-
-
-        pass
 
     def _error_popup(self, message, issue):
 
