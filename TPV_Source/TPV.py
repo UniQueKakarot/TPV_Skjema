@@ -134,6 +134,9 @@ class TPV_Main():
             self.config['Ukentlig'] = {}
             self.config['Ukentlig']['1'] = '0'
 
+            self.config['Månedlig'] = {}
+            self.config['Månedlig']['1'] = '0'
+
             self.config['Diversje']['3'] = self.date.strftime('%Y')
 
             self.config.write()
@@ -608,7 +611,8 @@ class TPV_Main():
         today = self.date.strftime('%A')
         #today = 'Friday'
         #today = 'M'
-        #today_number = int(self.date.strftime('%d'))
+        today_number = int(self.date.strftime('%d'))
+        today_saved = self.config['Diversje']['4']
 
         print(checkbox_values)
 
@@ -625,13 +629,32 @@ class TPV_Main():
                     config_pos += 1
 
         config_pos = 1
-        for value, test in zip(self.config['Ukentlig'].values(), self.weekly.values()):
-            #print("Test: ", test)
-            #print("Value: ", value)
+        for value, location in zip(self.config['Ukentlig'].values(), self.weekly.values()):
             
-            if value == '1' and checkbox_values[test] == 1:
-                print("Test2")
+            if value == '1' and checkbox_values[location] == 1:
                 self.config['Ukentlig'][str(config_pos)] = '0'
+        
+            config_pos += 1
+
+
+        config_pos = 1
+        if today_number == today_saved:
+            
+            for i in self.monthly.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Månedlig'][str(config_pos)] = '0'
+                    config_pos += 1
+                else:
+                    self.config['Månedlig'][str(config_pos)] = '1'
+                    config_pos += 1
+
+        config_pos = 1
+        for value, location in zip(self.config['Månedlig'].values(), self.monthly.values()):
+            
+            if value == '1' and checkbox_values[location] == 1:
+                print("Test2")
+                self.config['Månedlig'][str(config_pos)] = '0'
         
             config_pos += 1
 
