@@ -222,9 +222,9 @@ class TPV_Main():
 
             elif lowcas == 'ukentlig':
 
-                self.weekly_flag = self.config['Ukentlig'][str(key_weekly)]
+                weekly_flag = self.config['Ukentlig'][str(key_weekly)]
 
-                if today == 'Friday' or self.weekly_flag == '1':
+                if today == 'Friday' or weekly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='yellow')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -243,7 +243,9 @@ class TPV_Main():
 
             elif lowcas == 'månedlig':
 
-                if today_number == day:
+                monthly_flag = self.config['Månedlig'][str(key_monthly)]
+
+                if today_number == day or monthly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -521,9 +523,10 @@ class TPV_Main():
 
     def _persistent_weekly(self, checkbox_values):
 
+        """ Monitoring the maintainance so that correct maintainance is done on time
+            and if not signal that to the user by lighting up the labels """
+
         today = self.date.strftime('%A')
-        #today = 'Friday'
-        #today = 'M'
         today_number = int(self.date.strftime('%d'))
         today_saved = self.config['Diversje']['4']
 
@@ -566,12 +569,11 @@ class TPV_Main():
         for value, location in zip(self.config['Månedlig'].values(), self.monthly.values()):
             
             if value == '1' and checkbox_values[location] == 1:
-                print("Test2")
                 self.config['Månedlig'][str(config_pos)] = '0'
         
             config_pos += 1
 
-        self.config.write()
+        self.config.write() 
 
     def _error_popup(self, message, issue):
 
