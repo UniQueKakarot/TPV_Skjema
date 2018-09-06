@@ -194,6 +194,7 @@ class TPV_Main():
         row_han = 1
         row_olj = 1
         row_hyp = 1
+        row_when = 1
 
         # Generating labels on the fly based on how many entries it is in the config file
         for value in self.config['Vedlikeholdspunkt'].values():
@@ -293,6 +294,11 @@ class TPV_Main():
                 row_hyp += 1
 
             intervalls_counter += 1
+
+        for value in self.config['Tidspunkt'].values():
+            label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+            label.grid(row=row_when, column=5, sticky=tk.N, padx=15)
+            row_when += 1
 
         self.results = {}
         check_boxes = {}
