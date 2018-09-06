@@ -115,6 +115,13 @@ class TPV_Main():
             self.config['Hyppighet']['4'] = 'Put your info here'
             self.config['Hyppighet']['5'] = 'Put your info here'
 
+            self.config['Tidspunkt'] = {}
+            self.config['Tidspunkt']['1'] = 'Put your info here'
+            self.config['Tidspunkt']['2'] = 'Put your info here'
+            self.config['Tidspunkt']['3'] = 'Put your info here'
+            self.config['Tidspunkt']['4'] = 'Put your info here'
+            self.config['Tidspunkt']['5'] = 'Put your info here'
+
             self.config['Diversje'] = {}
             self.config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
             self.config['Diversje']['2'] = 'Annet:'
@@ -319,6 +326,8 @@ class TPV_Main():
         lbl3.grid(row=0, column=3, sticky=tk.N)
         lbl4 = tk.Label(self.TPV_Body, text='Hyppighet:', font=FONT2)
         lbl4.grid(row=0, column=4, sticky=tk.N)
+        lbl5 = tk.Label(self.TPV_Body, text='Tidspunkt:', font=FONT2)
+        lbl5.grid(row=0, column=5, sticky=tk.N)
 
         header = self.config['Diversje']['1']
         lbl16 = tk.Label(self.TPV_Body, text=header)
