@@ -1,5 +1,1 @@
-Fargekoder når vedlikehold ikke er utført på rett tid:
-
-Problemstilling:
-
--Hvordan finne ut om vedlikehold ikke er gjort på rett tidspunkt?
+Finn en måte å bedre håndtere halvårs kriteriet og kvartal kriteriet. (Generelt håndter relative datoer bedre)
