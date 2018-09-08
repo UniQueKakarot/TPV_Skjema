@@ -6,7 +6,7 @@ import os.path
 
 from configobj import ConfigObj
 
-from TPV import TPV_Main
+from modules import TPV
 
 # TODO
 # Fix up the logging so it actually logs any usefull error message
@@ -46,7 +46,7 @@ class SomeWindow(tk.Frame):
 
         try:
             for i in range(machines):
-                TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
+                TPV.TPV_Main(self.master, self.tabcontroll, names[i], configs[i])
         except IndexError as e:
             self._config_popup(e)
 

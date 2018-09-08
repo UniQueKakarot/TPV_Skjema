@@ -40,45 +40,22 @@ class TPV_Main():
         self.TPV_Body = ttk.LabelFrame(self.tabvar, text=frametxt)
         self.TPV_Body.pack(expand=1)
 
-        menuBar = tk.Menu(self.master)
-        self.master.config(menu=menuBar)
+        menu_bar = tk.Menu(self.master)
+        self.master.config(menu=menu_bar)
 
-        fileMenu = tk.Menu(menuBar, tearoff=0)
-        helpMenu = tk.Menu(menuBar, tearoff=0)
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        help_menu = tk.Menu(menu_bar, tearoff=0)
 
-        helpMenu.add_command(label='Prosedyre', command=self.procedure)
-        helpMenu.add_command(label='Hjelp', command=self._op_wiki)
-        menuBar.add_cascade(label='Info', menu=helpMenu)
+        help_menu.add_command(label='Prosedyre', command=self.procedure)
+        help_menu.add_command(label='Hjelp', command=self._op_wiki)
+        menu_bar.add_cascade(label='Info', menu=help_menu)
 
-        fileMenu.add_command(label='Lagre Utført vedlikehold', command=self.maintanance)
-        fileMenu.add_command(label='Åpne eksisterende excel fil', command=self._op_saved)
-        menuBar.add_cascade(label='Alternativer', menu=fileMenu)
+        file_menu.add_command(label='Lagre Utført vedlikehold', command=self.maintanance)
+        file_menu.add_command(label='Åpne eksisterende excel fil', command=self._op_saved)
+        menu_bar.add_cascade(label='Alternativer', menu=file_menu)
 
-        #self.logging()
         self._config_gen()
         self.main()
-
-        #self.master.after(1000, self.persistent_colors)
-        #self.persistent_colors()
-
-    def logging(self):
-
-        # Create the Logger
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.INFO)
-
-        # Create the Handler for logging data to a file
-        logger_handler = logging.FileHandler('TPV_log.log')
-        logger_handler.setLevel(logging.INFO)
-
-        # Create a Formatter for formatting the log messages
-        logger_formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-
-        # Add the Formatter to the Handler
-        logger_handler.setFormatter(logger_formatter)
-
-        # Add the Handler to the Logger
-        self.logger.addHandler(logger_handler)
 
     def _config_gen(self):
 
@@ -464,7 +441,6 @@ class TPV_Main():
             self.config.write()
             return 1
         else:
-            # returning 0 just to indicate that we have indeed not switched year
             return 0
 
     def _op_saved(self):
@@ -498,8 +474,7 @@ class TPV_Main():
             self.config.write()
 
         else:
-            # insert some logging here when we have figured out if it is needed
-            pass
+            self._error_popup("Procedure failed", "We could not locate or save the procedure document")
 
     def maintanance(self):
         

@@ -1,1 +1,3 @@
 Finn en måte å bedre håndtere halvårs kriteriet og kvartal kriteriet. (Generelt håndter relative datoer bedre)
+
+REFACTOR
