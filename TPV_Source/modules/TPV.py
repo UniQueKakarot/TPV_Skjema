@@ -105,17 +105,13 @@ class TPV_Main():
             self.config['Diversje']['3'] = ''
             self.config['Diversje']['4'] = '20'
             self.config['Diversje']['5'] = 'TPV Skjema for Maskin...'
+            self.config['Diversje']['6'] = '0'
 
             self.config['Filbehandling'] = {}
             self.config['Filbehandling']['1'] = ''
             self.config['Filbehandling']['2'] = '850x450'
             self.config['Filbehandling']['3'] = ''
             self.config['Filbehandling']['4'] = ''
-
-            self.config['Vedlikeholdsjekk'] = {}
-            self.config['Vedlikeholdsjekk']['1'] = '0'
-            self.config['Vedlikeholdsjekk']['2'] = ''
-            self.config['Vedlikeholdsjekk']['3'] = ''
 
             self.config['Ukentlig'] = {}
             self.config['Ukentlig']['1'] = '0'
@@ -139,22 +135,15 @@ class TPV_Main():
 
         # Collecting current date and weekday in full name
         today = self.date.strftime('%A')
-        #today = 'M'
 
         # Collecting which number in the month the current day is
-        today_number = self.date.strftime('%d')
-        today_number = int(today_number)
+        today_number = int(self.date.strftime('%d'))
 
         # Collecting which number in the year the current day is
-        day_of_year = self.date.strftime('%j')
-        day_of_year = int(day_of_year)
-
-        # Empty list assigned for holding info on entries in the first key of the config file
-        values = []
+        day_of_year = int(self.date.strftime('%j'))
 
         # Establish the number of entries in the config file
-        for i in self.config[first_key]:
-            values.append(i)
+        values = [i for i in self.config[first_key]]
 
         length = len(values)
         
@@ -320,15 +309,10 @@ class TPV_Main():
 
     def save(self):
         
-        values = []
-        for i in self.results:
-            values.append(self.results[i])
 
-        self.checkbox_values = []
-        for i in values:
-            self.checkbox_values.append(i.get())
-            
-        #print(self.checkbox_values)
+        values = [self.results[i] for i in self.results]
+
+        self.checkbox_values = [i.get() for i in values]
 
         # Main code for writing out the excel file used to save the data in comes here:
 
@@ -351,7 +335,7 @@ class TPV_Main():
         index.append(self.config['Diversje']['2'])
 
 
-        # Checking if the file exist or not
+        # Checking if the file exist or if we have switched year
         if not os.path.isfile(f_name) or self._year_check() == 1:
 
             f_new = filedialog.asksaveasfilename(title='Select File',
@@ -359,7 +343,6 @@ class TPV_Main():
                                                             ("All files", "*.*")), 
                                                  defaultextension="*.*")
 
-            # Assigning the filename a place in the config file
             self.config['Filbehandling']['1'] = f_new
 
             wb = op.Workbook()
@@ -368,12 +351,12 @@ class TPV_Main():
                 wb.create_sheet(i)
 
             del wb['Sheet']
-            sh = wb.sheetnames
+            wb_sheets = wb.sheetnames
 
             col = 2
 
-            for m in sh:
-                ws = wb[m]
+            for wb_month in wb_sheets:
+                ws = wb[wb_month]
                 for i in index:
                     ws.cell(row=1, column=col, value=i)
                     col += 1
@@ -399,7 +382,6 @@ class TPV_Main():
 
             except FileNotFoundError as e:
                 self._error_popup('Error!', e)
-                #print(e)
 
         elif os.path.isfile(f_name) and self._year_check() == 0:
 
@@ -486,30 +468,39 @@ class TPV_Main():
 
         """Checks to see if the 20th day of the month falls on a weekend"""
         
-        saved_day = self.config['Diversje']['4']
-        
-        year = self.date.strftime('%Y')
-        year = int(year)
-        month = self.date.strftime('%m')
-        month = int(month)
+        year = int(self.date.strftime('%Y'))
+        month = int(self.date.strftime('%m'))
         day = 20
         
         check_day = date(year, month, day).isoweekday()
 
+        if check_day == 6:
+            day -= 1
+            return day
+        
+        elif check_day == 7:
+            day += 1
+            return day
+
+        else:
+            return 20
+
+        """
         if saved_day == '20' and check_day == 6:
-            day = day - 1
+            day -= 1
             self.config['Diversje']['4'] = day
             self.config.write()
             return day
         
         elif saved_day == '20' and check_day == 7:
-            day = day + 1
+            day += 1
             self.config['Diversje']['4'] = day
             self.config.write()
             return day
 
         else:
             return 20
+        """
 
     def _persistent_weekly(self, checkbox_values):
 
@@ -520,7 +511,7 @@ class TPV_Main():
         today_number = int(self.date.strftime('%d'))
         today_saved = self.config['Diversje']['4']
 
-        print(checkbox_values)
+        #print(checkbox_values)
 
         config_pos = 1
         if today == 'Friday':
@@ -563,7 +554,13 @@ class TPV_Main():
         
             config_pos += 1
 
-        self.config.write() 
+        self.config.write()
+
+    def _movable_dates(self):
+
+        """ Deal with incremental maintainance times instead of a fixed date """
+
+        pass
 
     def _error_popup(self, message, issue):
 
