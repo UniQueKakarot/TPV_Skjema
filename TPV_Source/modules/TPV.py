@@ -401,7 +401,7 @@ class TPV_Main():
             textbox = self.txt.get('1.0', tk.END)
             ws.cell(row=day_as_int, column=col, value=textbox)
 
-            self._persistent_weekly(self.checkbox_values)
+            self._persistent_weekly(self.checkbox_values, ws)
 
             op.writer.excel.save_workbook(wb, f_name)
 
@@ -502,17 +502,20 @@ class TPV_Main():
             return 20
         """
 
-    def _persistent_weekly(self, checkbox_values):
+    def _persistent_weekly(self, checkbox_values, worksheet):
 
         """ Monitoring the maintainance so that correct maintainance is done on time
             and if not signal that to the user by lighting up the labels """
 
         today = self.date.strftime('%A')
+        #today = 'Friday'
         today_number = int(self.date.strftime('%d'))
         today_saved = self.config['Diversje']['4']
 
-        #print(checkbox_values)
+        backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6}
+        check_pos = today_number - backwards_counting[today]
 
+        # weekly
         config_pos = 1
         if today == 'Friday':
             
@@ -525,15 +528,28 @@ class TPV_Main():
                     self.config['Ukentlig'][str(config_pos)] = '1'
                     config_pos += 1
 
+        else:
+
+            for position in self.weekly.values():
+                position += 2
+
+                if worksheet.cell(row=check_pos, column=position).value == 0:
+                    self.config['Ukentlig'][str(config_pos)] = '1'
+                
+                config_pos += 1
+
         config_pos = 1
         for value, location in zip(self.config['Ukentlig'].values(), self.weekly.values()):
-            
+
             if value == '1' and checkbox_values[location] == 1:
                 self.config['Ukentlig'][str(config_pos)] = '0'
-        
+                location += 2
+                worksheet.cell(row=check_pos, column=location, value=1)
+
             config_pos += 1
 
 
+        # monthly
         config_pos = 1
         if today_number == today_saved:
             
