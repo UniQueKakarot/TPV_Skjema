@@ -485,34 +485,17 @@ class TPV_Main():
         else:
             return 20
 
-        """
-        if saved_day == '20' and check_day == 6:
-            day -= 1
-            self.config['Diversje']['4'] = day
-            self.config.write()
-            return day
-        
-        elif saved_day == '20' and check_day == 7:
-            day += 1
-            self.config['Diversje']['4'] = day
-            self.config.write()
-            return day
-
-        else:
-            return 20
-        """
-
     def _persistent_weekly(self, checkbox_values, worksheet):
 
         """ Monitoring the maintainance so that correct maintainance is done on time
             and if not signal that to the user by lighting up the labels """
 
         today = self.date.strftime('%A')
-        #today = 'Friday'
+        #today = 'Thursday'
         today_number = int(self.date.strftime('%d'))
         today_saved = self.config['Diversje']['4']
 
-        backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6}
+        backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6, 'Friday': 0}
         check_pos = today_number - backwards_counting[today]
 
         # weekly
