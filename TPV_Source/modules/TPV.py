@@ -401,7 +401,7 @@ class TPV_Main():
             textbox = self.txt.get('1.0', tk.END)
             ws.cell(row=day_as_int, column=col, value=textbox)
 
-            self._persistent_weekly(self.checkbox_values, ws)
+            self._persistent_weekly(self.checkbox_values, wb)
 
             op.writer.excel.save_workbook(wb, f_name)
 
@@ -485,7 +485,7 @@ class TPV_Main():
         else:
             return 20
 
-    def _persistent_weekly(self, checkbox_values, worksheet):
+    def _persistent_weekly(self, checkbox_values, workbook):
 
         """ Monitoring the maintainance so that correct maintainance is done on time
             and if not signal that to the user by lighting up the labels """
@@ -493,10 +493,27 @@ class TPV_Main():
         today = self.date.strftime('%A')
         #today = 'Thursday'
         today_number = int(self.date.strftime('%d'))
-        today_saved = self.config['Diversje']['4']
+        month_number = int(self.date.strftime('%m'))
 
         backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6, 'Friday': 0}
         check_pos = today_number - backwards_counting[today]
+
+        # I hate working with dates!
+        worksheet_months = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 
+                            9: 'September', 10: 'October', 11: 'November', 12: 'December'}
+
+        days_in_month = {'January': 31, 'February': 28, 'March': 31, 'April': 30, 'May': 31, 'June': 30, 'July': 31, 'August': 31,
+                         'September': 30, 'October': 31, 'November': 30, 'December': 31}
+
+        # if friday is so close to the start of the month that when we check back
+        # we need to check the previous month, subtract 1 of month number and convert to
+        # month name and set the correct worksheet and get the right number of days to subtract
+        if check_pos < 1:
+            worksheet = workbook[worksheet_months[(month_number - 1)]]
+            check_pos = days_in_month[worksheet_months[(month_number - 1)]] - abs(check_pos)
+
+        else:
+            worksheet = workbook[worksheet_months[month_number]]
 
         # weekly
         config_pos = 1
@@ -516,7 +533,7 @@ class TPV_Main():
             for position in self.weekly.values():
                 position += 2
 
-                if worksheet.cell(row=check_pos, column=position).value == 0:
+                if worksheet.cell(row=check_pos, column=position).value == 0 or worksheet.cell(row=check_pos, column=position).value == None:
                     self.config['Ukentlig'][str(config_pos)] = '1'
                 
                 config_pos += 1
@@ -534,7 +551,7 @@ class TPV_Main():
 
         # monthly
         config_pos = 1
-        if today_number == today_saved:
+        if today_number == self.day_check():
             
             for i in self.monthly.values():
 
@@ -554,12 +571,26 @@ class TPV_Main():
             config_pos += 1
 
         self.config.write()
+        self._movable_dates()
 
     def _movable_dates(self):
 
         """ Deal with incremental maintainance times instead of a fixed date """
 
-        pass
+        # Experimental
+        intervall_9months = int(self.config['Diversje']['4'])
+        day_of_year = int(self.date.strftime('%j'))
+
+        if intervall_9months <= day_of_year:
+            new_intervall = intervall_9months + intervall_9months
+
+            if new_intervall > 366:
+                new_intervall = new_intervall % 366
+
+            self.config['Diversje']['4'] = str(new_intervall)
+        
+        self.config.write()
+            
 
     def _error_popup(self, message, issue):
 
