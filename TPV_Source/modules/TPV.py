@@ -55,6 +55,7 @@ class TPV_Main():
         menu_bar.add_cascade(label='Alternativer', menu=file_menu)
 
         self._config_gen()
+        self._movable_dates()
         self.main()
 
     def _config_gen(self):
@@ -141,6 +142,9 @@ class TPV_Main():
 
         # Collecting which number in the year the current day is
         day_of_year = int(self.date.strftime('%j'))
+        month9_intervall = self.config['Dato']['2']
+
+        print('Dag nr: ', day_of_year, 'Intervall dag: ', month9_intervall)
 
         # Establish the number of entries in the config file
         values = [i for i in self.config[first_key]]
@@ -160,6 +164,9 @@ class TPV_Main():
 
         key_halfyear = 1
         self.halfyear = {}
+
+        key_yearly = 1
+        self.yearly = {}
 
         intervalls_counter = 0
 
@@ -244,7 +251,7 @@ class TPV_Main():
 
             elif lowcas == 'halvår':
 
-                if day_of_year == 183:
+                if day_of_year == month9_intervall:
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -260,6 +267,25 @@ class TPV_Main():
 
                     self.halfyear['Halfyear' + str(key_halfyear)] = intervalls_counter
                     key_halfyear += 1
+
+            elif lowcas == 'årlig':
+
+                if day_of_year == month9_intervall:
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.yearly['Yearly' + str(key_yearly)] = intervalls_counter
+                    key_yearly += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.yearly['Yearly' + str(key_yearly)] = intervalls_counter
+                    key_yearly += 1
 
             else:
                 label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
@@ -571,15 +597,15 @@ class TPV_Main():
             config_pos += 1
 
         self.config.write()
-        self._movable_dates()
 
     def _movable_dates(self):
 
         """ Deal with incremental maintainance times instead of a fixed date """
 
         # Experimental
-        intervall_9months = int(self.config['Diversje']['4'])
+        intervall_9months = int(self.config['Intervall']['2'])
         day_of_year = int(self.date.strftime('%j'))
+        #day_of_year = 271
 
         if intervall_9months <= day_of_year:
             new_intervall = intervall_9months + intervall_9months
@@ -587,7 +613,7 @@ class TPV_Main():
             if new_intervall > 366:
                 new_intervall = new_intervall % 366
 
-            self.config['Diversje']['4'] = str(new_intervall)
+            self.config['Dato']['2'] = str(new_intervall)
         
         self.config.write()
             
