@@ -142,9 +142,9 @@ class TPV_Main():
 
         # Collecting which number in the year the current day is
         day_of_year = int(self.date.strftime('%j'))
-        month9_intervall = self.config['Dato']['2']
+        month9_intervall = self.config['Dato']['3']
 
-        print('Dag nr: ', day_of_year, 'Intervall dag: ', month9_intervall)
+        #print('Dag nr: ', day_of_year, 'Intervall dag: ', month9_intervall)
 
         # Establish the number of entries in the config file
         values = [i for i in self.config[first_key]]
@@ -602,21 +602,22 @@ class TPV_Main():
 
         """ Deal with incremental maintainance times instead of a fixed date """
 
-        # Experimental
-        intervall_9months = int(self.config['Intervall']['2'])
-        day_of_year = int(self.date.strftime('%j'))
-        #day_of_year = 271
+        for i in self.config['Intervall']:
 
-        if intervall_9months <= day_of_year:
-            new_intervall = intervall_9months + intervall_9months
+            intervall = int(self.config['Intervall'][str(i)])
+            old_intervall = int(self.config['Dato'][str(i)])
+            day_of_year = int(self.date.strftime('%j'))
 
-            if new_intervall > 366:
-                new_intervall = new_intervall % 366
+            if old_intervall <= day_of_year:
+                new_intervall = old_intervall + intervall
 
-            self.config['Dato']['2'] = str(new_intervall)
-        
+                if new_intervall > 366:
+                    new_intervall %= 366
+                    
+
+                self.config['Dato'][str(i)] = str(new_intervall)
+
         self.config.write()
-            
 
     def _error_popup(self, message, issue):
 
