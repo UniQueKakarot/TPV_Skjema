@@ -100,11 +100,21 @@ class TPV_Main():
             self.config['Tidspunkt']['4'] = 'Put your info here'
             self.config['Tidspunkt']['5'] = 'Put your info here'
 
+            self.config['Intervall'] = {}
+            self.config['Intervall']['1'] = '0'
+            self.config['Intervall']['2'] = '0'
+            self.config['Intervall']['3'] = '0'
+
+            self.config['Dato'] = {}
+            self.config['Dato']['1'] = '0'
+            self.config['Dato']['2'] = '0'
+            self.config['Dato']['3'] = '0'
+
             self.config['Diversje'] = {}
             self.config['Diversje']['1'] = 'Du kan skrive ekstra info her:'
             self.config['Diversje']['2'] = 'Annet:'
-            self.config['Diversje']['3'] = ''
-            self.config['Diversje']['4'] = '20'
+            self.config['Diversje']['3'] = self.date.strftime('%Y')
+            self.config['Diversje']['4'] = '0'
             self.config['Diversje']['5'] = 'TPV Skjema for Maskin...'
             self.config['Diversje']['6'] = '0'
 
@@ -120,7 +130,14 @@ class TPV_Main():
             self.config['Månedlig'] = {}
             self.config['Månedlig']['1'] = '0'
 
-            self.config['Diversje']['3'] = self.date.strftime('%Y')
+            self.config['Kvartalsvis'] = {}
+            self.config['Kvartalsvis']['1'] = '0'
+
+            self.config['Halvår'] = {}
+            self.config['Halvår']['1'] = '0'
+
+            self.config['Årlig'] = {}
+            self.config['Årlig']['1'] = '0'
 
             self.config.write()
 
@@ -245,13 +262,26 @@ class TPV_Main():
 
             elif lowcas == 'kvartalsvis':
 
-                label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
-                label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
-                row_hyp += 1
+                if day_of_year == self.config['Dato']['1']:
+
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.quarterly['Quarterly' + str(key_quarterly)] = intervalls_counter
+                    key_quarterly += 1
+
+                else:
+                    label = ttk.Label(self.TPV_Body, text=value, font=FONT1)
+                    label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
+                    row_hyp += 1
+
+                    self.quarterly['Quarterly' + str(key_quarterly)] = intervalls_counter
+                    key_quarterly += 1
 
             elif lowcas == 'halvår':
 
-                if day_of_year == month9_intervall:
+                if day_of_year == self.config['Dato']['2']:
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -270,7 +300,7 @@ class TPV_Main():
 
             elif lowcas == 'årlig':
 
-                if day_of_year == month9_intervall:
+                if day_of_year == self.config['Dato']['3']:
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -490,13 +520,16 @@ class TPV_Main():
 
         maintanance.Maintanace(self.config, self.date, FONT1, FONT2)
 
-    def day_check(self):
+    def day_check(self, year=None, month=None, day=20):
 
         """Checks to see if the 20th day of the month falls on a weekend"""
-        
-        year = int(self.date.strftime('%Y'))
-        month = int(self.date.strftime('%m'))
-        day = 20
+
+        if year == None:
+            year = int(self.date.strftime('%Y'))
+
+        if month == None:
+            month = int(self.date.strftime('%m'))
+        #day = 20
         
         check_day = date(year, month, day).isoweekday()
 
@@ -588,11 +621,37 @@ class TPV_Main():
                     self.config['Månedlig'][str(config_pos)] = '1'
                     config_pos += 1
 
+        else:
+
+            try:
+                worksheet = workbook[worksheet_months[(month_number - 1)]]
+                prev_month = month_number - 1
+            
+                for position in self.monthly.values():
+                    position += 2
+
+                    if worksheet.cell(row=self.day_check(month=prev_month), column=position).value == 0 or worksheet.cell(row=self.day_check(month=prev_month), column=position).value == None:
+                        self.config['Månedlig'][str(config_pos)] = '1'
+                    
+                    config_pos += 1
+            except KeyError:
+                print('I failed you master... q.q')
+                pass
+
         config_pos = 1
         for value, location in zip(self.config['Månedlig'].values(), self.monthly.values()):
             
             if value == '1' and checkbox_values[location] == 1:
                 self.config['Månedlig'][str(config_pos)] = '0'
+
+                try:
+                    worksheet = workbook[worksheet_months[(month_number - 1)]]
+                    prev_month = month_number - 1
+                    location += 2
+                    worksheet.cell(row=self.day_check(month=prev_month), column=location, value=1)
+                except KeyError:
+                    print('Shit hit the fan')
+                    pass
         
             config_pos += 1
 
