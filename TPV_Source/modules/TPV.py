@@ -159,9 +159,6 @@ class TPV_Main():
 
         # Collecting which number in the year the current day is
         day_of_year = int(self.date.strftime('%j'))
-        month9_intervall = self.config['Dato']['3']
-
-        #print('Dag nr: ', day_of_year, 'Intervall dag: ', month9_intervall)
 
         # Establish the number of entries in the config file
         values = [i for i in self.config[first_key]]
@@ -567,12 +564,17 @@ class TPV_Main():
         # if friday is so close to the start of the month that when we check back
         # we need to check the previous month, subtract 1 of month number and convert to
         # month name and set the correct worksheet and get the right number of days to subtract
-        if check_pos < 1:
-            worksheet = workbook[worksheet_months[(month_number - 1)]]
-            check_pos = days_in_month[worksheet_months[(month_number - 1)]] - abs(check_pos)
 
-        else:
-            worksheet = workbook[worksheet_months[month_number]]
+        try:
+            if check_pos < 1:
+                worksheet = workbook[worksheet_months[(month_number - 1)]]
+                check_pos = days_in_month[worksheet_months[(month_number - 1)]] - abs(check_pos)
+
+            else:
+                worksheet = workbook[worksheet_months[month_number]]
+        except KeyError:
+            print('if check_pos < 1 failed somewhere')
+            pass
 
         # weekly
         config_pos = 1
@@ -592,8 +594,12 @@ class TPV_Main():
             for position in self.weekly.values():
                 position += 2
 
-                if worksheet.cell(row=check_pos, column=position).value == 0 or worksheet.cell(row=check_pos, column=position).value == None:
-                    self.config['Ukentlig'][str(config_pos)] = '1'
+                try:
+                    if worksheet.cell(row=check_pos, column=position).value == 0 or worksheet.cell(row=check_pos, column=position).value == None:
+                        self.config['Ukentlig'][str(config_pos)] = '1'
+                except NameError:
+                    print('worksheet not defined')
+                    pass
                 
                 config_pos += 1
 
@@ -603,7 +609,12 @@ class TPV_Main():
             if value == '1' and checkbox_values[location] == 1:
                 self.config['Ukentlig'][str(config_pos)] = '0'
                 location += 2
-                worksheet.cell(row=check_pos, column=location, value=1)
+                
+                try:
+                    worksheet.cell(row=check_pos, column=location, value=1)
+                except NameError:
+                    print('worksheet not defined 2')
+                    pass
 
             config_pos += 1
 
