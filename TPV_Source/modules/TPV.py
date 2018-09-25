@@ -736,8 +736,6 @@ class TPV_Main():
 
             config_pos += 1
 
-        self._error_popup('Hei', 'Jakob din fjott')
-
         self.config.write()
 
     def _movable_dates(self):
