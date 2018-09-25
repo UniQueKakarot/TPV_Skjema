@@ -259,7 +259,9 @@ class TPV_Main():
 
             elif lowcas == 'kvartalsvis':
 
-                if day_of_year == self.config['Dato']['1']:
+                quarterly_flag = self.config['Kvartalsvis'][str(key_quarterly)]
+
+                if day_of_year == self.config['Dato']['1'] or quarterly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='orange')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -278,7 +280,9 @@ class TPV_Main():
 
             elif lowcas == 'halvår':
 
-                if day_of_year == self.config['Dato']['2']:
+                halfyearly_flag = self.config['Halvår'][str(key_halfyear)]
+
+                if day_of_year == self.config['Dato']['2'] or halfyearly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -297,7 +301,9 @@ class TPV_Main():
 
             elif lowcas == 'årlig':
 
-                if day_of_year == self.config['Dato']['3']:
+                yearly_flag = self.config['Årlig'][str(key_yearly)]
+
+                if day_of_year == self.config['Dato']['3'] or yearly_flag == '1':
 
                     label = ttk.Label(self.TPV_Body, text=value, font=FONT1, background='red')
                     label.grid(row=row_hyp, column=4, sticky=tk.W, padx=15)
@@ -550,6 +556,7 @@ class TPV_Main():
         #today = 'Thursday'
         today_number = int(self.date.strftime('%d'))
         month_number = int(self.date.strftime('%m'))
+        day_of_year = int(self.date.strftime('%j'))
 
         backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6, 'Friday': 0}
         check_pos = today_number - backwards_counting[today]
@@ -665,6 +672,71 @@ class TPV_Main():
                     pass
         
             config_pos += 1
+
+        # quarterly
+        config_pos = 1
+        if day_of_year == self.config['Dato']['1']:
+
+            for i in self.quarterly.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Kvartalsvis'][str(config_pos)] = '0'
+                    config_pos += 1
+                else:
+                    self.config['Kvartalsvis'][str(config_pos)] = '1'
+                    config_pos += 1
+
+        config_pos = 1
+        for value, location in zip(self.config['Kvartalsvis'].values(), self.quarterly.values()):
+            
+            if value == '1' and checkbox_values[location] == 1:
+                self.config['Kvartalsvis'][str(config_pos)] = '0'
+
+            config_pos += 1
+
+        # halfyearly
+        config_pos = 1
+        if day_of_year == self.config['Dato']['2']:
+
+            for i in self.halfyear.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Halvår'][str(config_pos)] = '0'
+                    config_pos += 1
+                else:
+                    self.config['Halvår'][str(config_pos)] = '1'
+                    config_pos += 1
+
+        config_pos = 1
+        for value, location in zip(self.config['Halvår'].values(), self.halfyear.values()):
+            
+            if value == '1' and checkbox_values[location] == 1:
+                self.config['Halvår'][str(config_pos)] = '0'
+
+            config_pos += 1
+
+        # yearly
+        config_pos = 1
+        if day_of_year == self.config['Dato']['3']:
+
+            for i in self.yearly.values():
+
+                if checkbox_values[i] == 1:
+                    self.config['Årlig'][str(config_pos)] = '0'
+                    config_pos += 1
+                else:
+                    self.config['Årlig'][str(config_pos)] = '1'
+                    config_pos += 1
+
+        config_pos = 1
+        for value, location in zip(self.config['Årlig'].values(), self.yearly.values()):
+            
+            if value == '1' and checkbox_values[location] == 1:
+                self.config['Årlig'][str(config_pos)] = '0'
+
+            config_pos += 1
+
+        self._error_popup('Hei', 'Jakob din fjott')
 
         self.config.write()
 
