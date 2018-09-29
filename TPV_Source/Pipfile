@@ -20,6 +20,7 @@ six = "==1.11.0"
 wrapt = "==1.10.11"
 et_xmlfile = "==1.0.1"
 Pillow = "==5.1.0"
+pyinstaller = "*"
 
 [dev-packages]
 
