@@ -62,7 +62,7 @@ class TPV_Main():
 
         if not os.path.isfile(self.config_name):
 
-            self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
+            self.config = ConfigObj(encoding='UTF8', default_encoding='UTF8')
             self.config.filename = self.config_name
 
             self.config['Vedlikeholdspunkt'] = {}
