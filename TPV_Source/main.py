@@ -9,11 +9,12 @@ from configobj import ConfigObj
 from modules import TPV
 
 # TODO
-# Fix up the logging so it actually logs any usefull error message
+# Fix up the logging so it actually logs any usefull error message; Mostly done, exposing error through the GUI
 # Make an input field for oil filling besides entries that requires oil
 # Make it possible to edit any configs from the applications itself
 # Show the dates for when the next maintainance should be done
-# Make the color change persist if the maintainance havent beed done on time
+# Make the color change persist if the maintainance havent beed done on time; Taken out of the list for the time beeing.
+# Make the saving of a new excel file silent when switching year
 
 class SomeWindow(tk.Frame):
     def __init__(self, master):
@@ -21,14 +22,13 @@ class SomeWindow(tk.Frame):
 
         self.master = master
         self.master.title('TPV Skjema')
-        try:
-            self.master.iconbitmap('tpv.ico')
-        except:
-            self._generic_error()
+        #try:
+            #self.master.iconbitmap('tpv.ico')
+        #except:
+            #self._generic_error()
 
 
         self.config_folder = Path('configs')
-        self.file_folder = 'files\\'
         self.tabcontroll = ttk.Notebook(master)
 
         self._config_generation()
@@ -50,7 +50,7 @@ class SomeWindow(tk.Frame):
         except IndexError as e:
             self._config_popup(e)
 
-        self.master.after(1000, self.win_size)
+        self.master.after(1000, self._win_size)
 
         size = self.config['Diversje']['1']
         self.master.geometry(size)
@@ -94,7 +94,7 @@ class SomeWindow(tk.Frame):
 
         mBox.showerror('Error', 'Something went wrong!')
 
-    def win_size(self):
+    def _win_size(self):
 
         """Resizing the UI window to the minimum needed + a 100 pixels on each side"""
 
