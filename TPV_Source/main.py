@@ -12,8 +12,6 @@ from modules import TPV
 # Fix up the logging so it actually logs any usefull error message; Mostly done, exposing error through the GUI
 # Make an input field for oil filling besides entries that requires oil
 # Make it possible to edit any configs from the applications itself
-# Show the dates for when the next maintainance should be done
-# Make the color change persist if the maintainance havent beed done on time; Taken out of the list for the time beeing.
 # Make the saving of a new excel file silent when switching year
 
 class SomeWindow(tk.Frame):
@@ -22,10 +20,10 @@ class SomeWindow(tk.Frame):
 
         self.master = master
         self.master.title('TPV Skjema')
-        #try:
-            #self.master.iconbitmap('tpv.ico')
-        #except:
-            #self._generic_error()
+        try:
+            self.master.iconbitmap('tpv.ico')
+        except:
+            self._generic_error()
 
 
         self.config_folder = Path('configs')
@@ -40,7 +38,6 @@ class SomeWindow(tk.Frame):
         for i in self.config['Konfigurasjonsfiler'].values():
             config_path = self.config_folder / i 
             configs.append(str(config_path))
-            print(config_path)
 
         machines = self.config['Maskin info']['Antall Maskiner']
         machines = int(machines)
