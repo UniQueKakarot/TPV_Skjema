@@ -20,11 +20,13 @@ class TPV_Main():
     def __init__(self, master, tabcontroll, name, config_name):
         
         self.config_name = config_name
+        print(self.config_name)
         self.date = datetime.today()
 
         frametxt = 'TPV Skjema'
 
         if os.path.isfile(self.config_name) is True:
+            print('Hello')
             self.config = ConfigObj(self.config_name, encoding='utf8', default_encoding='utf8')
             frametxt = self.config['Diversje']['5']
 
@@ -62,7 +64,7 @@ class TPV_Main():
 
         if not os.path.isfile(self.config_name):
 
-            self.config = ConfigObj(encoding='utf8', default_encoding='utf8')
+            self.config = ConfigObj(encoding='UTF8', default_encoding='UTF8')
             self.config.filename = self.config_name
 
             self.config['Vedlikeholdspunkt'] = {}

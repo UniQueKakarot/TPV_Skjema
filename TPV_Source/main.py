@@ -38,8 +38,9 @@ class SomeWindow(tk.Frame):
         configs = []
 
         for i in self.config['Konfigurasjonsfiler'].values():
-            config_path = self.config_folder / i
+            config_path = self.config_folder / i 
             configs.append(str(config_path))
+            print(config_path)
 
         machines = self.config['Maskin info']['Antall Maskiner']
         machines = int(machines)
