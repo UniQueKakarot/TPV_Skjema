@@ -397,11 +397,13 @@ class TPV_Main():
         # Checking if the file exist or if we have switched year
         if not os.path.isfile(f_name) or self._year_check() == 1:
 
+            self._error_popup('Saving', 'Make sure you arent overwriting an old file')
+
             f_new = filedialog.asksaveasfilename(title='Select File',
                                                  filetypes=(("Excel files", ".xlsx"),
                                                             ("All files", "*.*")), 
                                                  defaultextension="*.*")
-
+            
             self.config['Filbehandling']['1'] = f_new
 
             wb = op.Workbook()
@@ -532,7 +534,6 @@ class TPV_Main():
 
         if month == None:
             month = int(self.date.strftime('%m'))
-        #day = 20
         
         check_day = date(year, month, day).isoweekday()
 
