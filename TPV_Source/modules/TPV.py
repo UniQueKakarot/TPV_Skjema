@@ -560,7 +560,7 @@ class TPV_Main():
         day_of_year = int(self.date.strftime('%j'))
 
         backwards_counting = {'Saturday': 1, 'Sunday': 2, 'Monday': 3, 'Tuesday': 4, 'Wednesday': 5, 'Thursday': 6, 'Friday': 0}
-        check_pos = today_number - backwards_counting[today]
+        check_pos = (today_number - backwards_counting[today]) + 1
 
         # I hate working with dates!
         worksheet_months = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 
